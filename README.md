@@ -17,6 +17,10 @@ Run individual execuatable for each snippet.
 
 ## Running all snippets
 
+The destination for compiled programs is mirrored structure in build directory.
+
+## Testing all targets
+
 To run all the snippets from the directory do the following too.
 
 $ meson test -C build

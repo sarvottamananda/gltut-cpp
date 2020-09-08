@@ -1,4 +1,4 @@
-# oglcs : OpenGL Code Snippets
+# OpenGL Snippets --- Simple Code Snippets for OpenGL/C++
 
 This project contains beginner level OpenGL code snippets. The purpose is to learn OpenGL through
 practical programming. 

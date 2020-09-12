@@ -1,4 +1,4 @@
-# OpenGL Snippets --- Simple Code Snippets for OpenGL/C++
+# OpenGL Snippets - Simple Code Snippets for OpenGL/C++ in Linux for Students
 
 This project contains beginner level OpenGL code snippets. The purpose is to learn OpenGL through
 practical programming. 
@@ -16,6 +16,10 @@ The executables are created as ${projectdir}/build/src/*/*
 Run individual execuatable for each snippet.
 
 ## Running all snippets
+
+The destination for compiled programs is mirrored structure in build directory.
+
+## Testing all targets
 
 To run all the snippets from the directory do the following too.
 

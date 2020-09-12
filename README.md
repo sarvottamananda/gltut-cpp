@@ -14,7 +14,7 @@ $ meson build
 $ meson compile -C build
 ```
 
-The executables are created as ${projectdir}/build/src/*/*
+The executables are created as ```${projectdir}/build/src/*/*```
 Run individual execuatable for each snippet.
 
 ## Running all snippets

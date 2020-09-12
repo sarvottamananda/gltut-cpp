@@ -1,4 +1,4 @@
-# OpenGL Snippets - Simple Code Snippets for OpenGL/C++
+# OpenGL Snippets - Simple Code Snippets for OpenGL/C++ in Linux for Students
 
 This project contains beginner level OpenGL code snippets. The purpose is to learn OpenGL through
 practical programming. 

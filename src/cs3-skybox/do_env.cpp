@@ -34,4 +34,5 @@ void process_env(Options_store& os)
     if (vallist[2] != nullptr) os.set_modelsdir(std::string(vallist[2]));
     if (vallist[3] != nullptr) os.set_shadersdir(std::string(vallist[3]));
     if (vallist[4] != nullptr) os.set_texturesdir(std::string(vallist[4]));
+    if (vallist[5] != nullptr) os.set_homedir(std::string(vallist[5]));
 }

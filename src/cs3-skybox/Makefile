@@ -25,31 +25,38 @@ CXXFLAGS = -std=c++20 -O2 -DDEBUG
 
 LDFLAGS = -lglfw -lvulkan -lm -lstdc++ -lyaml-cpp
 
-.PHONY: clang-format clean
+.PHONY: clean format fmt-stamp tags
 
 all : $(target)
 
 $(target) : $(objs)
 	$(CXX) $(objs) -o $@ $(LDFLAGS)
 
-$(subdirs):
-	$(MAKE) -C $@
-
-format :
-	for f in $(srcs) $(hdrs) ; do \
-	    clang-format-12 -i $$f ; \
-	done
-
 clean : 
 	$(RM) $(objs)
 	$(RM) $(deps)
 	$(RM) $(target)
 
-test: $(target)
-	./$(target)
-
 deps : $(deps)
 	@echo "Dependencies are created in directory dep"
+
+format : fmt-stamp
+
+
+fmt-stamp :
+	@for f in $(shell find .  \( -name '*.cpp' -or -name '*.h' -or -name '*.c' \) -and -cnewer $@) ; do \
+		echo "Running clang-format on $$f" ; \
+	    	clang-format-12 -i $$f ; \
+	done
+	@touch $@
+
+
+
+tags:
+	ctags -R --languages=C,C++ --kinds-C++=+p --fields=+iaS --extras=+qF --sort=yes
+
+test: $(target)
+	@./$(target)
 
 objs : $(objs)
 

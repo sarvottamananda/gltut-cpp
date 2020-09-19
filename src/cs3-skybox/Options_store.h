@@ -30,6 +30,7 @@ public:
     std::string get_texturesdir() { return texturesdir; }
     std::string get_builddir() { return builddir; }
     std::string get_sourcedir() { return sourcedir; }
+    std::string get_homedir() { return homedir; }
 
     bool set_verbose(bool x)
     {
@@ -103,11 +104,16 @@ public:
 	builddir = x;
 	return oldx;
     }
-
     std::string set_sourcedir(std::string x)
     {
 	std::string oldx = x;
 	sourcedir = x;
+	return oldx;
+    }
+    std::string set_homedir(std::string x)
+    {
+	std::string oldx = x;
+	homedir = x;
 	return oldx;
     }
 
@@ -129,6 +135,7 @@ private:
     std::string texturesdir;
     std::string builddir;
     std::string sourcedir;
+    std::string homedir;
 };
 
 #endif	// end of include guard: OPTIONS_STORE_H_INCLUDED

@@ -34,27 +34,35 @@ extern void print(int level, const char* fmt, ...);
 extern void printloc(int level, const char* fn, int lno, const char* fmt, ...);
 }  // namespace debug
 
+// Usage (DP):  D_PRINT(fmt, ...);
 // Usage (DD):  D_DEBUG(level, fmt, ...);
 // Usage (DT):  D_TRACEL(level, fmt, ...);
 // Usage (DC):  D_CALL(level, ...);
 
 // The structure of the macros means that the code is always validated
 // but is not called when DEBUG is undefined.
+
 // -- See chapter 8 of 'The Practice of Programming', by Kernighan and Pike.
 
-#define DD(level, ...)                                       \
+// Debug print
+#define DD(...)                                            \
+    do {                                                   \
+	if (debug::active) debug::print(999, __VA_ARGS__); \
+    } while (0)
+
+// Debug print based on level
+#define DP(level, ...)                                       \
     do {                                                     \
 	if (debug::active) debug::print(level, __VA_ARGS__); \
     } while (0)
 
+// Debug trace based on level
 #define DT(level, ...)                                                              \
     do {                                                                            \
 	if (debug::active) debug::printloc(level, __FILE__, __LINE__, __VA_ARGS__); \
     } while (0)
 
-// If debug is active at given level, execute the code in the variable
-// arguments.  Normally used to selectively execute printing functions.
-
+// Debug call based on level
 #define DC(level, ...)                                       \
     do {                                                     \
 	if (debug::active && debug::getdebug() >= (level)) { \

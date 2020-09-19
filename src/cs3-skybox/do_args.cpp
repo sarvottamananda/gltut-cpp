@@ -112,18 +112,23 @@ void process_args(int argc, char **argv, Options_store &os)
 	fputc('\n', stderr);
     }
 
+    // First process the configuration file for the options, because the environment vars and
+    // then command line options overide the configuration file.
+
     process_buildconf(os);
     if (has_copt) {
 	os.set_configfile(conffile);
     }
     process_yaml(os.get_configfile(), os);
+
+    process_env(os);
+
     if (has_vopt) os.set_verbose(verbose);
     if (has_dopt) os.set_debug(debug);
     if (has_fopt) os.set_fullscreen(fullscreen);
     if (has_hopt) os.set_height(height);
     if (has_wopt) os.set_width(width);
     return;
-    process_env(os);
 }
 
 static int getnumarg(char *s)

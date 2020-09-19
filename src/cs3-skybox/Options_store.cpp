@@ -27,7 +27,8 @@ Options_store::Options_store()
       shadersdir("shaders"),
       texturesdir("textures"),
       builddir("."),
-      sourcedir(".")
+      sourcedir("."),
+      homedir("~")
 {
     return;
 }
@@ -48,8 +49,9 @@ void Options_store::print(std::string name)
 	"\tshadersdir = %s\n"
 	"\ttexturesdir = %s\n"
 	"\tbuilddir = %s\n"
-	"\tsourcedir = %s\n",
+	"\tsourcedir = %s\n"
+	"\thomedir = %s\n",
 	name.c_str(), fullscreen, verbose, debug, height, width, configfile.c_str(),
 	assetspath.c_str(), searchpath.c_str(), modelsdir.c_str(), shadersdir.c_str(),
-	texturesdir.c_str(), builddir.c_str(), sourcedir.c_str());
+	texturesdir.c_str(), builddir.c_str(), sourcedir.c_str(), homedir.c_str());
 }

@@ -1,9 +1,10 @@
 # OpenGL Snippets - Simple Code Snippets for OpenGL/C++ in Linux for Students
 
-<img src="https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat">
-<img src="https://img.shields.io/badge/first--timers--only-friendly-blue.svg">
-<img src="https://travis-ci.org/freeCodeCamp/how-to-contribute-to-open-source.svg?branch=master">
-
+<p align="center">
+	<img src="https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat">
+	<img src="https://img.shields.io/badge/first--timers--only-friendly-blue.svg">
+	<img src="https://travis-ci.org/freeCodeCamp/how-to-contribute-to-open-source.svg?branch=master">
+</p>
 ***
 
 This project contains beginner level OpenGL code snippets. The purpose is to learn OpenGL through
@@ -71,6 +72,20 @@ $ ./build/src/cs1-triangles/cs
 ***
 
 
+<details>
+<summary>
+<a class="btnfire small stroke"><em class="fas fa-chevron-circle-down"></em>&nbsp;&nbsp;Frequently Asked Questions</a>    
+</summary>
+
+<ul>
+<li>
+
+[CODE_OF_CONDUCT](CODE_OF_CONDUCT.md)
+</li>
+
+
+</ul>
+</details>
 
 
 

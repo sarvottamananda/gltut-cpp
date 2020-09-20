@@ -20,11 +20,11 @@ add_project_arguments('-Wno-unused-parameter', language: ['c', 'cpp'])
 add_project_arguments('-Wno-unused-function', language: ['c', 'cpp'])
 add_project_arguments('-Wno-unused-result', language: ['c', 'cpp'])
 
-glfw_dep   = dependency('glfw3', version: '>= 3')
-glew_dep   = dependency('glew')
-
 m_dep = cpp_compiler.find_library('m', required : false)
+glfw_dep = dependency('glfw3', version: '>= 3')
+glew_dep = dependency('glew')
+yaml_dep = dependency('yaml-cpp')
 
-gl_deps = [glfw_dep, glew_dep, m_dep]
+gl_deps = [glfw_dep, glew_dep, m_dep, yaml_dep]
 
 subdir('src')

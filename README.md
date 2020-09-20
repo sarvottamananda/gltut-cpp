@@ -5,6 +5,7 @@
 	<img src="https://img.shields.io/badge/first--timers--only-friendly-blue.svg">
 	<img src="https://travis-ci.org/freeCodeCamp/how-to-contribute-to-open-source.svg?branch=master">
 </p>
+
 ***
 
 This project contains beginner level OpenGL code snippets. The purpose is to learn OpenGL through

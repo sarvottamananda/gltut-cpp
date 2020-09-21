@@ -14,9 +14,12 @@
 class App : public App_base {
    public:
     App(App_window* win) : App_base(win){};
-    virtual ~App() = default;
+    virtual ~App()=default;
 
     void initialize(Opts& os);
+    void prepare();
+    void render_loop();
+    void terminate();
    private:
 };
 

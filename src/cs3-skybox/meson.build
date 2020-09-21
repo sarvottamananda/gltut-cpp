@@ -6,9 +6,9 @@ cs3_src = [ \
     'do_yaml.cpp', \
     'glfw_stuff.cpp', \
     'main.cpp', \
-    'App.h', \
-    'App_base.h', \
-    'App_window.h', \
+    'App.cpp', \
+    'App_base.cpp', \
+    'App_window.cpp', \
     'Global.cpp', \
     'Opts.cpp' \
 ]

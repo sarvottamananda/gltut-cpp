@@ -1,21 +1,30 @@
+/*
+    Sarvottamananda (shreesh)
+    2020-09-20
+    do_args.cpp v0.0 (OpenGL Code Snippets)
+
+    Process args, env, conf file and build vars.
+
+*/
+
 #include "do_args.h"
 
 #include <getopt.h>
 
+#include <cstdio>
 #include <cstring>
-#include <iostream>
+#include <stdexcept>
 #include <string>
 
 #include "cs_config.h"
-#include "do_buildconf.h"
 #include "do_env.h"
+#include "do_meson.h"
 #include "do_yaml.h"
 
 static int getnumarg(char *);
-static char *getstrarg(char *);
 static void print_usage(char *);
 
-void process_args(int argc, char **argv, Options_store &os)
+void process_args(int argc, char **argv, Opts &os)
 {
     int res = -1;
 
@@ -92,10 +101,11 @@ void process_args(int argc, char **argv, Options_store &os)
 		print_usage(argv[0]);
 		break;
 	    case 'c':
-		conffile = getstrarg(optarg);
+		conffile = optarg;
 		break;
 	    case '?':
-		/* getopt_long already printed an error message. */
+		// getopt_long already printed an error message, but we print the usage
+		// nevertheless
 		print_usage(argv[0]);
 		break;
 
@@ -105,7 +115,7 @@ void process_args(int argc, char **argv, Options_store &os)
 	}
     }
 
-    /* Print any remaining command line arguments (not options). */
+    // Print any remaining command line arguments (not options).
     if (optind < argc) {
 	fprintf(stderr, "non-option argv-elements: ");
 	while (optind < argc) fprintf(stderr, "%s ", argv[optind++]);
@@ -116,18 +126,19 @@ void process_args(int argc, char **argv, Options_store &os)
     // then command line options overide the configuration file.
 
     process_buildconf(os);
+
     if (has_copt) {
-	os.set_configfile(conffile);
+	os.configfile = conffile;
     }
-    process_yaml(os.get_configfile(), os);
+    process_yaml(os.configfile, os);
 
     process_env(os);
 
-    if (has_vopt) os.set_verbose(verbose);
-    if (has_dopt) os.set_debug(debug);
-    if (has_fopt) os.set_fullscreen(fullscreen);
-    if (has_hopt) os.set_height(height);
-    if (has_wopt) os.set_width(width);
+    if (has_vopt) os.verbose = verbose;
+    if (has_dopt) os.debug = debug;
+    if (has_fopt) os.fullscreen = fullscreen;
+    if (has_hopt) os.height = height;
+    if (has_wopt) os.width = width;
     return;
 }
 
@@ -137,20 +148,18 @@ static int getnumarg(char *s)
 	std::size_t pos;
 	int num = std::stoi(s, &pos);
 	if (pos < strlen(s)) {
-	    std::cerr << "Trailing characters after number: " << s << '\n';
+	    fprintf(stderr, "Trailing characters after number: %s\n", s);
 	}
 	return num;
     }
-    catch (std::invalid_argument const &ex) {
-	std::cerr << "Invalid number: " << s << '\n';
+    catch (const std::invalid_argument &ex) {
+	fprintf(stderr, "Invalid number: %s\n", ex.what());
     }
-    catch (std::out_of_range const &ex) {
-	std::cerr << "Number out of range: " << s << '\n';
+    catch (const std::out_of_range &ex) {
+	fprintf(stderr, "Number out of range: %s\n", ex.what());
     }
     abort();
 }
-
-static char *getstrarg(char *s) { return s; }
 
 static void print_usage(char *program_name)
 {

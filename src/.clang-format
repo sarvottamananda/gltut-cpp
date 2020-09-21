@@ -5,7 +5,6 @@ TabWidth: 8
 UseTab: Always
 ---
 Language: Cpp
-AccessModifierOffset: -4
 BreakBeforeBraces: Stroustrup
 ColumnLimit: 96
 Standard: Auto

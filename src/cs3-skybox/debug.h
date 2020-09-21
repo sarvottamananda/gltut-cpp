@@ -1,15 +1,16 @@
-// Project:		OpenGL Code Snippets
-// File:		debug.hpp
-// Version:		0.0
-// Last changed:	2020-09-17
-// Purpose:		Code for the debugging system
-// Author:		shreesh
-// Credits:		The following code was taken from Jonathan Leffler.
-// License:		MIT
-// Copyright:		(C) Sarvottamananda  2020
-
 #ifndef DEBUG_H_INCLUDED
 #define DEBUG_H_INCLUDED
+
+/*
+    Sarvottamananda (shreesh)
+    2020-09-20
+    debug.h v0.0 (OpenGL Code Snippets)
+
+    Debugging by printing idiom
+
+    The debugging by printing idiom mainly follows
+    Jonathan Leffler's ideas from stackoverflow.
+*/
 
 #include <cstdio>
 #include <string>

@@ -1,7 +1,6 @@
 # Build Directory
 build/
 ref/
-tags
 
 # Prerequisites
 *.d
@@ -32,7 +31,6 @@ tags
 *.lib
 
 # Executables
-*.exe
-*.out
-*.app
 a.out
+
+# Compressed archives

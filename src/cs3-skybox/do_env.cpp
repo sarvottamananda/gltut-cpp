@@ -1,12 +1,10 @@
-// Project:		OpenGL Code Snippets
-// File:		do_env.cpp
-// Version:		0.0
-// Last changed:	2020-09-19
-// Purpose:		Code for the debugging system
-// Author:		shreesh
-// Credits:
-// License:		MIT
-// Copyright:		(C) Sarvottamananda  2020
+/*
+    Sarvottamananda (shreesh)
+    2020-09-20
+    do_env.cpp v0.0 (OpenGL Code Snippets)
+
+    Process environment variables
+*/
 
 #include "do_env.h"
 
@@ -15,7 +13,7 @@
 
 #include "debug.h"
 
-void process_env(Options_store& os)
+void process_env(Opts& os)
 {
     std::vector<std::string> namelist{
 	"CS_ASSETS_PATH", "CS_SEARCH_PATH",  "CS_MODELS_DIR",
@@ -29,10 +27,10 @@ void process_env(Options_store& os)
 	vallist[i++] = std::getenv(s.c_str());
     }
 
-    if (vallist[0] != nullptr) os.set_assetspath(std::string(vallist[0]));
-    if (vallist[1] != nullptr) os.set_searchpath(std::string(vallist[1]));
-    if (vallist[2] != nullptr) os.set_modelsdir(std::string(vallist[2]));
-    if (vallist[3] != nullptr) os.set_shadersdir(std::string(vallist[3]));
-    if (vallist[4] != nullptr) os.set_texturesdir(std::string(vallist[4]));
-    if (vallist[5] != nullptr) os.set_homedir(std::string(vallist[5]));
+    if (vallist[0] != nullptr) os.assetspath = vallist[0];
+    if (vallist[1] != nullptr) os.searchpath = vallist[1];
+    if (vallist[2] != nullptr) os.modelsdir = vallist[2];
+    if (vallist[3] != nullptr) os.shadersdir = vallist[3];
+    if (vallist[4] != nullptr) os.texturesdir = vallist[4];
+    if (vallist[5] != nullptr) os.homedir = vallist[5];
 }

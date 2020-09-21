@@ -5,10 +5,9 @@ project('opengl-snippets',
 	meson_version : '>= 0.49',
   	default_options : [
 		'buildtype=release', 
-		'c_std=c18', 
+		'c_std=c11', 
 		'cpp_std=c++17', 
 		'warning_level=3', 
-		'werror=true',
 		'layout=mirror'
 	]
 )
@@ -20,11 +19,15 @@ add_project_arguments('-Wno-unused-parameter', language: ['c', 'cpp'])
 add_project_arguments('-Wno-unused-function', language: ['c', 'cpp'])
 add_project_arguments('-Wno-unused-result', language: ['c', 'cpp'])
 
-m_dep = cpp_compiler.find_library('m', required : false)
-glfw_dep = dependency('glfw3', version: '>= 3')
+dl_dep = c_compiler.find_library('dl', required : true)
 glew_dep = dependency('glew')
+glfw_dep = dependency('glfw3', version: '>= 3')
+glm_dep = dependency('glm')
+m_dep = cpp_compiler.find_library('m', required : false)
 yaml_dep = dependency('yaml-cpp')
 
-gl_deps = [glfw_dep, glew_dep, m_dep, yaml_dep]
+glad_prj = subproject('glad')
+
+glad_dep = glad_prj.get_variable('glad_dep')
 
 subdir('src')

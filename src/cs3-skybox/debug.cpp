@@ -1,12 +1,10 @@
-// Project:		OpenGL Code Snippets
-// File:		debug.cpp
-// Version:		0.0
-// Last changed:	2020-09-18
-// Purpose:		Code for the debugging system
-// Author:		shreesh
-// Credits:		The following code was taken from Jonathan Leffler.
-// License:		MIT
-// Copyright:		(C) Sarvottamananda  2020
+/*
+    Sarvottamananda (shreesh)
+    2020-09-20
+    debug.cpp v0.0 (OpenGL Code Snippets)
+
+    Debug by printing with tests
+*/
 
 #undef DEBUG
 #define DEBUG

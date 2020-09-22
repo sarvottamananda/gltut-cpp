@@ -4,8 +4,10 @@
 srcs := \
     debug.cpp do_args.cpp do_meson.cpp do_env.cpp do_yaml.cpp  \
     glfw_stuff.cpp \
+    img_stuff.cpp \
     main.cpp \
     shader_stuff.cpp \
+    stb_image_impl.cpp \
     App.cpp App_base.cpp App_window.cpp \
     Global.cpp Opts.cpp \
 
@@ -13,6 +15,7 @@ srcs := \
 hdrs := cs_config.h \
     debug.h do_args.h do_meson.h do_env.h do_yaml.h \
     glfw_stuff.h \
+    img_stuff.h \
     shader_stuff.h \
     App.h App_base.h App_window.h \
     Global.h Opts.h \

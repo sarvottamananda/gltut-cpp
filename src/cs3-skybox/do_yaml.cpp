@@ -7,8 +7,10 @@
 */
 
 #include "do_yaml.h"
-#include <iostream>
+
 #include <yaml-cpp/yaml.h>
+
+#include <iostream>
 
 void process_yaml(std::string conffile, Opts& os)
 {
@@ -27,7 +29,7 @@ void process_yaml(std::string conffile, Opts& os)
 	}
     }
     catch (YAML::BadFile& e) {
-        std::cerr << "Bad yaml file : " <<  e.what() << " (" <<  conffile.c_str() << ")\n";
+	std::cerr << "Bad yaml file : " << e.what() << " (" << conffile.c_str() << ")\n";
 	return;
     }
 }

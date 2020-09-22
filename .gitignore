@@ -33,4 +33,7 @@ ref/
 # Executables
 a.out
 
+# Ignore vim swap files
+*.swp
+
 # Compressed archives

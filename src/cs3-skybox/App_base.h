@@ -20,13 +20,13 @@ class App_base {
     App_base(App_window* win) : w(*win){};
     virtual ~App_base() = default;
 
-    virtual void initialize(Opts& os) = 0;
-    virtual void prepare() = 0;
-    virtual void render_loop() = 0;
-    virtual void terminate() = 0;
+    virtual void initialize(Opts& os);
+    virtual void render_loop();
+    virtual void terminate();
 
    protected:
     App_window& w;
+
    private:
 };
 

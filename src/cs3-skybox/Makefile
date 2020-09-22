@@ -5,13 +5,15 @@ srcs := \
     debug.cpp do_args.cpp do_meson.cpp do_env.cpp do_yaml.cpp  \
     glfw_stuff.cpp \
     main.cpp \
+    shader_stuff.cpp \
     App.cpp App_base.cpp App_window.cpp \
     Global.cpp Opts.cpp \
 
 
 hdrs := cs_config.h \
     debug.h do_args.h do_meson.h do_env.h do_yaml.h \
-    glfw_stuff.h\
+    glfw_stuff.h \
+    shader_stuff.h \
     App.h App_base.h App_window.h \
     Global.h Opts.h \
 
@@ -29,10 +31,10 @@ deps := $(srcs:%.cpp=$(dep_dir)/%.d)
 inc_flags := $(addprefix -I,$(inc_dirs)) 
 
 CPPFLAGS =  $(inc_flags)
-CFLAGS = -std=c18 -g
+CFLAGS = -std=c11 -g
 CXXFLAGS = -std=c++20 -DDEBUG -g
 
-LDFLAGS = -lglfw -lvulkan -lm -lstdc++ -lyaml-cpp -ldl
+LDFLAGS = -lglfw -lm -lstdc++ -lyaml-cpp -ldl
 
 .PHONY: clean format fmt-stamp tags
 

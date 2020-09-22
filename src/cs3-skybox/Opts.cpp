@@ -51,4 +51,5 @@ void Opts::print(std::string name)
 	name.c_str(), fullscreen, verbose, debug, height, width, configfile.c_str(),
 	assetspath.c_str(), searchpath.c_str(), modelsdir.c_str(), shadersdir.c_str(),
 	texturesdir.c_str(), builddir.c_str(), sourcedir.c_str(), homedir.c_str());
+    fflush(stdout);
 }

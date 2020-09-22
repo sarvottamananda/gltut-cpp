@@ -11,27 +11,22 @@
 */
 #include "glfw_stuff.h"
 
+#include <iostream>
+
 extern "C" {
 // We need to include glad.h before glfw3.h
 #include "glad.h"  // glad is a C library
 #include <GLFW/glfw3.h>	 // GLFW3 is a C library
 }
 
-#include <stdio.h>
-#include <stdlib.h>
-
-#include <memory>
-
 class App_window_impl : public App_window {
    public:
-    App_window_impl():
-        App_window(),
-        glfw_window(nullptr){};
+    App_window_impl() : App_window(), glfw_window(nullptr){};
     virtual ~App_window_impl(){};
 
     bool initialize(std::string title, int width, int height, bool fullscreen);
     void terminate();
-    void render_prepare();
+    void make_current();
     void render_begin();
     bool render_cond();
     void render_end();
@@ -73,23 +68,23 @@ bool App_window_impl::initialize(std::string title, int width, int height, bool 
 
 	auto max_pixels = 0;
 	auto max_mode = 0;
-        auto max_hz = 0;
+	auto max_hz = 0;
 
 	for (int i = 0; i < count; i++) {
 	    if (pvidmodes[i].height * pvidmodes[i].width > max_pixels) {
 		max_pixels = pvidmodes[i].width * pvidmodes[i].height;
-                max_hz = pvidmodes[i].refreshRate;
+		max_hz = pvidmodes[i].refreshRate;
 		max_mode = i;
 	    }
 	    if (pvidmodes[i].height * pvidmodes[i].width == max_pixels) {
-                if (pvidmodes[i].refreshRate > max_hz) {
+		if (pvidmodes[i].refreshRate > max_hz) {
 		    max_pixels = pvidmodes[i].width * pvidmodes[i].height;
-                    max_hz = pvidmodes[i].refreshRate;
+		    max_hz = pvidmodes[i].refreshRate;
 		    max_mode = i;
-                }
-            }
+		}
+	    }
 
-            // Hopefully we have got the best resolution with best refresh rate
+	    // Hopefully we have got the best resolution with best refresh rate
 
 	    printf(
 		"No:%d, %dx%d,"
@@ -165,11 +160,18 @@ void error_callback(int error, const char *description)
     fprintf(stderr, "GLFW error%d: %s\n", error, description);
 }
 
-void App_window_impl::render_prepare()
+void App_window_impl::make_current()
 {
     // This makes the window context, current OpenGL context for rendering
     ::glfwMakeContextCurrent(glfw_window);
     ::glfwSwapInterval(1);
+
+    // glad: load all OpenGL function pointers
+    // ---------------------------------------
+    if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
+	std::cerr << "Failed to initialize GLAD" << std::endl;
+	exit(EXIT_FAILURE);
+    }
 }
 
 void App_window_impl::render_begin()
@@ -193,6 +195,4 @@ void App_window_impl::render_end()
     ::glfwSwapBuffers(glfw_window);
 }
 
-
 void App_window_impl::terminate() { glfwTerminate(); }
-

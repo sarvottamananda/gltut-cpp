@@ -8,29 +8,52 @@
 
 #include "App.h"
 
-#include "glad.h"
+#include "shader_stuff.h"
 
-void App::initialize(Opts& os) { 
-    w.initialize("Code Snippet 3", os.width, os.height, os.fullscreen); 
-}
+using std::string;
+template <class T>
+using Vector = std::vector<T, std::allocator<T>>;
 
-void App::prepare() 
+static void prepare();
+
+void App::render_loop()
 {
-    w.render_prepare();
-}
+    // This makes w's OpenGL context current
+    w.make_current();
 
-void App::render_loop() 
-{
+    // We need the context to compile programs and such
+    prepare();
+
     while (w.render_cond()) {
-        w.render_begin();
+	w.render_begin();
 
 	//::glClear(GL_COLOR_BUFFER_BIT);
+	//
 	w.render_end();
     }
-    
 }
 
-void App::terminate() 
+static void prepare_programs();
+static void prepare_textures();
+static void prepare_cube();
+
+static void prepare()
 {
-    w.terminate();
+    prepare_programs();
+    prepare_textures();
+    prepare_cube();
 }
+
+static void prepare_programs()
+{
+    Vector<string> shader_list = {
+	"assets/shaders/skybox.vert",
+	"assets/shaders/skybox.frag",
+    };
+
+    GLuint skybox_prog = create_program("Skybox", shader_list);
+}
+
+static void prepare_textures() {}
+
+static void prepare_cube() {}

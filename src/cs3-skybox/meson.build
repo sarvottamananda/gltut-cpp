@@ -6,6 +6,7 @@ cs3_src = [ \
     'do_yaml.cpp', \
     'glfw_stuff.cpp', \
     'main.cpp', \
+    'shader_stuff.cpp', \
     'App.cpp', \
     'App_base.cpp', \
     'App_window.cpp', \

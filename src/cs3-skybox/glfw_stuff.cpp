@@ -16,8 +16,9 @@
 extern "C" {
 // We need to include glad.h before glfw3.h
 #include "glad.h"  // glad is a C library
-#include <GLFW/glfw3.h>	 // GLFW3 is a C library
 }
+
+#include <GLFW/glfw3.h>	 // GLFW3 is a C library
 
 class App_window_impl : public App_window {
    public:

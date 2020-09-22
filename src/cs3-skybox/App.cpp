@@ -8,6 +8,9 @@
 
 #include "App.h"
 
+#include <array>
+
+#include "Model_cube.h"
 #include "img_stuff.h"
 #include "iostream"
 #include "shader_stuff.h"
@@ -18,6 +21,8 @@ using Vector = std::vector<T, std::allocator<T>>;
 
 static GLuint skybox_prog = 0;
 static GLuint skybox_txtr = 0;
+
+static int nskyboxes = 0;
 
 static void prepare();
 
@@ -40,13 +45,19 @@ void App::render_loop()
 
 static void prepare_programs();
 static void prepare_textures();
-static void prepare_cube();
+static void prepare_models();
+static void prepare_buffers();
+static void prepare_attributes();
+static void prepare_uniforms();
 
 static void prepare()
 {
     prepare_programs();
     prepare_textures();
-    prepare_cube();
+    prepare_models();
+    prepare_buffers();
+    prepare_attributes();
+    prepare_uniforms();
 }
 
 static void prepare_programs()
@@ -59,7 +70,26 @@ static void prepare_programs()
     skybox_prog = create_program("Skybox", shaders);
 }
 
+static void load_texture_data();
+
 static void prepare_textures()
+{
+    glGenTextures(1, &skybox_txtr);
+    glBindTexture(GL_TEXTURE_CUBE_MAP_ARRAY, skybox_txtr);
+
+    load_texture_data();
+
+    // Always set reasonable texture parameters
+    glTexParameteri(GL_TEXTURE_CUBE_MAP_ARRAY, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_CUBE_MAP_ARRAY, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_CUBE_MAP_ARRAY, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_CUBE_MAP_ARRAY, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+}
+
+// Upload pixel data on textures.
+static void splice_texture_data(Vector<Image> &image);
+
+static void load_texture_data()
 {
     Vector<string> file = {
 	"assets/textures/cubebox-0.png", "assets/textures/cubebox-1.png",
@@ -69,7 +99,7 @@ static void prepare_textures()
 	"assets/textures/cubebox-8.png", "assets/textures/cubebox-9.png",
     };
 
-    const int nskyboxes = file.size();	// Number of skyboxes
+    nskyboxes = file.size();  // Number of skyboxes
 
     Vector<Image> image(nskyboxes);
 
@@ -77,6 +107,11 @@ static void prepare_textures()
 	image[i].read_file(file[i]);
     }
 
+    splice_texture_data(image);
+}
+
+static void splice_texture_data(Vector<Image> &image)
+{
     // For a cube map array, all the sizes of the images should be equal. We assume that it is
     // true, and check it later.
 
@@ -87,23 +122,9 @@ static void prepare_textures()
     int fh = h / 3;
 
     std::cout << "No. of cubemaps : " << nskyboxes << "\n";
-    std::cout << "Cubemaps resolution : " << w << " x " << h << "\n";;
+    std::cout << "Cubemaps resolution : " << fw << " x " << fh << "\n";
+    ;
     std::cout << "No. of channels : " << nc << "\n";
-
-    int cnt_mip_level = 1;
-
-    glGenTextures(1, &skybox_txtr);
-    glBindTexture(GL_TEXTURE_CUBE_MAP_ARRAY, skybox_txtr);
-    // Allocate the storage.
-    //
-    glTexStorage3D(GL_TEXTURE_CUBE_MAP_ARRAY, cnt_mip_level, GL_RGBA8, fw, fh, nskyboxes);
-
-    // Upload pixel data.
-    // The first 0 refers to the mipmap level (level 0, since there's only 1)
-    // The following 2 zeroes refers to the x and y offsets in case you only want to specify a
-    // subrectangle. The final 0 refers to the layer index offset (we start from index 0 and
-    // have 2 levels). Altogether you can specify a 3D box subset of the overall texture, but
-    // only one mip level at a time.
 
     struct Offset {
 	int x;
@@ -111,35 +132,57 @@ static void prepare_textures()
     };
 
     Offset loc_face[6] = {
-	Offset{0, 3}, Offset{0, 1}, Offset{1, 2}, Offset{1, 0}, Offset{1, 1}, Offset{1, 3},
+	Offset{2, 1}, Offset{0, 1}, Offset{1, 0}, Offset{1, 2}, Offset{1, 1}, Offset{3, 1},
     };
-    auto texels = new GLubyte[w * h * nc];
 
-    for (int i = 0; i < nskyboxes; i++){
+    GLubyte *texels = new GLubyte[fw * fh * nc];
+
+    // Allocate the storage.
+    //
+    int cnt_mip_level = 1;
+    glTexStorage3D(GL_TEXTURE_CUBE_MAP_ARRAY, cnt_mip_level, GL_RGBA8, fw, fh, nskyboxes);
+
+    for (int i = 0; i < nskyboxes; i++) {
 	if (image[i].get_width() != w || image[i].get_height() != h ||
 	    image[i].get_bytes_per_pixel() != nc) {
 	    std::cerr << "Images do not have same size, resize them equally.\n";
 	    exit(EXIT_FAILURE);
 	}
 	for (int j = 0; j < 6; j++) {
-	    GLubyte* p = (GLubyte*)image[i].pixels();
+	    GLubyte *p = (GLubyte *)image[i].pixels();
 
-	    int scanlines = (2 - loc_face[j].y) * fh  ;
-	    int disp = (loc_face[j].x * fw) ;
+	    int scanlines = loc_face[j].y * fh;
+	    int disp = (loc_face[j].x * fw);
 
-            int offset = (scanlines *w +disp) * nc;
-
+	    int offset = (scanlines * w + disp) * nc;
 
 	    for (int jj = 0; jj < fh; jj++)
 		for (int ii = 0; ii < fw; ii++)
-		    for (int kk = 0; kk < nc; kk++){
-			int tidx = (fw * jj + ii) * nc + kk ;
-                        if (tidx >= fw * fh * nc) 
-                            std::cerr << "Boundst : " << tidx << "\n";
-                        int pidx = ((fh - jj - 1) * w + ii) * nc + kk + offset;
-                        if (pidx >= w * h * nc) 
-                            std::cerr << "Boundsp : " << pidx << "\n";
-                    }
+		    for (int kk = 0; kk < nc; kk++) {
+			int tidx = (fw * jj + ii) * nc + kk;
+			int pidx = ((fh - jj - 1) * w + ii) * nc + kk + offset;
+
+			// std::cerr << tidx << "\n";
+
+			if (tidx >= fw * fh * nc || tidx < 0) {
+			    std::cerr << "Bounds t : " << tidx << "\n";
+			    exit(EXIT_FAILURE);
+			}
+			if (pidx >= w * h * nc || pidx < 0) {
+			    std::cerr << "Bounds p : " << pidx << "\n";
+			    exit(EXIT_FAILURE);
+			}
+
+			texels[tidx] = p[pidx];
+		    }
+
+	    // The first 0 refers to the mipmap level (level 0, since there's only 1)
+	    // The following 2 zeroes refers to the x and y offsets in case you only want to
+	    // specify a subrectangle. The final 6i+j refers to the layer index offset (we start
+	    // from index 0 and have 6 faces). Altogether you can specify a 3D box subset of
+	    // the overall texture, but only one mip level at a time.
+
+	    // std ::cerr << "Loading texture (" << j << " of " << i << "\n";
 
 	    glTexSubImage3D(GL_TEXTURE_CUBE_MAP_ARRAY, 0, 0, 0, i * 6 + j, fw, fh, 1, GL_RGBA,
 			    GL_UNSIGNED_BYTE, texels);
@@ -151,12 +194,15 @@ static void prepare_textures()
     for (int i = 0; i < nskyboxes; i++) {
 	image[i].free_data();
     }
-
-    // Always set reasonable texture parameters
-    glTexParameteri(GL_TEXTURE_CUBE_MAP_ARRAY, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_CUBE_MAP_ARRAY, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_CUBE_MAP_ARRAY, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-    glTexParameteri(GL_TEXTURE_CUBE_MAP_ARRAY, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 }
 
-static void prepare_cube() {}
+static void prepare_models() { 
+    Model_cube cube;  
+    cube.print();
+}
+
+static void prepare_buffers() {}
+
+static void prepare_attributes() {}
+
+static void prepare_uniforms() {}

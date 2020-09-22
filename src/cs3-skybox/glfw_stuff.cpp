@@ -12,13 +12,10 @@
 #include "glfw_stuff.h"
 
 #include <iostream>
-
-extern "C" {
-// We need to include glad.h before glfw3.h
-#include "glad.h"  // glad is a C library
-}
-
-#include <GLFW/glfw3.h>	 // GLFW3 is a C library
+// clang-format off
+#include "glad.h"  // glad is written in C
+#include <GLFW/glfw3.h>	 // GLFW3 is written in C
+// clang-format on
 
 class App_window_impl : public App_window {
    public:

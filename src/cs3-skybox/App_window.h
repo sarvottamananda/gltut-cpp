@@ -13,11 +13,11 @@
 
 class App_window {
    public:
-    App_window(){}; 
+    App_window(){};
     virtual ~App_window(){};
     virtual bool initialize(std::string title, int width, int height, bool fullscreen) = 0;
     virtual void terminate() = 0;
-    virtual void render_prepare() = 0;
+    virtual void make_current() = 0;
     virtual void render_begin() = 0;
     virtual bool render_cond() = 0;
     virtual void render_end() = 0;

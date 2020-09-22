@@ -8,10 +8,7 @@
 
 #include "do_env.h"
 
-#include <cstdlib>
 #include <vector>
-
-#include "debug.h"
 
 void process_env(Opts& os)
 {

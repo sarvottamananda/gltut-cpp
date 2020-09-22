@@ -8,12 +8,7 @@
 
 #include "App.h"
 #include "Opts.h"
-#include "debug.h"
 #include "do_args.h"
-
-void initialize_snippet(App_base& ab, Opts& os);
-void run_snippet(App_base& ab, Opts&);
-void terminate_snippet(App_base& ab, Opts&);
 
 int main(int argc, char* argv[])
 {
@@ -26,19 +21,9 @@ int main(int argc, char* argv[])
     App_window* awin = create_app_window();
     App code_snippet(awin);
 
-    initialize_snippet(code_snippet, opts_store);
-    run_snippet(code_snippet, opts_store);
-    terminate_snippet(code_snippet, opts_store);
+    code_snippet.initialize(opts_store);
+    code_snippet.render_loop();
+    code_snippet.terminate();
 
     destroy_app_window(awin);
 }
-
-void initialize_snippet(App_base& ab, Opts& os) { ab.initialize(os); }
-
-void run_snippet(App_base& ab, Opts& os)
-{
-    ab.prepare();
-    ab.render_loop();
-}
-
-void terminate_snippet(App_base& ab, Opts& os) { ab.terminate(); }

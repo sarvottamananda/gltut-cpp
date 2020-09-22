@@ -11,7 +11,6 @@
 
 #include <getopt.h>
 
-#include <cstdio>
 #include <cstring>
 #include <stdexcept>
 #include <string>

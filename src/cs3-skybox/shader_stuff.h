@@ -9,10 +9,11 @@
 #ifndef SHADER_H_INCLUDED
 #define SHADER_H_INCLUDED
 
+#include <GL/glew.h>
+
 #include <string>
 #include <vector>
-
-#include "glad.h"
+//#include "glad.h"
 
 GLuint create_program(std::string, std::vector<std::string>);
 

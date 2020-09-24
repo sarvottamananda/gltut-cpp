@@ -41,6 +41,7 @@ GLuint create_program(string name, std::vector<string> shaders)
 	Shader_data{GL_COMPUTE_SHADER, "comp", "compute", false, 0, ""},
     };
 
+    //  Compile all the shaders given in parameter
     for (auto fn : shaders) {
 	bool found_ext = false;
 
@@ -67,12 +68,12 @@ GLuint create_program(string name, std::vector<string> shaders)
 	    cerr << "Unknown shader! (" << fn << ")\n";
 	}
     }
-
     // Vertex and fragment shaders are successfully compiled.
-    // Now time to link them together into a program.
+
     // Get a program object.
     auto prog_id = glCreateProgram();
 
+    // Attach all the compiled shaders above
     for (auto shdr : shdr_list) {
 	if (shdr.present) {
 	    // cerr << "Attaching shader ("<< shdr.file << ")\n";
@@ -83,7 +84,7 @@ GLuint create_program(string name, std::vector<string> shaders)
     // Link our program
     glLinkProgram(prog_id);
 
-    // Note the different functions here: glGetProgram* instead of glGetShader*.
+    // Check the linking status
     GLint isLinked = 0;
     glGetProgramiv(prog_id, GL_LINK_STATUS, (int *)&isLinked);
     if (isLinked == GL_FALSE) {
@@ -111,10 +112,13 @@ GLuint create_program(string name, std::vector<string> shaders)
 	cerr << "Linking failed (" << name << ")\n";
 	exit(EXIT_FAILURE);
     }
+    cout << "Linking successful (" << name << ")\n\n";
 
     // Always detach shaders after a successful link.
     for (auto shdr : shdr_list)
 	if (shdr.present) glDetachShader(prog_id, shdr.id);
+    for (auto shdr : shdr_list)
+	if (shdr.present) glDeleteShader(shdr.id);
 
     return prog_id;
 }
@@ -122,36 +126,42 @@ GLuint create_program(string name, std::vector<string> shaders)
 static string read_file(std::string);
 
 GLuint create_shader(const string fn, const GLenum type)
+// This function compiles the shader.
 {
     string read_str = read_file(fn).c_str();  // Get source code for vertex shader.
+
+    // Read the file.
     GLchar *shader_src = (GLchar *)read_str.c_str();
 
-    // Create an empty shader handle of the given type
-    GLuint shader = glCreateShader(type);
-
-    // Send the shader source code to GL
-    glShaderSource(shader, 1, &shader_src, 0);
-
     // Compile the shader
+    GLuint shader = glCreateShader(type);
+    glShaderSource(shader, 1, &shader_src, 0);
     glCompileShader(shader);
 
+    // Check if compilation was okay
     GLint isCompiled = 0;
     glGetShaderiv(shader, GL_COMPILE_STATUS, &isCompiled);
+
     if (isCompiled == GL_FALSE) {
-	GLint maxLength = 0;
+	GLint maxLength = 512;
 	glGetShaderiv(shader, GL_INFO_LOG_LENGTH, &maxLength);
 
 	// The maxLength includes the NULL character
-	std::vector<GLchar> infoLog(maxLength);
+	std::string infoLog(maxLength, '\0');
 	glGetShaderInfoLog(shader, maxLength, &maxLength, &infoLog[0]);
 
 	// We don't need the shader anymore.
 	glDeleteShader(shader);
 
 	// Use the infoLog as you see fit.
+	std::cerr << "Compilation failure (" << fn << ")\n";
+	std::cerr << infoLog;
+	;
 
 	// In this simple program, we'll just leave
+	exit(EXIT_FAILURE);
     }
+    std::cout << "Compilation successful (" << fn << ")\n";
     return shader;
 }
 

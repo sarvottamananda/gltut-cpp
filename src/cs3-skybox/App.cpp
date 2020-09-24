@@ -24,8 +24,6 @@ using Vector = std::vector<T, std::allocator<T>>;
 
 namespace {
 
-GLuint skybox_prog = 0;
-GLuint skybox_txtr = 0;
 int nskyboxes = 0;
 Model_cube cube;
 GLuint vao = 0;
@@ -33,8 +31,18 @@ GLuint vbo = 0;
 GLuint ebo = 0;
 
 GLuint mvp_id = 0;
+GLuint vp_id = 0;
+
+GLuint skybox_loc = 0;
+GLuint cubemap_loc = 0;
+
+GLuint skybox_prog = 0;
+GLuint cubeobj_prog = 0;
+
+GLuint skybox_txtr = 0;
 
 glm::mat4 mvp = glm::mat4(1.0f);
+glm::mat4 vp = glm::mat4(1.0f);
 
 }  // namespace
 
@@ -52,7 +60,6 @@ void App::render_loop()
     std::cout << "Renderer : " << glGetString(GL_VERSION) << "\n\n";
 
     std::cout << "Preparing to draw\n";
-
     prepare(w);
 
     // Various OpenGL settings
@@ -63,16 +70,17 @@ void App::render_loop()
     glDepthFunc(GL_LEQUAL);   // The Type Of Depth Test To Do
     glClearDepth(1.0f);	      // Depth Buffer Setup
 
-    glEnable(GL_BLEND);
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    //glEnable(GL_BLEND);
+    //glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+    glEnable(GL_TEXTURE_CUBE_MAP_SEAMLESS);
+    glEnable(GL_MULTISAMPLE);
 
     glPointSize(1);
 
-    // The render loop
-
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     // test_drawing();
-
+    
+    // The render loop
     while (w.render_cond()) {
 	w.render_begin();
 
@@ -95,23 +103,27 @@ static void prepare(const App_window& win)
 // Prepare various stuff to draw
 {
     prepare_programs();
-    prepare_textures();
     prepare_models(win);
     prepare_buffers();
+    prepare_textures();
     prepare_attributes();
+    // Uniforms do not use attributes
     prepare_uniforms();
 }  // end of prepare()
 
 static void prepare_programs()
 {
-    Vector<string> shaders = {
-	//"assets/shaders/skybox.vert",
-	//"assets/shaders/skybox.frag",
-	"assets/shaders/test.vert",
-	"assets/shaders/test.frag",
+    Vector<string> skybox_shaders = {
+	"assets/shaders/skybox.vert",
+	"assets/shaders/skybox.frag",
+    };
+    Vector<string> cubeobj_shaders = {
+	"assets/shaders/cubeobj.vert",
+	"assets/shaders/cubeobj.frag",
     };
 
-    skybox_prog = create_program("Skybox", shaders);
+    skybox_prog = create_program("Skybox", skybox_shaders);
+    cubeobj_prog = create_program("cubeobj", cubeobj_shaders);
 }
 
 static void load_texture_data();
@@ -119,9 +131,6 @@ static void load_texture_data();
 // static void prepare_textures() {{{1
 static void prepare_textures()
 {
-    glGenTextures(1, &skybox_txtr);
-    glBindTexture(GL_TEXTURE_CUBE_MAP_ARRAY, skybox_txtr);
-
     load_texture_data();
 
     // Always set reasonable texture parameters
@@ -149,6 +158,9 @@ static void load_texture_data()
 	"assets/textures/cubebox-6.png", "assets/textures/cubebox-7.png",
 	"assets/textures/cubebox-8.png", "assets/textures/cubebox-9.png",
     };
+    //Vector<string> file = {
+	//"assets/textures/cubebox-0.png"
+    //};
 
     nskyboxes = file.size();  // Number of skyboxes
 
@@ -192,8 +204,12 @@ static void splice_texture_data(Vector<Image> &image)
 
     // Allocate the storage.
     //
-    int cnt_mip_level = 1;
-    glTexStorage3D(GL_TEXTURE_CUBE_MAP_ARRAY, cnt_mip_level, GL_RGBA8, fw, fh, nskyboxes);
+    glGenTextures(1, &skybox_txtr);
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_CUBE_MAP_ARRAY, skybox_txtr);
+
+    int cnt_mip_level = 2;
+    glTexStorage3D(GL_TEXTURE_CUBE_MAP_ARRAY, cnt_mip_level, GL_RGBA8, fw, fh, 6*nskyboxes);
 
     for (int i = 0; i < nskyboxes; i++) {
 	if (image[i].get_width() != w || image[i].get_height() != h ||
@@ -213,7 +229,7 @@ static void splice_texture_data(Vector<Image> &image)
 		for (int ii = 0; ii < fw; ii++)
 		    for (int kk = 0; kk < nc; kk++) {
 			int tidx = (fw * jj + ii) * nc + kk;
-			int pidx = ((fh - jj - 1) * w + ii) * nc + kk + offset;
+			int pidx = (jj * w + ii) * nc + kk + offset;
 
 			// std::cerr << tidx << "\n";
 
@@ -237,10 +253,14 @@ static void splice_texture_data(Vector<Image> &image)
 
 	    // std ::cerr << "Loading texture (" << j << " of " << i << "\n";
 
+	    //for (int zz = 0 ; zz < fw * fh * nc ; zz++) texels[zz] = 127u;
+
 	    glTexSubImage3D(GL_TEXTURE_CUBE_MAP_ARRAY, 0, 0, 0, i * 6 + j, fw, fh, 1, GL_RGBA,
-			    GL_UNSIGNED_BYTE, texels);
+			   GL_UNSIGNED_BYTE, (void *)texels);
 	}
     }
+
+    glGenerateMipmap(GL_TEXTURE_CUBE_MAP_ARRAY);
 
     delete[] texels;
 
@@ -285,7 +305,7 @@ static void compute_matrices(const App_window& win)
 
     // Projection
     
-    GLfloat fovy =  win.get_fovy(); 
+    GLfloat fovy =  win.get_fovy() * 3; 
     GLfloat aspect = win.get_aspect();
     GLfloat near = 0.1f;
     GLfloat far = 100.0f;
@@ -296,6 +316,14 @@ static void compute_matrices(const App_window& win)
     // mvp
     
     mvp = projection * view * model;
+
+    // For cubemap
+
+    view = glm::mat4(glm::mat3(view));  
+
+    // vo
+
+    vp = projection * view;
 }
 
 static void prepare_buffers()
@@ -321,10 +349,10 @@ static void prepare_attributes()
 
     // Bind all the buffers here, so that the state information is stored in vao
 
-    std::cout << "Size : " << sizeof(Vertex_data) << "\n";
-    std::cout << "pos : " << offsetof(Vertex_data, pos) << "\n";
-    std::cout << "normal : " << offsetof(Vertex_data, normal) << "\n";
-    std::cout << "txtr : " << offsetof(Vertex_data, txtr) << "\n";
+    //std::cout << "Size : " << sizeof(Vertex_data) << "\n";
+    //std::cout << "pos : " << offsetof(Vertex_data, pos) << "\n";
+    //std::cout << "normal : " << offsetof(Vertex_data, normal) << "\n";
+    //std::cout << "txtr : " << offsetof(Vertex_data, txtr) << "\n";
 
     glBindBuffer(GL_ARRAY_BUFFER, vbo);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
@@ -340,38 +368,48 @@ static void prepare_attributes()
     glEnableVertexAttribArray(1);
     glEnableVertexAttribArray(2);
 
-    glBindTexture(GL_TEXTURE_CUBE_MAP, skybox_txtr);
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_CUBE_MAP_ARRAY, skybox_txtr);
 
-    glBindVertexArray(0);
+    //glBindVertexArray(0);
     // note that following is not needed, the call to glVertexAttribPointer is registered
 
-    glBindBuffer(GL_ARRAY_BUFFER, 0);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+    //glBindBuffer(GL_ARRAY_BUFFER, 0);
+    //glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
 }
 
 static void prepare_uniforms() {
-    mvp_id = glGetUniformLocation(skybox_prog, "mvp");
+    vp_id = glGetUniformLocation(skybox_prog, "vp");
+    skybox_loc = glGetUniformLocation(skybox_prog, "skybox");
+    cubemap_loc = glGetUniformLocation(skybox_prog, "cubemap");
+    mvp_id = glGetUniformLocation(cubeobj_prog, "mvp");
 }
 
 static void do_draw_commands(const App_window& win)
 {
 
-    glUseProgram(skybox_prog);
     glBindVertexArray(vao);
+
+    //glActiveTexture(GL_TEXTURE0);
 
     compute_matrices(win);
 
-    glUniformMatrix4fv(mvp_id, 1, GL_FALSE, &mvp[0][0]);
 
-    GLuint tex0_uniform_loc = glGetUniformLocation(skybox_prog, "skybox");
-    glUniform1i(tex0_uniform_loc, 0);
-    glActiveTexture(GL_TEXTURE0);
-    glBindTexture(GL_TEXTURE_CUBE_MAP_ARRAY, skybox_txtr);
+    //glBindTexture(GL_TEXTURE_CUBE_MAP_ARRAY, skybox_txtr);
 
-    glDrawElements(GL_TRIANGLES, cube.idx_num, GL_UNSIGNED_SHORT, (void *)0);
     //glDrawArrays(GL_TRIANGLES, 0, 36);
-    //glDrawElementsBaseVertex(GL_TRIANGLES, 3, GL_UNSIGNED_SHORT, (void *)0, 8);
+    //
+    glUseProgram(skybox_prog);
+    glUniformMatrix4fv(vp_id, 1, GL_FALSE, &vp[0][0]);
+    glUniform1i(skybox_loc, 0);
+    glUniform1i(cubemap_loc, 0);
+    glDrawElements(GL_TRIANGLES, cube.idx_num, GL_UNSIGNED_SHORT, (void *)0);
+
+    glUseProgram(cubeobj_prog);
+    glUniform1i(skybox_loc, 0);
+    glUniformMatrix4fv(mvp_id, 1, GL_FALSE, &mvp[0][0]);
+    glDrawElements(GL_TRIANGLES, cube.idx_num, GL_UNSIGNED_SHORT, (void *)0);
     
     //glDepthMask(GL_FALSE);
 }

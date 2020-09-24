@@ -9,9 +9,10 @@
 #ifndef IMG_STUFF_H_INCLUDED
 #define IMG_STUFF_H_INCLUDED
 
-#include <string>
+#include <GL/glew.h>
 
-#include "glad.h"
+#include <string>
+//#include "glad.h"
 
 class Image {
    public:

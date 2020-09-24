@@ -45,9 +45,10 @@ target ?= $(bin_dir)/cs3
 dep_dir ?= dep
 src_dir ?= .
 #inc_dirs := $(shell find $(src_dir) -type d -name inc)
-inc_dirs ?= ../../subprojects/glad/
+#inc_dirs ?= ../../subprojects/glad/
 
-objs := $(srcs:%.cpp=$(bin_dir)/%.o) bin/glad.o 
+#objs := $(srcs:%.cpp=$(bin_dir)/%.o) bin/glad.o 
+objs := $(srcs:%.cpp=$(bin_dir)/%.o) 
 deps := $(srcs:%.cpp=$(dep_dir)/%.d)
 
 inc_flags := $(addprefix -I,$(inc_dirs)) 
@@ -56,7 +57,8 @@ CPPFLAGS =  $(inc_flags)
 CFLAGS = -std=c11 -g
 CXXFLAGS = -std=c++20 -DDEBUG -g
 
-LDFLAGS = -lglfw -lm -lstdc++ -lyaml-cpp -ldl
+#LDFLAGS = -lglfw -lm -lstdc++ -lyaml-cpp -ldl
+LDFLAGS = -lm -lstdc++ -lyaml-cpp -lGL -lGLEW -lglfw
 
 .PHONY: clean format fmt-stamp tags
 
@@ -65,9 +67,9 @@ all : $(target)
 $(target) : $(objs)
 	$(CXX) $(CXXFLAGS) $(objs) -o $@ $(LDFLAGS)
 
-$(bin_dir)/glad.o : ../../subprojects/glad/glad.c
-	$(CC) $(CPPFLAGS) $(CFLAGS) -c $< -o $@
 
+$(bin_dir)/glad.o : ../../subprojects/glad/glad.c
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $< -o $@
 
 clean : 
 	$(RM) $(objs)

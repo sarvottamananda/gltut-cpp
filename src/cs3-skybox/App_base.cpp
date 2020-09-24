@@ -7,8 +7,6 @@
 */
 #include "App_base.h"
 
-#include "glad.h"
-
 void App_base::initialize(Opts& os)
 {
     // Opens a window of required resolution and mode

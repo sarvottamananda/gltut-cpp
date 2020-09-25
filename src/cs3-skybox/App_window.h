@@ -23,7 +23,7 @@ class App_window {
     virtual void render_end() = 0;
     virtual bool is_valid() = 0;
     virtual float get_aspect() const = 0;
-    virtual float get_fovy()const  = 0;
+    virtual float get_fovy() const = 0;
 };
 
 App_window *create_app_window();

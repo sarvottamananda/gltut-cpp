@@ -17,6 +17,7 @@ class App : public App_base {
     virtual ~App() = default;
 
     void render_loop();
+
    private:
 };
 

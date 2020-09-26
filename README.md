@@ -67,7 +67,15 @@ $ ./build/src/cs1-triangles/cs1-triangles
 $ ./build/src/cs1-triangles/cs
 ```
 
-![Tutorial 2](imgs/cs2-moving.gif)
+![Tutorial 2](imgs/cs2-moving.png)
+
+#### Tutorial 3 - Skybox
+
+```
+$ ./build/src/cs1-triangles/cs
+```
+
+![Tutorial 3](imgs/cs2-skybox.png)
 
 
 ***

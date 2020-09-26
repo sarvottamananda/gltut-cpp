@@ -3,6 +3,7 @@ cmake_minimum_required (VERSION 3.0)
 project (Code-snippets)
 
 find_package(PkgConfig REQUIRED)
+find_package(OpenGL REQUIRED)
 find_package(GLEW REQUIRED)
 find_package(yaml-cpp REQUIRED)
 
@@ -14,6 +15,7 @@ endif()
 if (PKGCONFIG_FOUND)
     pkg_search_module(GLFW REQUIRED glfw3)
     include_directories(${GLFW_INCLUDE_DIRS})
+    link_libraries(${GLFW_LIBRARIES})
 endif()
 
 #add_subdirectory (external)
@@ -33,8 +35,6 @@ endif()
 
 set(ALL_LIBS
 	${OPENGL_LIBRARY}
-        ${GLFW_LIBRARIES}
-        ${GLEW_LIBRARIES}
         ${YAML_CPP_LIBRARIES}
 )
 
@@ -45,23 +45,41 @@ add_definitions(
 
 # Tutorial 2
 add_executable(cs3 
-        Options_store.cpp
-        Options_store.h
-	main.cpp
-	debug.cpp
-	debug.h
-        do_args.cpp
-        do_args.h
-        do_buildconf.cpp
-        do_buildconf.h
-        do_env.cpp
-        do_env.h
-        do_yaml.cpp
-        do_yaml.h
-	
-        #tutorial02_red_triangle/SimpleFragmentShader.fragmentshader
-        #tutorial02_red_triangle/SimpleVertexShader.vertexshader
+    App_base.cpp
+    App_base.h
+    App.cpp
+    App.h
+    App_window.cpp
+    App_window.h
+    cs_config.h
+    debug.cpp
+    debug.h
+    do_args.cpp
+    do_args.h
+    do_env.cpp
+    do_env.h
+    do_meson.cpp
+    do_meson.h
+    do_yaml.cpp
+    do_yaml.h
+    glfw_stuff.cpp
+    glfw_stuff.h
+    Global.cpp
+    Global.h
+    img_stuff.cpp
+    img_stuff.h
+    main.cpp
+    Model_base.cpp
+    Model_base.h
+    Model_cube.cpp
+    Model_cube.h
+    Opts.cpp
+    Opts.h
+    shader_stuff.cpp
+    shader_stuff.h
+    stb_image_impl.cpp
 )
+
 target_link_libraries(cs3
 	${ALL_LIBS}
 )

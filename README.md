@@ -75,7 +75,7 @@ $ ./build/src/cs1-triangles/cs
 $ ./build/src/cs1-triangles/cs
 ```
 
-![Tutorial 3](imgs/cs2-skybox.png)
+![Tutorial 3](imgs/cs3-skybox.png)
 
 
 ***

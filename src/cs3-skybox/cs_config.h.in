@@ -1,0 +1,20 @@
+/*
+    Sarvottamananda (shreesh)
+    2020-09-20
+    OpenGL Code Snippets: cs_config.h v0.0
+
+    Data for configuration produced by meson build system from cs_config.h.in
+*/
+
+#ifndef CS_CONFIG_H_INCLUDED
+#define CS_CONFIG_H_INCLUDED
+
+namespace cs_config {
+
+constexpr char cs_config_file[] = "@CS_CONFIG_FILE@";
+constexpr char cs_build_dir[] = "@CS_BUILD_DIR@";
+constexpr char cs_source_dir[] = "@CS_SOURCE_DIR@";
+
+}  
+
+#endif	// CS_CONFIG_H_INCLUDED

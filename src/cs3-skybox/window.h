@@ -1,20 +1,18 @@
-#ifndef APP_WINDOW_H_INCLUDED
-#define APP_WINDOW_H_INCLUDED
+// Sarvottamananda (shreesh)
+// 2020-09-28
+// window.h v0.0 (OpenGL Code Snippets)
+//
+// Wrapper for GLFWwindow*
 
-/*
-    Sarvottamananda (shreesh)
-    2020-09-21
-    App_window.h v0.0 (OpenGL Code Snippets)
-
-    Wrapper for GLFWwindow*
-*/
+#ifndef SNIPPETS_WINDOW_H
+#define SNIPPETS_WINDOW_H
 
 #include <string>
 
-class App_window {
+class Window {
    public:
-    App_window(){};
-    virtual ~App_window(){};
+    Window(){};
+    virtual ~Window(){};
     virtual bool initialize(std::string title, int width, int height, bool fullscreen) = 0;
     virtual void terminate() = 0;
     virtual void make_current() = 0;
@@ -26,7 +24,7 @@ class App_window {
     virtual float get_fovy() const = 0;
 };
 
-App_window *create_app_window();
-void destroy_app_window(App_window *);
+Window *create_window();
+void destroy_window(Window *);
 
-#endif	// APP_WINDOW_H_INCLUDED
+#endif	// SNIPPETS_WINDOW_H

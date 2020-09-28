@@ -1,16 +1,14 @@
-/*
-    Sarvottamananda (shreesh)
-    2020-09-20
-    do_env.cpp v0.0 (OpenGL Code Snippets)
-
-    Process environment variables
-*/
+// Sarvottamananda (shreesh)
+// 2020-09-28
+// do_env.cpp v0.0 (OpenGL Code Snippets)
+//
+// Process environment variables
 
 #include "do_env.h"
 
 #include <vector>
 
-void process_env(Opts& os)
+void process_env(Options_store& os)
 {
     std::vector<std::string> namelist{
 	"CS_ASSETS_PATH", "CS_SEARCH_PATH",  "CS_MODELS_DIR",

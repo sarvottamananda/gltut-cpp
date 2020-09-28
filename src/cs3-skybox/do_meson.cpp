@@ -1,16 +1,14 @@
-/*
-    Sarvottamananda (shreesh)
-    2020-09-20
-    do_meson.cpp v0.0 (OpenGL Code Snippets)
-
-    Process build configuration variables
-*/
+// Sarvottamananda (shreesh)
+// 2020-09-28
+// do_meson.cpp v0.0 (OpenGL Code Snippets)
+//
+// Process build configuration variables
 
 #include "do_meson.h"
 
 #include "cs_config.h"
 
-void process_buildconf(Opts& os)
+void process_buildconf(Options_store& os)
 {
     // Currently we are directly setting the builddir and srcdir variable in the config.h using
     // meson build system.

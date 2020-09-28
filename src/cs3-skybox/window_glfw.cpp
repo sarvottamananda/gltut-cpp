@@ -1,15 +1,13 @@
-/*
-    Sarvottamananda (shreesh)
-    2020-09-20
-    glfw_stuff.cpp v0.0 (OpenGL Code Snippets)
+//	Sarvottamananda (shreesh)
+//	2020-09-28
+//	window_glfw.cpp v0.0 (OpenGL Code Snippets)
+//
+//	GLFW3 stuff
+//
+//      All GLFW3 library stuff should go here. We should be sure not to include glfw.h
+//      elsewhere for portability and multi-os support.
 
-    GLFW3 stuff
-
-    All GLFW3 library stuff should go here. We should be sure not to include glfw.h elsewhere
-    for portability and multi-os support.
-
-*/
-#include "glfw_stuff.h"
+#include "window_glfw.h"
 
 #include <iostream>
 
@@ -28,10 +26,10 @@ constexpr float view_distance = 2016.0f;  // Viewing distance in pixels
 
 // Implementation class that hides glfw window datastructure
 
-class App_window_impl : public App_window {
+class Window_glfw : public Window {
    public:
-    App_window_impl() : App_window(), glfw_window(nullptr){};
-    virtual ~App_window_impl(){};
+    Window_glfw() : Window(), window(nullptr){};
+    virtual ~Window_glfw(){};
 
     bool initialize(std::string title, int width, int height, bool fullscreen);
     void terminate();
@@ -45,7 +43,7 @@ class App_window_impl : public App_window {
     float get_fovy() const { return fovy; };
 
    private:
-    ::GLFWwindow *glfw_window;
+    ::GLFWwindow *window;
     int width;
     int height;
     float aspect;
@@ -59,8 +57,7 @@ void framebuffer_size_callback(GLFWwindow *window, int width, int height)
     // make sure the viewport matches the new window dimensions; note that width
     // and height will be significantly larger than specified on retina
     // displays.
-    App_window_impl *handler =
-	reinterpret_cast<App_window_impl *>(glfwGetWindowUserPointer(window));
+    Window_glfw *handler = static_cast<Window_glfw *>(glfwGetWindowUserPointer(window));
     if (handler) {
 	handler->aspect = (float)width / (float)height;
 	handler->fovy = (float)height / view_distance;
@@ -81,16 +78,16 @@ void error_callback(int error, const char *description)
 // The extern functions needed to access and destroy the implementation app window hidden in
 // unnamed namespace above.
 
-App_window *create_app_window() { return new App_window_impl; }
-void destroy_app_window(App_window *aw) { delete aw; }
+Window *create_window() { return new Window_glfw; }
+void destroy_window(Window *aw) { delete aw; }
 
 // All the overridden virtual functions defined in sequence. Later on if we need to override
 // them we shall make them virtual. But right now there is no need to bother with mixing virtual
 // and non-virtual functions.
 
-// bool App_window_impl::initialize(std::string title, int width, int height, bool fullscreen)
+// bool Window_glfw::initialize(std::string title, int width, int height, bool fullscreen)
 // {{{1
-bool App_window_impl::initialize(std::string title, int width, int height, bool fullscreen)
+bool Window_glfw::initialize(std::string title, int width, int height, bool fullscreen)
 // We initialize both glfw and glew, and open a window which is either windowed or fullscreen,
 // depending on the fullscreen parameter. Opening of window/fullscreen is necessary because glew
 // needs a context to get initialized.
@@ -204,7 +201,7 @@ bool App_window_impl::initialize(std::string title, int width, int height, bool 
     ::glfwSetInputMode(window, GLFW_STICKY_KEYS, GL_TRUE);
     ::glfwSetInputMode(window, GLFW_STICKY_MOUSE_BUTTONS, 1);
 
-    ::glfwSetWindowUserPointer(window, reinterpret_cast<void *>(this));
+    ::glfwSetWindowUserPointer(window, static_cast<void *>(this));
     ::glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
 
     // glad stuff did not work first try so fallback to glew
@@ -231,7 +228,7 @@ bool App_window_impl::initialize(std::string title, int width, int height, bool 
 
     ::glfwSwapInterval(1);
 
-    glfw_window = window;
+    this->window = window;
     glfwGetWindowSize(window, &(this->width), &(this->height));
 
     aspect = (float)width / (float)height;
@@ -243,44 +240,45 @@ bool App_window_impl::initialize(std::string title, int width, int height, bool 
 }
 // 1}}}
 
-void App_window_impl::make_current()
+void Window_glfw::make_current()
 {
-    // This makes the window context, current OpenGL context for rendering
-    ::glfwMakeContextCurrent(glfw_window);
+    //// This makes the window context, current OpenGL context for rendering
+    //::glfwMakeContextCurrent(window);
 
-    if (glfwGetCurrentContext() != glfw_window) {
+    if (glfwGetCurrentContext() != window) {
 	cerr << "Window context not set.\n";
 	exit(EXIT_FAILURE);
     }
 }
 
-void App_window_impl::render_begin()
+void Window_glfw::render_begin()
 {
     // Poll for the events
     ::glfwPollEvents();
 }
 
-bool App_window_impl::render_cond()
+bool Window_glfw::render_cond()
 {
     // Check if the ESC key was pressed or the window was closed
-    auto render_condition = (::glfwGetKey(glfw_window, GLFW_KEY_ESCAPE) != GLFW_PRESS &&
-			     ::glfwWindowShouldClose(glfw_window) == 0);
+    auto render_condition = (::glfwGetKey(window, GLFW_KEY_ESCAPE) != GLFW_PRESS &&
+			     ::glfwWindowShouldClose(window) == 0);
     return render_condition;
 }
 
-void App_window_impl::render_end()
+void Window_glfw::render_end()
 {
     // Swap buffers
-    ::glfwSwapBuffers(glfw_window);
+    ::glfwSwapBuffers(window);
+    // And then idle wait
     ::glfwWaitEvents();
 }
 
-void App_window_impl::terminate() { glfwTerminate(); }
+void Window_glfw::terminate() { glfwTerminate(); }
 
-bool App_window_impl::is_valid()
+bool Window_glfw::is_valid()
 {
-    if (glfw_window != nullptr) {
-	std::cout << "Current window is a valid context (" << (void *)glfw_window << ")\n";
+    if (window != nullptr) {
+	std::cout << "Current window is a valid context (" << (void *)window << ")\n";
 	return true;
     }
     return false;

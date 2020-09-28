@@ -1,14 +1,12 @@
-#ifndef DO_MESON_H_INCLUDED
-#define DO_MESON_H_INCLUDED
+#ifndef SNIPPETS_DO_MESON_H
+#define SNIPPETS_DO_MESON_H
 
-/*
-    Sarvottamananda (shreesh)
-    2020-09-20
-    do_meson.h v0.0 (OpenGL Code Snippets)
-*/
+//	Sarvottamananda (shreesh)
+//	2020-09-28
+//	do_meson.h v0.0 (OpenGL Code Snippets)
 
-#include "Opts.h"
+#include "options_store.h"
 
-void process_buildconf(Opts& os);
+void process_buildconf(Options_store& os);
 
-#endif	// DO_MESON_H_INCLUDED
+#endif	// SNIPPETS_DO_MESON_H

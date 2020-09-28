@@ -1,10 +1,8 @@
-/*
-    Sarvottamananda (shreesh)
-    2020-09-22
-    shader_stuff.cpp v0.0 (OpenGL Code Snippets)
-
-    Low level shader stuff
-*/
+// Sarvottamananda (shreesh)
+// 2020-09-28
+// shader_stuff.cpp v0.0 (OpenGL Code Snippets) 
+//
+// Low level shader stuff
 
 #include "shader_stuff.h"
 

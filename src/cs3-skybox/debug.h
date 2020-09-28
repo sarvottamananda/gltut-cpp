@@ -1,16 +1,13 @@
-#ifndef DEBUG_H_INCLUDED
-#define DEBUG_H_INCLUDED
-
-/*
-    Sarvottamananda (shreesh)
-    2020-09-20
-    debug.h v0.0 (OpenGL Code Snippets)
-
-    Debugging by printing idiom
-
-    The debugging by printing idiom mainly follows
-    Jonathan Leffler's ideas from stackoverflow.
-*/
+#ifndef SNIPPETS_DEBUG_H
+#define SNIPPETS_DEBUG_H
+//	Sarvottamananda (shreesh)
+//	2020-09-28
+//	debug.h v0.0 (OpenGL Code Snippets)
+//
+//      Debugging by printing idiom
+//
+//      The debugging by printing idiom mainly follows
+//      Jonathan Leffler's ideas from stackoverflow, but it is simplified.
 
 #include <cstdio>
 #include <string>
@@ -46,25 +43,25 @@ extern void printloc(int level, const char* fn, int lno, const char* fmt, ...);
 // -- See chapter 8 of 'The Practice of Programming', by Kernighan and Pike.
 
 // Debug print
-#define DD(...)                                            \
+#define DPRINT(...)                                        \
     do {                                                   \
 	if (debug::active) debug::print(999, __VA_ARGS__); \
     } while (0)
 
 // Debug print based on level
-#define DP(level, ...)                                       \
+#define DDEBUG(level, ...)                                   \
     do {                                                     \
 	if (debug::active) debug::print(level, __VA_ARGS__); \
     } while (0)
 
 // Debug trace based on level
-#define DT(level, ...)                                                              \
+#define DTRACE(level, ...)                                                          \
     do {                                                                            \
 	if (debug::active) debug::printloc(level, __FILE__, __LINE__, __VA_ARGS__); \
     } while (0)
 
 // Debug call based on level
-#define DC(level, ...)                                       \
+#define DCALL(level, ...)                                    \
     do {                                                     \
 	if (debug::active && debug::getdebug() >= (level)) { \
 	    __VA_ARGS__;                                     \
@@ -75,7 +72,7 @@ extern void printloc(int level, const char* fn, int lno, const char* fmt, ...);
 // string in a function identifying that the file is compiled with debug
 // enabled.
 
-#define D_TRACKING()                                                         \
+#define DTRACK()                                                             \
     do {                                                                     \
 	if (debug::active) {                                                 \
 	    static int once = 0;                                             \
@@ -85,4 +82,4 @@ extern void printloc(int level, const char* fn, int lno, const char* fmt, ...);
 	}                                                                    \
     } while (0)
 
-#endif	// DEBUG_H_INCLUDED
+#endif	// SNIPPETS_DEBUG_H

@@ -1,14 +1,20 @@
-#ifndef CS_CONFIG_H_INCLUDED
-#define CS_CONFIG_H_INCLUDED
+#ifndef SNIPPETS_CS_CONFIG_H
+#define SNIPPETS_CS_CONFIG_H
+
+//	Sarvottamananda (shreesh)
+//	2020-09-28
+//	cs_config.h v0.0 (OpenGL Code Snippets)
+//
+//
 
 #include <string>
 
 namespace cs_config {
 
-constexpr char cs_config_file[] = "cs3.yaml";
+constexpr char cs_config_file[] = "cs3.yml";
 constexpr char cs_build_dir[] = ".";
 constexpr char cs_source_dir[] = ".";
 
 }  // namespace cs_config
 
-#endif	// CS_CZ
+#endif	// SNIPPETS_CS_CONFIG_H

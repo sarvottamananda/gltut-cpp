@@ -1,16 +1,14 @@
-#ifndef GLOBAL_H_INCLUDED
-#define GLOBAL_H_INCLUDED
+#ifndef SNIPPETS_GLOBAL_H
+#define SNIPPETS_GLOBAL_H
 
-/*
-    Sarvottamananda (shreesh)
-    2020-09-20
-    Global.h v0.0 (OpenGL Code Snippets)
-
-    Interface for global variables
-*/
+//	Sarvottamananda (shreesh)
+//	2020-09-28
+//	global.h v0.0 (OpenGL Code Snippets)
+//
+//      Interface for global variables
 
 class Global {
-   public:
+   public:  // All globals are public
     int zero = 0;
     float zerof = 0.0f;
     // and other "global" variable
@@ -42,4 +40,4 @@ namespace {
 Global& global = Global::Instance();
 }
 
-#endif	// GLOBAL_H_INCLUDED
+#endif	// SNIPPETS_GLOBAL_H

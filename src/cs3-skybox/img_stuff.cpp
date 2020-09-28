@@ -1,10 +1,8 @@
-/*
-    Sarvottamananda (shreesh)
-    2020-09-22
-    img_stuff.cpp v0.0 (OpenGL Code Snippets)
-
-    Image Utility Library
-*/
+// Sarvottamananda (shreesh)
+// 2020-09-28
+// img_stuff.cpp v0.0 (OpenGL Code Snippets) 
+//
+// Image Utility Library
 
 #include "img_stuff.h"
 

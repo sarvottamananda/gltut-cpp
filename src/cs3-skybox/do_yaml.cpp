@@ -1,10 +1,8 @@
-/*
-    Sarvottamananda (shreesh)
-    2020-09-20
-    do_yaml.cpp v0.0 (OpenGL Code Snippets)
-
-    Process configuration file
-*/
+// Sarvottamananda (shreesh)
+// 2020-09-28
+// do_yaml.cpp v0.0 (OpenGL Code Snippets)
+//
+// Process configuration file
 
 #include "do_yaml.h"
 
@@ -12,7 +10,7 @@
 
 #include <iostream>
 
-void process_yaml(std::string conffile, Opts& os)
+void process_yaml(std::string conffile, Options_store& os)
 {
     try {
 	YAML::Node config = YAML::LoadFile(conffile);

@@ -2,42 +2,42 @@
 #hdrs := $(shell find $(src_dir) -type f -name '*.h' -printf '%f\n' | sort)
 
 srcs := \
+    app.cpp \
+    app_base.cpp \
     debug.cpp \
     do_args.cpp \
     do_meson.cpp \
     do_env.cpp \
     do_yaml.cpp  \
-    glfw_stuff.cpp \
+    global.cpp \
     img_stuff.cpp \
     main.cpp \
+    model_base.cpp \
+    model_cube.cpp \
+    options_store.cpp \
     shader_stuff.cpp \
     stb_image_impl.cpp \
-    App.cpp \
-    App_base.cpp \
-    App_window.cpp \
-    Global.cpp \
-    Model_base.cpp \
-    Model_cube.cpp \
-    Opts.cpp \
+    window.cpp \
+    window_glfw.cpp \
 
 
 hdrs := \
+    app.h \
+    app_base.h \
     cs_config.h \
     debug.h \
     do_args.h \
     do_meson.h \
     do_env.h \
     do_yaml.h \
-    glfw_stuff.h \
+    global.h \
     img_stuff.h \
+    model_base.h \
+    model_cube.h \
+    options_store.h \
     shader_stuff.h \
-    App.h \
-    App_base.h \
-    App_window.h \
-    Global.h \
-    Model_base.h \
-    Model_cube.h \
-    Opts.h \
+    window.h \
+    window_glfw.h \
 
 
 bin_dir ?= bin
@@ -51,7 +51,7 @@ src_dir ?= .
 objs := $(srcs:%.cpp=$(bin_dir)/%.o) 
 deps := $(srcs:%.cpp=$(dep_dir)/%.d)
 
-inc_flags := $(addprefix -I,$(inc_dirs)) 
+inc_flags := $(addprefix -I,$(inc_dirs)) -I.
 
 CPPFLAGS =  $(inc_flags)
 CFLAGS = -std=c11 -g
@@ -60,7 +60,7 @@ CXXFLAGS = -std=c++20 -DDEBUG -g
 #LDFLAGS = -lglfw -lm -lstdc++ -lyaml-cpp -ldl
 LDFLAGS = -lm -lstdc++ -lyaml-cpp -lGL -lGLEW -lglfw
 
-.PHONY: clean format fmt-stamp tags
+.PHONY: clean format tags
 
 all : $(target)
 
@@ -79,14 +79,12 @@ clean :
 deps : $(deps)
 	@echo "Dependencies are created in directory dep"
 
-format : fmt-stamp
-
-fmt-stamp :
-	@for f in $(shell find .  \( -name '*.cpp' -or -name '*.h' -or -name '*.c' \) -and -cnewer $@) ; do \
+format : 
+	@for f in $(shell find .  \( -name '*.cpp' -or -name '*.h' -or -name '*.c' \) -and -cnewer fmt-stamp) ; do \
 		echo "Running clang-format on $$f" ; \
 	    	clang-format-12 -i $$f ; \
 	done
-	@touch $@
+	@touch fmt-stamp
 
 tags:
 	ctags -R --languages=C,C++ --kinds-C++=+p --fields=+iaS --extras=+qF --sort=yes

@@ -1,18 +1,16 @@
-/*
-    Sarvottamananda (shreesh)
-    2020-09-21
-    App.cpp v0.0 (OpenGL Code Snippets)
+// Sarvottamananda (shreesh)
+// 2020-09-28
+// app.cpp v0.0 (OpenGL Code Snippets)
+//
+// Apps derived from App_base
 
-    Apps derived from App_base
-*/
-
-#include "App.h"
+#include "app.h"
 
 #include <glm/gtc/matrix_transform.hpp>
 
-#include "Model_cube.h"
 #include "img_stuff.h"
 #include "iostream"
+#include "model_cube.h"
 #include "shader_stuff.h"
 // clang-format off
 #include <GL/glew.h>
@@ -53,11 +51,11 @@ glm::mat4 vp = glm::mat4(1.0f);
 // helper functions
 //
 
-static void prepare(const App_window &);
-static void do_draw_commands(const App_window &);
-static void prepare(const App_window &win);
+static void prepare(const Window &);
+static void do_draw_commands(const Window &);
+static void prepare(const Window &win);
 static void prepare_models();
-static void prepare_matrices(const App_window &);
+static void prepare_matrices(const Window &);
 static void prepare_programs();
 static void prepare_uniforms();
 static void prepare_textures();
@@ -108,7 +106,7 @@ void App::render_loop()
 }
 // render_loop()
 
-static void prepare(const App_window &win)
+static void prepare(const Window &win)
 // Prepare various stuff to draw
 {
     prepare_models();
@@ -142,8 +140,8 @@ static void prepare_uniforms()
     mvp_id = glGetUniformLocation(cubeobj_prog, "mvp");
 }
 
-// Fold: static void prepare_matrices(const App_window &win) {{{1
-static void prepare_matrices(const App_window &win)
+// Fold: static void prepare_matrices(const Window &win) {{{1
+static void prepare_matrices(const Window &win)
 // Comput model, view, project matrices for the cube object and the cubemap
 {
     using glm::vec3;
@@ -386,7 +384,7 @@ static void prepare_attributes()
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 }
 
-static void do_draw_commands(const App_window &win)
+static void do_draw_commands(const Window &win)
 {
     //// Since we are drawing a cubemap we do not need to clear the window,
     //// however we stll need to clear the depth buffer

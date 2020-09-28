@@ -45,12 +45,10 @@ add_definitions(
 
 # Tutorial 2
 add_executable(cs3 
-    App_base.cpp
-    App_base.h
-    App.cpp
-    App.h
-    App_window.cpp
-    App_window.h
+    app_base.cpp
+    app_base.h
+    app.cpp
+    app.h
     cs_config.h
     debug.cpp
     debug.h
@@ -62,22 +60,24 @@ add_executable(cs3
     do_meson.h
     do_yaml.cpp
     do_yaml.h
-    glfw_stuff.cpp
-    glfw_stuff.h
-    Global.cpp
-    Global.h
+    global.cpp
+    global.h
     img_stuff.cpp
     img_stuff.h
     main.cpp
-    Model_base.cpp
-    Model_base.h
-    Model_cube.cpp
-    Model_cube.h
-    Opts.cpp
-    Opts.h
+    model_base.cpp
+    model_base.h
+    model_cube.cpp
+    model_cube.h
+    options_store.cpp
+    options_store.h
     shader_stuff.cpp
     shader_stuff.h
     stb_image_impl.cpp
+    window.cpp
+    window_glfw.cpp
+    window_glfw.h
+    window.h
 )
 
 target_link_libraries(cs3

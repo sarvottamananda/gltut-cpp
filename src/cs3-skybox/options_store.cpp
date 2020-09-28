@@ -1,16 +1,13 @@
-/*
-    Sarvottamananda (shreesh)
-    2020-09-20
-    Opts.cpp v0.0 (OpenGL Code Snippets)
+//	Sarvottamananda (shreesh)
+//	2020-09-28
+//	options_store.cpp v0.0 (OpenGL Code Snippets)
+//      Opt class implementation
 
-    Opt class implementation
-*/
-
-#include "Opts.h"
+#include "options_store.h"
 
 #include "cs_config.h"
 
-Opts::Opts()
+Options_store::Options_store()
     : verbose(false),
       debug(0),
       fullscreen(false),
@@ -29,7 +26,7 @@ Opts::Opts()
     return;
 }
 
-void Opts::print(std::string name)
+void Options_store::print(std::string name)
 {
     printf(
 	"Options (%s) {\n"

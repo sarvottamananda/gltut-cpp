@@ -1,25 +1,25 @@
 cs3_src = [ \
-    'App_base.cpp', \
-    'App.cpp', \
-    'App_window.cpp', \
-    'debug.cpp', \
-    'do_args.cpp', \
-    'do_env.cpp', \
-    'do_meson.cpp', \
-    'do_yaml.cpp', \
-    'glfw_stuff.cpp', \
-    'Global.cpp', \
-    'img_stuff.cpp', \
-    'main.cpp', \
-    'Model_base.cpp', \
-    'Model_cube.cpp', \
-    'Opts.cpp', \
-    'shader_stuff.cpp', \
-    'stb_image_impl.cpp', \
+  'app_base.cpp', \
+  'app.cpp', \
+  'debug.cpp', \
+  'do_args.cpp', \
+  'do_env.cpp', \
+  'do_meson.cpp', \
+  'do_yaml.cpp', \
+  'global.cpp', \
+  'img_stuff.cpp', \
+  'main.cpp', \
+  'model_base.cpp', \
+  'model_cube.cpp', \
+  'options_store.cpp', \
+  'shader_stuff.cpp', \
+  'stb_image_impl.cpp', \
+  'window.cpp', \
+  'window_glfw.cpp', \
 ]
 
 config_data = configuration_data()
-config_data.set('CS_CONFIG_FILE', 'cs3.yaml')
+config_data.set('CS_CONFIG_FILE', 'cs3.yml')
 config_data.set('CS_BUILD_DIR', meson.current_build_dir())
 config_data.set('CS_SOURCE_DIR', meson.current_source_dir())
 

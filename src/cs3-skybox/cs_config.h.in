@@ -1,13 +1,11 @@
-/*
-    Sarvottamananda (shreesh)
-    2020-09-20
-    OpenGL Code Snippets: cs_config.h v0.0
+// Sarvottamananda (shreesh)
+// 2020-09-28
+// cs_config.h.in v0.0 (OpenGL Code Snippets) 
+// 
+// Data for configuration produced by meson build system from cs_config.h.in
 
-    Data for configuration produced by meson build system from cs_config.h.in
-*/
-
-#ifndef CS_CONFIG_H_INCLUDED
-#define CS_CONFIG_H_INCLUDED
+#ifndef SNIPPETS_CS_CONFIG_H_IN
+#define SNIPPETS_CS_CONFIG_H_IN
 
 namespace cs_config {
 
@@ -17,4 +15,4 @@ constexpr char cs_source_dir[] = "@CS_SOURCE_DIR@";
 
 }  
 
-#endif	// CS_CONFIG_H_INCLUDED
+#endif // SNIPPETS_CS_CONFIG_H_IN 

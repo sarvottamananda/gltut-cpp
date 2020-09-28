@@ -1,10 +1,8 @@
-/*
-    Sarvottamananda (shreesh)
-    2020-09-20
-    debug.cpp v0.0 (OpenGL Code Snippets)
-
-    Debug by printing with tests
-*/
+// Sarvottamananda (shreesh)
+// 2020-09-28
+// debug.cpp v0.0 (OpenGL Code Snippets) 
+//
+// Debug by printing with tests
 
 #undef DEBUG
 #define DEBUG
@@ -86,7 +84,7 @@ const std::string debug::setsuffix(const std::string s)
 
 void debug::print(int level, const char* fmt, ...)
 {
-    D_TRACKING();
+    DTRACK();
     if (dbg_level >= level) {
 	va_list ap;
 

@@ -1,13 +1,11 @@
-/*
-    Sarvottamananda (shreesh)
-    2020-09-22
-    shader.h v0.0 (OpenGL Code Snippets)
+// Sarvottamananda (shreesh)
+// 2020-09-28
+// shader_stuff.h v0.0 (OpenGL Code Snippets)
+//
+// Shader file loading and compiling
 
-    Shader file loading and compiling
-*/
-
-#ifndef SHADER_H_INCLUDED
-#define SHADER_H_INCLUDED
+#ifndef SNIPPETS_SHADER_STUFF_H
+#define SNIPPETS_SHADER_STUFF_H
 
 #include <GL/glew.h>
 
@@ -17,4 +15,4 @@
 
 GLuint create_program(std::string, std::vector<std::string>);
 
-#endif	// SHADER_H_INCLUDED
+#endif	// SNIPPETS_SHADER_STUFF_H

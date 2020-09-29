@@ -7,8 +7,9 @@
 #ifndef SNIPPETS_WINDOW_GLFW_H
 #define SNIPPETS_WINDOW_GLFW_H
 
-#include "window.h"
+class Window;
 
+/*
 typedef void (*App_func0)(const Window&);
 typedef void (*App_func1)(const Window&, int);
 typedef void (*App_func2)(const Window&, int, int);
@@ -36,5 +37,9 @@ void set_mouse_cb(Window&, App_func3);
 void set_scroll_cb(Window&, App_func2d);
 void set_cur_pos_cb(Window&, App_func2d);
 void set_cur_enter_cb(Window&, App_func1);
+*/
+
+extern Window* create_glfw_window();
+extern void destroy_glfw_window(Window*);
 
 #endif	// SNIPPETS_WINDOW_GLFW_H

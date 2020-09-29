@@ -5,7 +5,7 @@
 //	2020-09-28
 //	do_meson.h v0.0 (OpenGL Code Snippets)
 
-#include "options_store.h"
+class Options_store;
 
 void process_buildconf(Options_store& os);
 

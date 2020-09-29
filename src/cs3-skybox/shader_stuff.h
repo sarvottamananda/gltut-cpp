@@ -7,11 +7,10 @@
 #ifndef SNIPPETS_SHADER_STUFF_H
 #define SNIPPETS_SHADER_STUFF_H
 
-#include <GL/glew.h>
+#include <GL/gl.h>
 
 #include <string>
 #include <vector>
-//#include "glad.h"
 
 GLuint create_program(std::string, std::vector<std::string>);
 

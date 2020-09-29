@@ -8,6 +8,8 @@
 
 #include <vector>
 
+#include "options_store.h"
+
 void process_env(Options_store& os)
 {
     std::vector<std::string> namelist{

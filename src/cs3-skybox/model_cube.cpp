@@ -1,6 +1,6 @@
 // Sarvottamananda (shreesh)
 // 2020-09-28
-// model_cube.cpp v0.0 (OpenGL Code Snippets) 
+// model_cube.cpp v0.0 (OpenGL Code Snippets)
 //
 // Cube Model
 

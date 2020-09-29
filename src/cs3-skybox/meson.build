@@ -15,6 +15,7 @@ cs3_src = [ \
   'shader_stuff.cpp', \
   'stb_image_impl.cpp', \
   'window.cpp', \
+  'window_factory.cpp', \
   'window_glfw.cpp', \
 ]
 

@@ -9,8 +9,12 @@
 
 #include <string>
 
-#include "options_store.h"
-#include "window.h"
+class Window;
+class Options_store;
+
+enum class Key : uint8_t;
+enum class Key_action : uint8_t;
+enum class Key_mods : uint8_t;
 
 class App_base {
    public:
@@ -21,6 +25,7 @@ class App_base {
     virtual void initialize(Options_store& os);
     virtual void render_loop();
     virtual void terminate();
+    virtual void key_callback(Key, int, Key_action, Key_mods);
 
    protected:
     Window& w;

@@ -8,5 +8,5 @@ uniform float cubemap;
 
 void main()
 {    
-    fragcolor = texture(skybox, vec4(texcoords.xyz, cubemap), 0.0);
+    fragcolor = texture(skybox, vec4(texcoords.xyz, cubemap), 0);
 }

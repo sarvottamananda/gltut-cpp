@@ -342,6 +342,8 @@ static void initialize_key_map()
     map_key_table[GLFW_KEY_7] = Key::k7;
     map_key_table[GLFW_KEY_8] = Key::k8;
     map_key_table[GLFW_KEY_9] = Key::k9;
+
+    map_key_table[GLFW_KEY_SPACE] = Key::space;
 }
 
 static Key map_key(int key)

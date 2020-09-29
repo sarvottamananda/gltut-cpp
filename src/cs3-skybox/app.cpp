@@ -57,21 +57,20 @@ glm::mat4 vp = glm::mat4(1.0f);
 
 using glm::vec3;
 
-auto pos = vec3(0.0f, -4.0f, 0.0f);   // model location
+auto pos = vec3(0.0f, -4.0f, 0.0f);  // model location
 auto sf = vec3(1.0f, 1.0f, 1.0f);    // model scaling factor
 auto angle = (GLfloat)0.0f;	     // model rotation angle
 auto axis = vec3(1.0f, 1.0f, 1.0f);  // model rotational axis
 
-auto eye_up = vec3(0, 1, 0);	   // Up is +ive Y (will be (0,-1,0) to look upside-down)
-auto eye_right = vec3(1, 0, 0);	   // Right is +ive X
-auto eye_front = vec3(0, 0, -1);	   // Front is -ive Z 
+auto eye_up = vec3(0, 1, 0);	  // Up is +ive Y (will be (0,-1,0) to look upside-down)
+auto eye_right = vec3(1, 0, 0);	  // Right is +ive X
+auto eye_front = vec3(0, 0, -1);  // Front is -ive Z
 auto eye_dist = start_dist;
 
-auto eye_pos = vec3(0, 0, start_dist);  // Camera at (8,0,0), in World Space
-auto eye_lookat = vec3(0, 0, 0);   // Look at the origin
+auto eye_pos = vec3(0, 0, start_dist);	// Camera at (8,0,0), in World Space
+auto eye_lookat = vec3(0, 0, 0);	// Look at the origin
 
 GLfloat cubemap_num = 0.0f;
-
 
 }  // unnamed namespace
 
@@ -443,87 +442,86 @@ void App::key_callback(Key key, int scancode, Key_action action, Key_mods mods)
     switch (key) {
 	case Key::left:
 	    cout << "key (left)\n";
-            rotate_right(-delta_theta);
+	    rotate_right(-delta_theta);
 	    break;
 	case Key::right:
 	    cout << "key (right)\n";
-            rotate_right(delta_theta);
+	    rotate_right(delta_theta);
 	    break;
 	case Key::up:
 	    cout << "key (up)\n";
-            rotate_up(delta_theta);
+	    rotate_up(delta_theta);
 	    break;
 	case Key::down:
 	    cout << "key (down)\n";
-            rotate_up(-delta_theta);
+	    rotate_up(-delta_theta);
 	    break;
 
 	case Key::kw:
 	    cout << "key (w)\n";
-            move_back(-delta);
+	    move_back(-delta);
 	    break;
 	case Key::ks:
 	    cout << "key (s)\n";
-            move_back(delta);
+	    move_back(delta);
 	    break;
 	case Key::ka:
 	    cout << "key (a)\n";
-            angle += delta_alpha;
+	    angle += delta_alpha;
 	    break;
 	case Key::kd:
 	    cout << "key (d)\n";
-            angle -= delta_alpha;
+	    angle -= delta_alpha;
 	    break;
 
 	case Key::k0:
 	    cout << "key (0)\n";
-            cubemap_num = 0.0f;
+	    cubemap_num = 0.0f;
 	    break;
 	case Key::k1:
 	    cout << "key (1)\n";
-            cubemap_num = 1.0f;
+	    cubemap_num = 1.0f;
 	    break;
 	case Key::k2:
 	    cout << "key (2)\n";
-            cubemap_num = 2.0f;
+	    cubemap_num = 2.0f;
 	    break;
 	case Key::k3:
 	    cout << "key (3)\n";
-            cubemap_num = 3.0f;
+	    cubemap_num = 3.0f;
 	    break;
 	case Key::k4:
 	    cout << "key (4)\n";
-            cubemap_num = 4.0f;
+	    cubemap_num = 4.0f;
 	    break;
 	case Key::k5:
 	    cout << "key (5)\n";
-            cubemap_num = 5.0f;
+	    cubemap_num = 5.0f;
 	    break;
 	case Key::k6:
 	    cout << "key (6)\n";
-            cubemap_num = 6.0f;
+	    cubemap_num = 6.0f;
 	    break;
 	case Key::k7:
 	    cout << "key (7)\n";
-            cubemap_num = 7.0f;
+	    cubemap_num = 7.0f;
 	    break;
 	case Key::k8:
 	    cout << "key (8)\n";
-            cubemap_num = 8.0f;
+	    cubemap_num = 8.0f;
 	    break;
 	case Key::k9:
 	    cout << "key (9)\n";
-            cubemap_num = 9.0f;
+	    cubemap_num = 9.0f;
 	    break;
 
 	case Key::space:
 	    cout << "key (space)\n";
-            init_camera();
+	    init_camera();
 	    break;
 	case Key::esc:
 	    cout << "key (esc)\n";
 	    break;
-
 
 	case Key::left_shift:
 	case Key::right_shift:
@@ -551,7 +549,7 @@ void App::key_callback(Key key, int scancode, Key_action action, Key_mods mods)
 static void rotate_right(float theta)
 {
     eye_front = glm::rotate(eye_front, theta, eye_up);
-    eye_right = glm::cross(eye_front,  eye_up);
+    eye_right = glm::cross(eye_front, eye_up);
 }
 
 static void rotate_up(float theta)
@@ -560,15 +558,9 @@ static void rotate_up(float theta)
     eye_front = glm::cross(eye_up, eye_right);
 }
 
-static void move_back(float delta)
-{
-    eye_dist += delta;
-}
+static void move_back(float delta) { eye_dist += delta; }
 
-static void calculate_camera()
-{
-    eye_pos = - eye_dist * eye_front;
-}
+static void calculate_camera() { eye_pos = -eye_dist * eye_front; }
 
 static void init_camera()
 {

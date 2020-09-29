@@ -29,5 +29,4 @@ void App_base::render_loop()
 }
 
 void App_base::terminate() { w.terminate(); }
-
 void App_base::key_callback(Key k, int sc, Key_action ka, Key_mods km) { return; }

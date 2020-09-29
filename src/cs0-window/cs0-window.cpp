@@ -38,7 +38,7 @@ int main(void)
 
     // Open a window and create its OpenGL context
     window = glfwCreateWindow(
-        800, 600, "OpenGL Code Snippet 1: Creating a Window", NULL, NULL);
+        800, 600, "OpenGL Code Snippets : Creating a Window", NULL, NULL);
     if (window == NULL) {
         fprintf(stderr, "Failed to open GLFW window.\n");
         getchar();

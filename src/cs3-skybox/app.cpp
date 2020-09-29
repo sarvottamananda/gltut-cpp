@@ -35,6 +35,11 @@ using std::string;
 
 namespace {
 
+constexpr GLfloat delta_theta = 0.005f;
+constexpr GLfloat delta = 0.1f;
+constexpr GLfloat delta_alpha = 0.5f;
+constexpr GLfloat start_dist = 20.0f;
+
 int nskyboxes = 0;
 Model_cube cube;
 GLuint vao = 0;
@@ -52,24 +57,21 @@ glm::mat4 vp = glm::mat4(1.0f);
 
 using glm::vec3;
 
-auto pos = vec3(0.0f, 0.0f, 0.0f);   // model location
+auto pos = vec3(0.0f, -4.0f, 0.0f);   // model location
 auto sf = vec3(1.0f, 1.0f, 1.0f);    // model scaling factor
 auto angle = (GLfloat)0.0f;	     // model rotation angle
 auto axis = vec3(1.0f, 1.0f, 1.0f);  // model rotational axis
 
 auto eye_up = vec3(0, 1, 0);	   // Up is +ive Y (will be (0,-1,0) to look upside-down)
-auto eye_right = vec3(0, 0, 1);	   // Right is +ive X (will be (0,-1,0) to look upside-down)
-auto eye_front = vec3(0, 0, 1);	   // Right is +ive X (will be (0,-1,0) to look upside-down)
-auto eye_dist = 16.0f;
+auto eye_right = vec3(1, 0, 0);	   // Right is +ive X
+auto eye_front = vec3(0, 0, -1);	   // Front is -ive Z 
+auto eye_dist = start_dist;
 
-auto eye_pos = vec3(0, 0, 16.0f);  // Camera at (8,0,0), in World Space
+auto eye_pos = vec3(0, 0, start_dist);  // Camera at (8,0,0), in World Space
 auto eye_lookat = vec3(0, 0, 0);   // Look at the origin
 
 GLfloat cubemap_num = 0.0f;
 
-const GLfloat delta_theta = 0.005f;
-const GLfloat delta = 0.1f;
-const GLfloat delta_alpha = 0.5f;
 
 }  // unnamed namespace
 
@@ -94,6 +96,7 @@ static void rotate_up(float theta);
 static void rotate_right(float theta);
 static void move_back(float delta);
 static void calculate_camera();
+static void init_camera();
 
 /*
  * App::render_loop() is the main function defined in this file.
@@ -515,6 +518,7 @@ void App::key_callback(Key key, int scancode, Key_action action, Key_mods mods)
 
 	case Key::space:
 	    cout << "key (space)\n";
+            init_camera();
 	    break;
 	case Key::esc:
 	    cout << "key (esc)\n";
@@ -564,4 +568,14 @@ static void move_back(float delta)
 static void calculate_camera()
 {
     eye_pos = - eye_dist * eye_front;
+}
+
+static void init_camera()
+{
+    eye_right = vec3(1.0f, 0.0f, 0.0f);
+    eye_up = vec3(0.0f, 1.0f, 0.0f);
+    eye_front = vec3(0.0f, 0.0f, -1.0f);
+
+    angle = 0.0f;
+    eye_dist = start_dist;
 }

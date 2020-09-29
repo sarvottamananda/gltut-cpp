@@ -75,6 +75,8 @@ add_executable(cs3
     shader_stuff.h
     stb_image_impl.cpp
     window.cpp
+    window_factory.cpp
+    window_factory.h
     window_glfw.cpp
     window_glfw.h
     window.h

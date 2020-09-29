@@ -13,7 +13,7 @@
 //     3) Configuration options
 //     4) Command line options
 
-#include "options_store.h"
+class Options_store;
 
 void process_args(int, char**, Options_store& os);
 

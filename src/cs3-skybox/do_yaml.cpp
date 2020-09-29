@@ -10,6 +10,8 @@
 
 #include <iostream>
 
+#include "options_store.h"
+
 void process_yaml(std::string conffile, Options_store& os)
 {
     try {

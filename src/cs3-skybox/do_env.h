@@ -7,7 +7,7 @@
 #ifndef SNIPPETS_DO_ENV_H
 #define SNIPPETS_DO_ENV_H
 
-#include "options_store.h"
+class Options_store;
 
 void process_env(Options_store&);
 

@@ -9,11 +9,6 @@
 
 class Global {
    public:  // All globals are public
-    int zero = 0;
-    float zerof = 0.0f;
-    // and other "global" variable
-
-   public:
     Global() = default;
     ~Global() = default;
 
@@ -23,6 +18,10 @@ class Global {
     // Move
     Global(Global&&) = delete;
     Global& operator=(Global&&) = delete;
+
+    int zero = 0;
+    float zerof = 0.0f;
+    // and other "global" variable
 
     static Global& Instance()
     {

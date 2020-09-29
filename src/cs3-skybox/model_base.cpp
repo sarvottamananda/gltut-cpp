@@ -1,6 +1,6 @@
 // Sarvottamananda (shreesh)
 // 2020-09-28
-// model_base.cpp v0.0 (OpenGL Code Snippets) 
+// model_base.cpp v0.0 (OpenGL Code Snippets)
 //
 // Base Model class
 

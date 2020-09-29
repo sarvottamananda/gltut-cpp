@@ -11,20 +11,29 @@
 
 #include <iostream>
 
+#include "app_base.h"
+#include "window.h"
 // clang-format off
-#include <GL/glew.h>
 //#include "glad.h"  // glad is written in C
+#include <GL/glew.h>
 #include <GLFW/glfw3.h>	 // GLFW3 is written in C
 // clang-format on
 
 // using definitions
 using std::cerr;
 
+static Key map_key(int);
+static Key_action map_action(int);
+static Key_mods map_mods(int);
+static void error_callback(int error, const char *description);
+static void initialize_key_map();
+
 // unnamed namespace
 namespace {
 constexpr float view_distance = 2016.0f;  // Viewing distance in pixels
 
 // Implementation class that hides glfw window datastructure
+static void framebuffer_size_callback(GLFWwindow *window, int width, int height);
 
 class Window_glfw : public Window {
    public:
@@ -49,27 +58,13 @@ class Window_glfw : public Window {
     float aspect;
     float fovy;
 
-    friend void framebuffer_size_callback(GLFWwindow *window, int width, int height);
+    static void framebuffer_size_callback(GLFWwindow *, int, int);
+    static void key_callback(GLFWwindow *, int, int, int, int);
 };
 
-void framebuffer_size_callback(GLFWwindow *window, int width, int height)
-{
-    // make sure the viewport matches the new window dimensions; note that width
-    // and height will be significantly larger than specified on retina
-    // displays.
-    Window_glfw *handler = static_cast<Window_glfw *>(glfwGetWindowUserPointer(window));
-    if (handler) {
-	handler->aspect = (float)width / (float)height;
-	handler->fovy = (float)height / view_distance;
-    }
+// local data
 
-    glViewport(0, 0, width, height);
-}
-
-void error_callback(int error, const char *description)
-{
-    cerr << "GLFW error (" << error << ") " << description << "\n";
-}
+Key map_key_table[GLFW_KEY_LAST + 1];
 
 }  // namespace
 
@@ -78,8 +73,8 @@ void error_callback(int error, const char *description)
 // The extern functions needed to access and destroy the implementation app window hidden in
 // unnamed namespace above.
 
-Window *create_window() { return new Window_glfw; }
-void destroy_window(Window *aw) { delete aw; }
+Window *create_glfw_window() { return new Window_glfw; }
+void destroy_glfw_window(Window *aw) { delete aw; }
 
 // All the overridden virtual functions defined in sequence. Later on if we need to override
 // them we shall make them virtual. But right now there is no need to bother with mixing virtual
@@ -202,7 +197,10 @@ bool Window_glfw::initialize(std::string title, int width, int height, bool full
     ::glfwSetInputMode(window, GLFW_STICKY_MOUSE_BUTTONS, 1);
 
     ::glfwSetWindowUserPointer(window, static_cast<void *>(this));
-    ::glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
+    ::glfwSetFramebufferSizeCallback(window, Window_glfw::framebuffer_size_callback);
+    ::glfwSetKeyCallback(window, key_callback);
+
+    initialize_key_map();
 
     // glad stuff did not work first try so fallback to glew
 
@@ -253,8 +251,8 @@ void Window_glfw::make_current()
 
 void Window_glfw::render_begin()
 {
-    // Poll for the events
-    ::glfwPollEvents();
+    //// Poll for the events
+    //::glfwPollEvents();
 }
 
 bool Window_glfw::render_cond()
@@ -282,4 +280,103 @@ bool Window_glfw::is_valid()
 	return true;
     }
     return false;
+}
+
+static void error_callback(int error, const char *description)
+{
+    cerr << "GLFW error (" << error << ") " << description << "\n";
+}
+
+void Window_glfw::framebuffer_size_callback(GLFWwindow *window, int width, int height)
+{
+    // make sure the viewport matches the new window dimensions; note that width
+    // and height will be significantly larger than specified on retina
+    // displays.
+    Window_glfw *handler = static_cast<Window_glfw *>(glfwGetWindowUserPointer(window));
+    if (handler) {
+	handler->aspect = (float)width / (float)height;
+	handler->fovy = (float)height / view_distance;
+    }
+
+    glViewport(0, 0, width, height);
+}
+
+void Window_glfw::key_callback(GLFWwindow *window, int key, int scancode, int action, int mods)
+{
+    Key appkey = map_key(key);
+    Key_action appaction = map_action(action);
+    Key_mods appmods = map_mods(mods);
+
+    Window_glfw *handler = static_cast<Window_glfw *>(glfwGetWindowUserPointer(window));
+    if (handler) {
+	App_base *app = handler->app;
+	if (app) {
+	    app->key_callback(appkey, scancode, appaction, appmods);
+	}
+    }
+}
+
+static void initialize_key_map()
+{
+    for (auto i = 0; i <= GLFW_KEY_LAST; i++) map_key_table[i] = Key::none;
+
+    map_key_table[GLFW_KEY_ESCAPE] = Key::esc;
+
+    map_key_table[GLFW_KEY_LEFT] = Key::left;
+    map_key_table[GLFW_KEY_RIGHT] = Key::right;
+    map_key_table[GLFW_KEY_UP] = Key::up;
+    map_key_table[GLFW_KEY_DOWN] = Key::down;
+
+    map_key_table[GLFW_KEY_W] = Key::kw;
+    map_key_table[GLFW_KEY_A] = Key::ka;
+    map_key_table[GLFW_KEY_S] = Key::ks;
+    map_key_table[GLFW_KEY_D] = Key::kd;
+
+    map_key_table[GLFW_KEY_0] = Key::k0;
+    map_key_table[GLFW_KEY_1] = Key::k1;
+    map_key_table[GLFW_KEY_2] = Key::k2;
+    map_key_table[GLFW_KEY_3] = Key::k3;
+    map_key_table[GLFW_KEY_4] = Key::k4;
+    map_key_table[GLFW_KEY_5] = Key::k5;
+    map_key_table[GLFW_KEY_6] = Key::k6;
+    map_key_table[GLFW_KEY_7] = Key::k7;
+    map_key_table[GLFW_KEY_8] = Key::k8;
+    map_key_table[GLFW_KEY_9] = Key::k9;
+
+    map_key_table[GLFW_KEY_SPACE] = Key::space;
+}
+
+static Key map_key(int key)
+{
+    if (key > GLFW_KEY_LAST || key < GLFW_KEY_UNKNOWN) {
+	cerr << "Got a key with a value more than GLFW_KEY_LAST (" << key << ")\n";
+	exit(EXIT_FAILURE);
+    }
+
+    if (key == GLFW_KEY_UNKNOWN) {
+	return Key::unknown;
+    }
+
+    return map_key_table[key];
+}
+
+static Key_action map_action(int a)
+{
+    switch (a) {
+	case GLFW_RELEASE:
+	    return Key_action::release;
+	case GLFW_PRESS:
+	    return Key_action::press;
+	case GLFW_REPEAT:
+	    return Key_action::repeat;
+	default:
+	    return Key_action::none;
+    }
+}
+
+static Key_mods map_mods(int mods)
+{
+    // We have mapped mods of GLFW one-to-one with our mapping so pass them as it is
+
+    return static_cast<Key_mods>(mods);
 }

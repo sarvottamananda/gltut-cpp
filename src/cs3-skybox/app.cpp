@@ -6,16 +6,20 @@
 
 #include "app.h"
 
-#include <glm/gtc/matrix_transform.hpp>
-
-#include "img_stuff.h"
-#include "iostream"
-#include "model_cube.h"
-#include "shader_stuff.h"
 // clang-format off
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 // clang-format on
+
+#include "img_stuff.h"
+#include "model_cube.h"
+#include "shader_stuff.h"
+#include "window.h"
+#include <cmath>
+#include <iostream>
+#include <glm/gtc/matrix_transform.hpp>
+#define GLM_ENABLE_EXPERIMENTAL
+#include <glm/gtx/rotate_vector.hpp>
 
 //
 // using declarations
@@ -45,6 +49,28 @@ GLuint cubeobj_prog = 0;
 GLuint skybox_txtr = 0;
 glm::mat4 mvp = glm::mat4(1.0f);
 glm::mat4 vp = glm::mat4(1.0f);
+
+using glm::vec3;
+
+auto pos = vec3(0.0f, 0.0f, 0.0f);   // model location
+auto sf = vec3(1.0f, 1.0f, 1.0f);    // model scaling factor
+auto angle = (GLfloat)0.0f;	     // model rotation angle
+auto axis = vec3(1.0f, 1.0f, 1.0f);  // model rotational axis
+
+auto eye_up = vec3(0, 1, 0);	   // Up is +ive Y (will be (0,-1,0) to look upside-down)
+auto eye_right = vec3(0, 0, 1);	   // Right is +ive X (will be (0,-1,0) to look upside-down)
+auto eye_front = vec3(0, 0, 1);	   // Right is +ive X (will be (0,-1,0) to look upside-down)
+auto eye_dist = 16.0f;
+
+auto eye_pos = vec3(0, 0, 16.0f);  // Camera at (8,0,0), in World Space
+auto eye_lookat = vec3(0, 0, 0);   // Look at the origin
+
+GLfloat cubemap_num = 0.0f;
+
+const GLfloat delta_theta = 0.005f;
+const GLfloat delta = 0.1f;
+const GLfloat delta_alpha = 0.5f;
+
 }  // unnamed namespace
 
 //
@@ -63,6 +89,11 @@ static void prepare_buffers();
 static void prepare_attributes();
 static void load_texture_data();
 static void splice_texture_data(Vector<Image> &image);
+static void key_callback(Window *win, int key, int scancode, int action, int mods);
+static void rotate_up(float theta);
+static void rotate_right(float theta);
+static void move_back(float delta);
+static void calculate_camera();
 
 /*
  * App::render_loop() is the main function defined in this file.
@@ -144,13 +175,7 @@ static void prepare_uniforms()
 static void prepare_matrices(const Window &win)
 // Comput model, view, project matrices for the cube object and the cubemap
 {
-    using glm::vec3;
     // Model
-
-    auto pos = vec3(0.0f, 0.0f, 0.0f);
-    auto sf = vec3(1.0f, 1.0f, 1.0f);
-    auto angle = (GLfloat)0.0f;
-    auto axis = vec3(1.0f, 1.0f, 1.0f);
 
     glm::mat4 model = glm::mat4(1.0f);	// Identity matrix
 
@@ -160,15 +185,11 @@ static void prepare_matrices(const Window &win)
 
     // View
 
-    vec3 eye = vec3(8, 3, 5);	  // Camera is at (4,3,3), in World Space
-    vec3 center = vec3(0, 0, 0);  // and looks at the origin
-    vec3 up = vec3(0, 1, 0);	  // Head is up (set to 0,-1,0 to look upside-down)
-
-    glm::mat4 view = glm::lookAt(eye, center, up);
+    glm::mat4 view = glm::lookAt(eye_pos, eye_lookat, eye_up);
 
     // Projection
 
-    GLfloat fovy = win.get_fovy() * 3;
+    GLfloat fovy = win.get_fovy() * 2;
     GLfloat aspect = win.get_aspect();
     GLfloat near = 0.1f;
     GLfloat far = 100.0f;
@@ -392,13 +413,14 @@ static void do_draw_commands(const Window &win)
     glClear(GL_DEPTH_BUFFER_BIT);
     glBindVertexArray(vao);
 
+    calculate_camera();
     prepare_matrices(win);
 
     glDepthMask(GL_FALSE);
     glUseProgram(skybox_prog);
     glUniformMatrix4fv(vp_id, 1, GL_FALSE, &vp[0][0]);
     glUniform1i(skybox_loc, 0);
-    glUniform1i(cubemap_loc, 0);
+    glUniform1f(cubemap_loc, cubemap_num);
     glCullFace(GL_FRONT);
     glDrawElements(GL_TRIANGLES, cube.idx_num, GL_UNSIGNED_SHORT, (void *)0);
 
@@ -407,4 +429,139 @@ static void do_draw_commands(const Window &win)
     glUniformMatrix4fv(mvp_id, 1, GL_FALSE, &mvp[0][0]);
     glCullFace(GL_BACK);
     glDrawElements(GL_TRIANGLES, cube.idx_num, GL_UNSIGNED_SHORT, (void *)0);
+}
+
+void App::key_callback(Key key, int scancode, Key_action action, Key_mods mods)
+{
+    using std::cout;
+
+    if (action == Key_action::release) return;
+
+    switch (key) {
+	case Key::left:
+	    cout << "key (left)\n";
+            rotate_right(-delta_theta);
+	    break;
+	case Key::right:
+	    cout << "key (right)\n";
+            rotate_right(delta_theta);
+	    break;
+	case Key::up:
+	    cout << "key (up)\n";
+            rotate_up(delta_theta);
+	    break;
+	case Key::down:
+	    cout << "key (down)\n";
+            rotate_up(-delta_theta);
+	    break;
+
+	case Key::kw:
+	    cout << "key (w)\n";
+            move_back(-delta);
+	    break;
+	case Key::ks:
+	    cout << "key (s)\n";
+            move_back(delta);
+	    break;
+	case Key::ka:
+	    cout << "key (a)\n";
+            angle += delta_alpha;
+	    break;
+	case Key::kd:
+	    cout << "key (d)\n";
+            angle -= delta_alpha;
+	    break;
+
+	case Key::k0:
+	    cout << "key (0)\n";
+            cubemap_num = 0.0f;
+	    break;
+	case Key::k1:
+	    cout << "key (1)\n";
+            cubemap_num = 1.0f;
+	    break;
+	case Key::k2:
+	    cout << "key (2)\n";
+            cubemap_num = 2.0f;
+	    break;
+	case Key::k3:
+	    cout << "key (3)\n";
+            cubemap_num = 3.0f;
+	    break;
+	case Key::k4:
+	    cout << "key (4)\n";
+            cubemap_num = 4.0f;
+	    break;
+	case Key::k5:
+	    cout << "key (5)\n";
+            cubemap_num = 5.0f;
+	    break;
+	case Key::k6:
+	    cout << "key (6)\n";
+            cubemap_num = 6.0f;
+	    break;
+	case Key::k7:
+	    cout << "key (7)\n";
+            cubemap_num = 7.0f;
+	    break;
+	case Key::k8:
+	    cout << "key (8)\n";
+            cubemap_num = 8.0f;
+	    break;
+	case Key::k9:
+	    cout << "key (9)\n";
+            cubemap_num = 9.0f;
+	    break;
+
+	case Key::space:
+	    cout << "key (space)\n";
+	    break;
+	case Key::esc:
+	    cout << "key (esc)\n";
+	    break;
+
+
+	case Key::left_shift:
+	case Key::right_shift:
+	    cout << "key (shift)\n";
+	    break;
+	case Key::left_ctrl:
+	case Key::right_ctrl:
+	    cout << "key (ctrl)\n";
+	    break;
+	case Key::left_alt:
+	case Key::right_alt:
+	    cout << "key (alt)\n";
+	    break;
+	case Key::left_super:
+	case Key::right_super:
+	    cout << "key (super)\n";
+	    break;
+	default:
+	    cout << "key (unknown)\n";
+	    break;
+    }
+    return;
+}
+
+static void rotate_right(float theta)
+{
+    eye_front = glm::rotate(eye_front, theta, eye_up);
+    eye_right = glm::cross(eye_front,  eye_up);
+}
+
+static void rotate_up(float theta)
+{
+    eye_up = glm::rotate(eye_up, theta, eye_right);
+    eye_front = glm::cross(eye_up, eye_right);
+}
+
+static void move_back(float delta)
+{
+    eye_dist += delta;
+}
+
+static void calculate_camera()
+{
+    eye_pos = - eye_dist * eye_front;
 }

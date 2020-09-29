@@ -13,8 +13,9 @@ class App : public App_base {
    public:
     App(Window* win) : App_base(win){};
     virtual ~App() = default;
-
     void render_loop();
+
+    virtual void key_callback(Key, int, Key_action, Key_mods);
 
    private:
 };

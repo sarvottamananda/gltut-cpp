@@ -77,6 +77,24 @@ $ ./build/src/cs1-triangles/cs3-skybox
 
 ![Tutorial 3](imgs/cs3-skybox.png)
 
+Contol the camera and the cube with following keys
+
+0, 1, ..., 9 : change cubemap
+
+w, s : move camera to / away from cube
+
+a, d : rotate cube clockwise / counter-clockwise
+
+left, right, up, down : move camera
+
+space : Reset camera and cube
+
+Options : 
+
+    **--fullscreen** for fullscreen
+    **--windowed** for window
+    **--height** _h_ for window height _h_
+    **--width** _w_ for window width _w_
 
 ***
 

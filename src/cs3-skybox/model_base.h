@@ -7,8 +7,7 @@
 #ifndef SNIPPETS_MODEL_BASE_H
 #define SNIPPETS_MODEL_BASE_H
 
-#include <GL/glew.h>
-//#include "glad.h"
+#include <GL/gl.h>
 
 enum class Model_type { none = 0, point = 1, line = 2, triangle = 3 };
 

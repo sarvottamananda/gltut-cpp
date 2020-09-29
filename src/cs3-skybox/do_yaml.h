@@ -9,7 +9,7 @@
 
 #include <string>
 
-#include "options_store.h"
+class Options_store;
 
 void process_yaml(std::string, Options_store&);
 

@@ -7,6 +7,8 @@
 #include "app.h"
 #include "do_args.h"
 #include "options_store.h"
+#include "window.h"
+#include "window_factory.h"
 
 int main(int argc, char* argv[])
 {
@@ -16,12 +18,18 @@ int main(int argc, char* argv[])
     process_args(argc, argv, opts_store);
     opts_store.print("Options store");
 
-    Window* awin = create_window();
-    App code_snippet(awin);
+    Window* win_glfw = Window_factory::create_window(
+	Window_type::glfw);	 // Create a glfw window using factory idiom
+    App code_snippet(win_glfw);	 // Create an app instance using glfw window, we did not want to
+				 // hardcode glfw instance of window inside the app, hence we
+				 // create it first and then pass it to app instance
+				 //
+    win_glfw->set_app(&code_snippet);
 
     code_snippet.initialize(opts_store);
     code_snippet.render_loop();
     code_snippet.terminate();
 
-    destroy_window(awin);
+    Window_factory::destroy_window(
+	win_glfw, Window_type::glfw);  // Destroy the glfw window using factory idiom
 }

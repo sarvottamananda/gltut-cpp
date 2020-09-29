@@ -1,6 +1,6 @@
 // Sarvottamananda (shreesh)
 // 2020-09-28
-// do_args.cpp v0.0 (OpenGL Code Snippets) 
+// do_args.cpp v0.0 (OpenGL Code Snippets)
 //
 // Process args, env, conf file and build vars.
 
@@ -16,6 +16,7 @@
 #include "do_env.h"
 #include "do_meson.h"
 #include "do_yaml.h"
+#include "options_store.h"
 
 static int getnumarg(char *);
 static void print_usage(char *);

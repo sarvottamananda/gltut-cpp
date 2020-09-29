@@ -7,10 +7,9 @@
 //
 //	Image Utility Library
 
-#include <GL/glew.h>
+#include <GL/gl.h>
 
 #include <string>
-//#include "glad.h"
 
 class Image {
    public:

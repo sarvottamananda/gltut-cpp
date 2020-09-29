@@ -1,6 +1,6 @@
 // Sarvottamananda (shreesh)
 // 2020-09-28
-// debug.cpp v0.0 (OpenGL Code Snippets) 
+// debug.cpp v0.0 (OpenGL Code Snippets)
 //
 // Debug by printing with tests
 

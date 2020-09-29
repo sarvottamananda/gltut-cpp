@@ -18,6 +18,7 @@ srcs := \
     shader_stuff.cpp \
     stb_image_impl.cpp \
     window.cpp \
+    window_factory.cpp \
     window_glfw.cpp \
 
 
@@ -37,6 +38,7 @@ hdrs := \
     options_store.h \
     shader_stuff.h \
     window.h \
+    window_factory.h \
     window_glfw.h \
 
 

@@ -1,14 +1,17 @@
 // Sarvottamananda (shreesh)
 // 2020-09-28
-// shader_stuff.cpp v0.0 (OpenGL Code Snippets) 
+// shader_stuff.cpp v0.0 (OpenGL Code Snippets)
 //
 // Low level shader stuff
 
-#include "shader_stuff.h"
-
+// clang-format: off
+#include <GL/glew.h>
+// clang-format: on
 #include <fstream>
 #include <iostream>
 #include <sstream>
+
+#include "shader_stuff.h"
 
 using std::cerr;
 using std::cout;

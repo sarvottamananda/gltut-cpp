@@ -6,16 +6,17 @@
 
 #include "app.h"
 
-#include <glm/gtc/matrix_transform.hpp>
-
-#include "img_stuff.h"
-#include "iostream"
-#include "model_cube.h"
-#include "shader_stuff.h"
 // clang-format off
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 // clang-format on
+
+#include "img_stuff.h"
+#include "model_cube.h"
+#include "shader_stuff.h"
+#include "window.h"
+#include <iostream>
+#include <glm/gtc/matrix_transform.hpp>
 
 //
 // using declarations
@@ -63,6 +64,7 @@ static void prepare_buffers();
 static void prepare_attributes();
 static void load_texture_data();
 static void splice_texture_data(Vector<Image> &image);
+static void key_callback(Window *win, int key, int scancode, int action, int mods);
 
 /*
  * App::render_loop() is the main function defined in this file.
@@ -168,7 +170,7 @@ static void prepare_matrices(const Window &win)
 
     // Projection
 
-    GLfloat fovy = win.get_fovy() * 3;
+    GLfloat fovy = win.get_fovy() * 2;
     GLfloat aspect = win.get_aspect();
     GLfloat near = 0.1f;
     GLfloat far = 100.0f;
@@ -407,4 +409,95 @@ static void do_draw_commands(const Window &win)
     glUniformMatrix4fv(mvp_id, 1, GL_FALSE, &mvp[0][0]);
     glCullFace(GL_BACK);
     glDrawElements(GL_TRIANGLES, cube.idx_num, GL_UNSIGNED_SHORT, (void *)0);
+}
+
+void App::key_callback(Key key, int scancode, Key_action action, Key_mods mods)
+{
+    using std::cout;
+
+    if (action == Key_action::release) return;
+
+    switch (key) {
+	case Key::left:
+	    cout << "key (left)\n";
+	    break;
+	case Key::right:
+	    cout << "key (right)\n";
+	    break;
+	case Key::up:
+	    cout << "key (up)\n";
+	    break;
+	case Key::down:
+	    cout << "key (down)\n";
+	    break;
+
+	case Key::kw:
+	    cout << "key (w)\n";
+	    break;
+	case Key::ks:
+	    cout << "key (s)\n";
+	    break;
+	case Key::ka:
+	    cout << "key (a)\n";
+	    break;
+	case Key::kd:
+	    cout << "key (d)\n";
+	    break;
+
+	case Key::k0:
+	    cout << "key (0)\n";
+	    break;
+	case Key::k1:
+	    cout << "key (1)\n";
+	    break;
+	case Key::k2:
+	    cout << "key (2)\n";
+	    break;
+	case Key::k3:
+	    cout << "key (3)\n";
+	    break;
+	case Key::k4:
+	    cout << "key (4)\n";
+	    break;
+	case Key::k5:
+	    cout << "key (5)\n";
+	    break;
+	case Key::k6:
+	    cout << "key (6)\n";
+	    break;
+	case Key::k7:
+	    cout << "key (7)\n";
+	    break;
+	case Key::k8:
+	    cout << "key (8)\n";
+	    break;
+	case Key::k9:
+	    cout << "key (9)\n";
+	    break;
+
+	case Key::space:
+	    cout << "key (space)\n";
+	    break;
+
+	case Key::left_shift:
+	case Key::right_shift:
+	    cout << "key (shift)\n";
+	    break;
+	case Key::left_ctrl:
+	case Key::right_ctrl:
+	    cout << "key (ctrl)\n";
+	    break;
+	case Key::left_alt:
+	case Key::right_alt:
+	    cout << "key (alt)\n";
+	    break;
+	case Key::left_super:
+	case Key::right_super:
+	    cout << "key (super)\n";
+	    break;
+	default:
+	    cout << "key (unknown)\n";
+	    break;
+    }
+    return;
 }

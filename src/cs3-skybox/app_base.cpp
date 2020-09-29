@@ -6,6 +6,9 @@
 
 #include "app_base.h"
 
+#include "options_store.h"
+#include "window.h"
+
 void App_base::initialize(Options_store& os)
 {
     // Opens a window of required resolution and mode
@@ -26,3 +29,5 @@ void App_base::render_loop()
 }
 
 void App_base::terminate() { w.terminate(); }
+
+void App_base::key_callback(Key k, int sc, Key_action ka, Key_mods km) { return; };

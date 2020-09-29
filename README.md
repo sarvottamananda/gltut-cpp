@@ -91,10 +91,10 @@ space : Reset camera and cube
 
 Options : 
 
-    **--fullscreen** for fullscreen
-    **--windowed** for window
-    **--height** _h_ for window height _h_
-    **--width** _w_ for window width _w_
+*    **--fullscreen** for fullscreen
+*    **--windowed** for window
+*    **--height** _h_ for window height _h_
+*    **--width** _w_ for window width _w_
 
 ***
 

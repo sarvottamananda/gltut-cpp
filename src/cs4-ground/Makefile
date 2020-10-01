@@ -1,5 +1,9 @@
+bin_dir ?= bin
+src_dir ?= .
+target ?= $(bin_dir)/cs4
+
 #srcs := $(shell find $(src_dir) -type f -name '*.cpp' -printf '%f\n' | sort)
-#hdrs := $(shell find $(src_dir) -type f -name '*.h' -printf '%f\n' | sort)
+#hdrs := $(shell find $(src_dir) -type f -name '*.hpp' -printf '%f\n' | sort)
 
 srcs := \
     app.cpp \
@@ -23,29 +27,26 @@ srcs := \
 
 
 hdrs := \
-    app.h \
-    app_base.h \
-    cs_config.h \
-    debug.h \
-    do_args.h \
-    do_meson.h \
-    do_env.h \
-    do_yaml.h \
-    global.h \
-    img_stuff.h \
-    model_base.h \
-    model_cube.h \
-    options_store.h \
-    shader_stuff.h \
-    window.h \
-    window_factory.h \
-    window_glfw.h \
+    app.hpp \
+    app_base.hpp \
+    cs_config.hpp \
+    debug.hpp \
+    do_args.hpp \
+    do_meson.hpp \
+    do_env.hpp \
+    do_yaml.hpp \
+    global.hpp \
+    img_stuff.hpp \
+    model_base.hpp \
+    model_cube.hpp \
+    options_store.hpp \
+    shader_stuff.hpp \
+    window.hpp \
+    window_factory.hpp \
+    window_glfw.hpp \
 
 
-bin_dir ?= bin
-target ?= $(bin_dir)/cs3
 dep_dir ?= dep
-src_dir ?= .
 #inc_dirs := $(shell find $(src_dir) -type d -name inc)
 #inc_dirs ?= ../../subprojects/glad/
 
@@ -82,7 +83,7 @@ deps : $(deps)
 	@echo "Dependencies are created in directory dep"
 
 format : 
-	@for f in $(shell find .  \( -name '*.cpp' -or -name '*.h' -or -name '*.c' \) -and -cnewer fmt-stamp) ; do \
+	@for f in $(shell find .  \( -name '*.cpp' -or -name '*.hpp' -or -name '*.c'  -or -name '*.h' \) -and -cnewer fmt-stamp) ; do \
 		echo "Running clang-format on $$f" ; \
 	    	clang-format -i $$f ; \
 	done

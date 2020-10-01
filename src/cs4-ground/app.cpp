@@ -4,21 +4,21 @@
 //
 // Apps derived from App_base
 
-#include "app.h"
+#include "app.hpp"
 
 // clang-format off
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 // clang-format on
 
-#include "img_stuff.h"
-#include "model_cube.h"
-#include "shader_stuff.h"
-#include "window.h"
+#include "img_stuff.hpp"
+#include "model_cube.hpp"
+#include "shader_stuff.hpp"
+#include "window.hpp"
 #include <cmath>
 #include <iostream>
-#include <glm/gtc/matrix_transform.hpp>
 #define GLM_ENABLE_EXPERIMENTAL
+#include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtx/rotate_vector.hpp>
 
 //
@@ -191,7 +191,7 @@ static void prepare_matrices(const Window &win)
 
     // Projection
 
-    GLfloat fovy = win.get_fovy() * 3;
+    GLfloat fovy = win.get_fovy() * 2;
     GLfloat aspect = win.get_aspect();
     GLfloat near = 0.1f;
     GLfloat far = 100.0f;

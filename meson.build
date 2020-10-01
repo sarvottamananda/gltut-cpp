@@ -1,6 +1,6 @@
 project('opengl-snippets',
 	['c', 'cpp'],
-	version : '0.1.3',
+	version : '0.1.4',
 	license : 'MIT',
 	meson_version : '>= 0.49',
   	default_options : [
@@ -29,5 +29,14 @@ yaml_dep = dependency('yaml-cpp')
 glad_prj = subproject('glad')
 
 glad_dep = glad_prj.get_variable('glad_dep')
+
+copy_to_build = find_program('scripts/copy_to_build.py')
+copy = find_program('scripts/copy.py')
+
+#run_command(
+#    copy,
+#    join_paths('.', 'LICENSE'),
+#    join_paths('.', 'license')
+#)
 
 subdir('src')

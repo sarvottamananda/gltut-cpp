@@ -10,6 +10,7 @@
 namespace cs_config {
 
 constexpr char cs_config_file[] = "@CS_CONFIG_FILE@";
+constexpr char cs_config_dir[] = "@CS_CONFIG_DIR@";
 constexpr char cs_build_dir[] = "@CS_BUILD_DIR@";
 constexpr char cs_source_dir[] = "@CS_SOURCE_DIR@";
 

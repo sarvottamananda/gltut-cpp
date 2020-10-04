@@ -19,7 +19,7 @@ void Model_base::print()
 
     for (auto i = 0; i < v_num; i++) {
 	cout << "\t(";
-	for (auto j = 0; j < 3; j++) {
+	for (auto j = 0; j < 4; j++) {
 	    cout << data[i].pos[j];
 	    if (j == 2)
 		cout << ") ";
@@ -28,7 +28,7 @@ void Model_base::print()
 	}
 
 	cout << "(";
-	for (auto j = 0; j < 3; j++) {
+	for (auto j = 0; j < 4; j++) {
 	    cout << data[i].normal[j];
 	    if (j == 2)
 		cout << ") ";
@@ -37,7 +37,7 @@ void Model_base::print()
 	}
 
 	cout << "(";
-	for (auto j = 0; j < 2; j++) {
+	for (auto j = 0; j < 4; j++) {
 	    cout << data[i].txtr[0];
 	    if (j == 1)
 		cout << ")\n";

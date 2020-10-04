@@ -96,12 +96,12 @@ bool Window_glfw::initialize(std::string title, int width, int height, bool full
 
     // We need core profile 4.0 because of cube map array
     ::glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
-    ::glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
+    ::glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     ::glfwWindowHint(GLFW_SAMPLES, 4);
     ::glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
     ::glfwWindowHint(GLFW_DEPTH_BITS, 32);
     ::glfwWindowHint(GLFW_STENCIL_BITS, 32);
-    ::glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, 1);
+    ::glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, GL_TRUE);
     // For Apple, but sadly Apple is removing OpenGL from it OSes in favour of Metal API, but it
     // is good to deprecate the deprecated API.
     ::glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
@@ -223,6 +223,7 @@ bool Window_glfw::initialize(std::string title, int width, int height, bool full
 	glfwTerminate();
 	exit(EXIT_FAILURE);
     }
+
 
     ::glfwSwapInterval(1);
 

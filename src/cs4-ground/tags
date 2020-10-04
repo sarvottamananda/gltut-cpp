@@ -7,329 +7,160 @@
 !_TAG_PROGRAM_NAME	Universal Ctags	/Derived from Exuberant Ctags/
 !_TAG_PROGRAM_URL	https://ctags.io/	/official site/
 !_TAG_PROGRAM_VERSION	0.0.0	//
-App	app.h	/^    App(Window* win) : App_base(win){};$/;"	f	class:App	access:public	signature:(Window * win)
-App	app.h	/^class App : public App_base {$/;"	c	inherits:App_base
-App::App	app.h	/^    App(Window* win) : App_base(win){};$/;"	f	class:App	access:public	signature:(Window * win)
+App	app.hpp	/^    App(Window* win) : App_base(win){};$/;"	f	class:App	access:public	signature:(Window * win)
+App	app.hpp	/^class App : public App_base {$/;"	c	inherits:App_base
+App::App	app.hpp	/^    App(Window* win) : App_base(win){};$/;"	f	class:App	access:public	signature:(Window * win)
+App::key_callback	app.cpp	/^void App::key_callback(Key key, int scancode, Key_action action, Key_mods mods)$/;"	f	class:App	typeref:typename:void	signature:(Key key,int scancode,Key_action action,Key_mods mods)
+App::key_callback	app.hpp	/^    virtual void key_callback(Key, int, Key_action, Key_mods);$/;"	p	class:App	typeref:typename:void	access:public	signature:(Key,int,Key_action,Key_mods)
 App::render_loop	app.cpp	/^void App::render_loop()$/;"	f	class:App	typeref:typename:void	signature:()
-App::render_loop	app.h	/^    void render_loop();$/;"	p	class:App	typeref:typename:void	access:public	signature:()
-App::~App	app.h	/^    virtual ~App() = default;$/;"	p	class:App	access:public	signature:()
-App_base	app_base.h	/^    App_base() = delete;$/;"	p	class:App_base	access:public	signature:()
-App_base	app_base.h	/^    App_base(Window* win) : w(*win){};$/;"	f	class:App_base	access:public	signature:(Window * win)
-App_base	app_base.h	/^class App_base {$/;"	c
-App_base::App_base	app_base.h	/^    App_base() = delete;$/;"	p	class:App_base	access:public	signature:()
-App_base::App_base	app_base.h	/^    App_base(Window* win) : w(*win){};$/;"	f	class:App_base	access:public	signature:(Window * win)
-App_base::initialize	app_base.cpp	/^void App_base::initialize(Options_store& os)$/;"	f	class:App_base	typeref:typename:void	signature:(Options_store & os)
-App_base::initialize	app_base.h	/^    virtual void initialize(Options_store& os);$/;"	p	class:App_base	typeref:typename:void	access:public	signature:(Options_store & os)
-App_base::render_loop	app_base.cpp	/^void App_base::render_loop()$/;"	f	class:App_base	typeref:typename:void	signature:()
-App_base::render_loop	app_base.h	/^    virtual void render_loop();$/;"	p	class:App_base	typeref:typename:void	access:public	signature:()
-App_base::terminate	app_base.cpp	/^void App_base::terminate() { w.terminate(); }$/;"	f	class:App_base	typeref:typename:void	signature:()
-App_base::terminate	app_base.h	/^    virtual void terminate();$/;"	p	class:App_base	typeref:typename:void	access:public	signature:()
-App_base::w	app_base.h	/^    Window& w;$/;"	m	class:App_base	typeref:typename:Window &	access:protected
-App_base::~App_base	app_base.h	/^    virtual ~App_base() = default;$/;"	p	class:App_base	access:public	signature:()
-App_func0	window_glfw.h	/^typedef void (*App_func0)(const Window&);$/;"	t	typeref:typename:void (*)(const Window &)
-App_func1	window_glfw.h	/^typedef void (*App_func1)(const Window&, int);$/;"	t	typeref:typename:void (*)(const Window &,int)
-App_func2	window_glfw.h	/^typedef void (*App_func2)(const Window&, int, int);$/;"	t	typeref:typename:void (*)(const Window &,int,int)
-App_func2d	window_glfw.h	/^typedef void (*App_func2d)(const Window&, double, double);$/;"	t	typeref:typename:void (*)(const Window &,double,double)
-App_func2f	window_glfw.h	/^typedef void (*App_func2f)(const Window&, float, float);$/;"	t	typeref:typename:void (*)(const Window &,float,float)
-App_func3	window_glfw.h	/^typedef void (*App_func3)(const Window&, int, int, int);$/;"	t	typeref:typename:void (*)(const Window &,int,int,int)
-App_func4	window_glfw.h	/^typedef void (*App_func4)(const Window&, int, int, int, int);$/;"	t	typeref:typename:void (*)(const Window &,int,int,int,int)
-DCALL	debug.h	/^#define DCALL(/;"	d	signature:(level,...)
-DDEBUG	debug.h	/^#define DDEBUG(/;"	d	signature:(level,...)
-DEBUG	debug.cpp	/^#define DEBUG$/;"	d	file:
-DPRINT	debug.h	/^#define DPRINT(/;"	d	signature:(...)
-DTRACE	debug.h	/^#define DTRACE(/;"	d	signature:(level,...)
-DTRACK	debug.h	/^#define DTRACK(/;"	d	signature:()
-Global	global.h	/^    Global() = default;$/;"	p	class:Global	access:public	signature:()
-Global	global.h	/^    Global(Global&&) = delete;$/;"	p	class:Global	access:public	signature:(Global &&)
-Global	global.h	/^    Global(const Global&) = delete;$/;"	p	class:Global	access:public	signature:(const Global &)
-Global	global.h	/^class Global {$/;"	c
-Global::Global	global.h	/^    Global() = default;$/;"	p	class:Global	access:public	signature:()
-Global::Global	global.h	/^    Global(Global&&) = delete;$/;"	p	class:Global	access:public	signature:(Global &&)
-Global::Global	global.h	/^    Global(const Global&) = delete;$/;"	p	class:Global	access:public	signature:(const Global &)
-Global::Instance	global.h	/^    static Global& Instance()$/;"	f	class:Global	typeref:typename:Global &	access:public	signature:()
-Global::operator =	global.h	/^    Global& operator=(Global&&) = delete;$/;"	p	class:Global	typeref:typename:Global &	access:public	signature:(Global &&)
-Global::operator =	global.h	/^    Global& operator=(const Global&) = delete;$/;"	p	class:Global	typeref:typename:Global &	access:public	signature:(const Global &)
+App::render_loop	app.hpp	/^    void render_loop();$/;"	p	class:App	typeref:typename:void	access:public	signature:()
+App::~App	app.hpp	/^    virtual ~App() = default;$/;"	p	class:App	access:public	signature:()
+GLM_ENABLE_EXPERIMENTAL	app.cpp	/^#define GLM_ENABLE_EXPERIMENTAL$/;"	d	file:
+Global	global.hpp	/^    Global() = default;$/;"	p	class:Global	access:public	signature:()
+Global	global.hpp	/^    Global(Global&&) = delete;$/;"	p	class:Global	access:public	signature:(Global &&)
+Global	global.hpp	/^    Global(const Global&) = delete;$/;"	p	class:Global	access:public	signature:(const Global &)
+Global	global.hpp	/^class Global {$/;"	c
+Global::Global	global.hpp	/^    Global() = default;$/;"	p	class:Global	access:public	signature:()
+Global::Global	global.hpp	/^    Global(Global&&) = delete;$/;"	p	class:Global	access:public	signature:(Global &&)
+Global::Global	global.hpp	/^    Global(const Global&) = delete;$/;"	p	class:Global	access:public	signature:(const Global &)
+Global::Instance	global.hpp	/^    static Global& Instance()$/;"	f	class:Global	typeref:typename:Global &	access:public	signature:()
+Global::operator =	global.hpp	/^    Global& operator=(Global&&) = delete;$/;"	p	class:Global	typeref:typename:Global &	access:public	signature:(Global &&)
+Global::operator =	global.hpp	/^    Global& operator=(const Global&) = delete;$/;"	p	class:Global	typeref:typename:Global &	access:public	signature:(const Global &)
 Global::print	global.cpp	/^void Global::print() {}$/;"	f	class:Global	typeref:typename:void	signature:()
-Global::print	global.h	/^    void print();$/;"	p	class:Global	typeref:typename:void	access:public	signature:()
-Global::zero	global.h	/^    int zero = 0;$/;"	m	class:Global	typeref:typename:int	access:public
-Global::zerof	global.h	/^    float zerof = 0.0f;$/;"	m	class:Global	typeref:typename:float	access:public
-Global::~Global	global.h	/^    ~Global() = default;$/;"	p	class:Global	access:public	signature:()
-Image	img_stuff.h	/^class Image {$/;"	c
-Image::data	img_stuff.h	/^    void* data;$/;"	m	class:Image	typeref:typename:void *	access:private
-Image::free_data	img_stuff.cpp	/^void Image::free_data() { stbi_image_free(data); }$/;"	f	class:Image	typeref:typename:void	signature:()
-Image::free_data	img_stuff.h	/^    void free_data();$/;"	p	class:Image	typeref:typename:void	access:public	signature:()
-Image::get_bytes_per_pixel	img_stuff.h	/^    inline int get_bytes_per_pixel() { return no_channels; };$/;"	f	class:Image	typeref:typename:int	access:public	signature:()
-Image::get_height	img_stuff.h	/^    inline GLsizei get_height() { return height; };$/;"	f	class:Image	typeref:typename:GLsizei	access:public	signature:()
-Image::get_width	img_stuff.h	/^    inline GLsizei get_width() { return width; };$/;"	f	class:Image	typeref:typename:GLsizei	access:public	signature:()
-Image::height	img_stuff.h	/^    GLsizei height;$/;"	m	class:Image	typeref:typename:GLsizei	access:private
-Image::no_channels	img_stuff.h	/^    GLenum no_channels;$/;"	m	class:Image	typeref:typename:GLenum	access:private
-Image::pixels	img_stuff.h	/^    inline void* pixels() { return data; };$/;"	f	class:Image	typeref:typename:void *	access:public	signature:()
-Image::read_file	img_stuff.cpp	/^void Image::read_file(std::string fname)$/;"	f	class:Image	typeref:typename:void	signature:(std::string fname)
-Image::read_file	img_stuff.h	/^    void read_file(std::string filename);$/;"	p	class:Image	typeref:typename:void	access:public	signature:(std::string filename)
-Image::width	img_stuff.h	/^    GLsizei width;$/;"	m	class:Image	typeref:typename:GLsizei	access:private
-Instance	global.h	/^    static Global& Instance()$/;"	f	class:Global	typeref:typename:Global &	access:public	signature:()
-Model_base	model_base.h	/^class Model_base {$/;"	c
-Model_base::data	model_base.h	/^    Vertex_data* data = nullptr;$/;"	m	class:Model_base	typeref:typename:Vertex_data *	access:public
-Model_base::idx	model_base.h	/^    GLushort* idx = nullptr;$/;"	m	class:Model_base	typeref:typename:GLushort *	access:public
-Model_base::idx_num	model_base.h	/^    GLsizei idx_num = 0;$/;"	m	class:Model_base	typeref:typename:GLsizei	access:public
-Model_base::print	model_base.cpp	/^void Model_base::print()$/;"	f	class:Model_base	typeref:typename:void	signature:()
-Model_base::print	model_base.h	/^    void print();$/;"	p	class:Model_base	typeref:typename:void	access:public	signature:()
-Model_base::prog	model_base.h	/^    GLuint prog;$/;"	m	class:Model_base	typeref:typename:GLuint	access:public
-Model_base::type	model_base.h	/^    Model_type type;$/;"	m	class:Model_base	typeref:typename:Model_type	access:public
-Model_base::v_num	model_base.h	/^    GLsizei v_num = 0;$/;"	m	class:Model_base	typeref:typename:GLsizei	access:public
-Model_cube	model_cube.cpp	/^Model_cube::Model_cube()$/;"	f	class:Model_cube	signature:()
-Model_cube	model_cube.h	/^    Model_cube();$/;"	p	class:Model_cube	access:public	signature:()
-Model_cube	model_cube.h	/^class Model_cube : public Model_base {$/;"	c	inherits:Model_base
-Model_cube::Model_cube	model_cube.cpp	/^Model_cube::Model_cube()$/;"	f	class:Model_cube	signature:()
-Model_cube::Model_cube	model_cube.h	/^    Model_cube();$/;"	p	class:Model_cube	access:public	signature:()
-Model_cube::~Model_cube	model_cube.h	/^    virtual ~Model_cube(){};$/;"	f	class:Model_cube	access:public	signature:()
-Model_type	model_base.h	/^enum class Model_type { none = 0, point = 1, line = 2, triangle = 3 };$/;"	g
-Offset	app.cpp	/^    struct Offset {$/;"	s	function:splice_texture_data	file:
-Options_store	options_store.cpp	/^Options_store::Options_store()$/;"	f	class:Options_store	signature:()
-Options_store	options_store.h	/^    Options_store();$/;"	p	class:Options_store	access:public	signature:()
-Options_store	options_store.h	/^    Options_store(Options_store&&) = delete;$/;"	p	class:Options_store	access:public	signature:(Options_store &&)
-Options_store	options_store.h	/^    Options_store(const Options_store&) = default;$/;"	p	class:Options_store	access:public	signature:(const Options_store &)
-Options_store	options_store.h	/^class Options_store {$/;"	c
-Options_store::Options_store	options_store.cpp	/^Options_store::Options_store()$/;"	f	class:Options_store	signature:()
-Options_store::Options_store	options_store.h	/^    Options_store();$/;"	p	class:Options_store	access:public	signature:()
-Options_store::Options_store	options_store.h	/^    Options_store(Options_store&&) = delete;$/;"	p	class:Options_store	access:public	signature:(Options_store &&)
-Options_store::Options_store	options_store.h	/^    Options_store(const Options_store&) = default;$/;"	p	class:Options_store	access:public	signature:(const Options_store &)
-Options_store::assetspath	options_store.h	/^    std::string assetspath;$/;"	m	class:Options_store	typeref:typename:std::string	access:public
-Options_store::builddir	options_store.h	/^    std::string builddir;$/;"	m	class:Options_store	typeref:typename:std::string	access:public
-Options_store::configfile	options_store.h	/^    std::string configfile;$/;"	m	class:Options_store	typeref:typename:std::string	access:public
-Options_store::debug	options_store.h	/^    int debug;$/;"	m	class:Options_store	typeref:typename:int	access:public
-Options_store::fullscreen	options_store.h	/^    bool fullscreen;$/;"	m	class:Options_store	typeref:typename:bool	access:public
-Options_store::height	options_store.h	/^    int height;$/;"	m	class:Options_store	typeref:typename:int	access:public
-Options_store::homedir	options_store.h	/^    std::string homedir;$/;"	m	class:Options_store	typeref:typename:std::string	access:public
-Options_store::modelsdir	options_store.h	/^    std::string modelsdir;$/;"	m	class:Options_store	typeref:typename:std::string	access:public
-Options_store::operator =	options_store.h	/^    Options_store& operator=(Options_store&&) = delete;$/;"	p	class:Options_store	typeref:typename:Options_store &	access:public	signature:(Options_store &&)
-Options_store::operator =	options_store.h	/^    Options_store& operator=(const Options_store&) = delete;$/;"	p	class:Options_store	typeref:typename:Options_store &	access:public	signature:(const Options_store &)
-Options_store::print	options_store.cpp	/^void Options_store::print(std::string name)$/;"	f	class:Options_store	typeref:typename:void	signature:(std::string name)
-Options_store::print	options_store.h	/^    void print(std::string title);$/;"	p	class:Options_store	typeref:typename:void	access:public	signature:(std::string title)
-Options_store::searchpath	options_store.h	/^    std::string searchpath;$/;"	m	class:Options_store	typeref:typename:std::string	access:public
-Options_store::shadersdir	options_store.h	/^    std::string shadersdir;$/;"	m	class:Options_store	typeref:typename:std::string	access:public
-Options_store::sourcedir	options_store.h	/^    std::string sourcedir;$/;"	m	class:Options_store	typeref:typename:std::string	access:public
-Options_store::texturesdir	options_store.h	/^    std::string texturesdir;$/;"	m	class:Options_store	typeref:typename:std::string	access:public
-Options_store::verbose	options_store.h	/^    bool verbose;$/;"	m	class:Options_store	typeref:typename:bool	access:public
-Options_store::width	options_store.h	/^    int width;$/;"	m	class:Options_store	typeref:typename:int	access:public
-Options_store::~Options_store	options_store.h	/^    ~Options_store() = default;$/;"	p	class:Options_store	access:public	signature:()
-SNIPPETS_APP_BASE_H	app_base.h	/^#define SNIPPETS_APP_BASE_H$/;"	d
-SNIPPETS_APP_H	app.h	/^#define SNIPPETS_APP_H$/;"	d
-SNIPPETS_CS_CONFIG_H	cs_config.h	/^#define SNIPPETS_CS_CONFIG_H$/;"	d
+Global::print	global.hpp	/^    void print();$/;"	p	class:Global	typeref:typename:void	access:public	signature:()
+Global::zero	global.hpp	/^    int zero = 0;$/;"	m	class:Global	typeref:typename:int	access:public
+Global::zerof	global.hpp	/^    float zerof = 0.0f;$/;"	m	class:Global	typeref:typename:float	access:public
+Global::~Global	global.hpp	/^    ~Global() = default;$/;"	p	class:Global	access:public	signature:()
+Instance	global.hpp	/^    static Global& Instance()$/;"	f	class:Global	typeref:typename:Global &	access:public	signature:()
+Options	options.cpp	/^Options::Options()$/;"	f	class:Options	signature:()
+Options	options.hpp	/^    Options();$/;"	p	class:Options	access:public	signature:()
+Options	options.hpp	/^    Options(Options&&) = delete;$/;"	p	class:Options	access:public	signature:(Options &&)
+Options	options.hpp	/^    Options(const Options&) = default;$/;"	p	class:Options	access:public	signature:(const Options &)
+Options	options.hpp	/^class Options{$/;"	c
+Options::Options	options.cpp	/^Options::Options()$/;"	f	class:Options	signature:()
+Options::Options	options.hpp	/^    Options();$/;"	p	class:Options	access:public	signature:()
+Options::Options	options.hpp	/^    Options(Options&&) = delete;$/;"	p	class:Options	access:public	signature:(Options &&)
+Options::Options	options.hpp	/^    Options(const Options&) = default;$/;"	p	class:Options	access:public	signature:(const Options &)
+Options::assetspath	options.hpp	/^    std::string assetspath;$/;"	m	class:Options	typeref:typename:std::string	access:public
+Options::builddir	options.hpp	/^    std::string builddir;$/;"	m	class:Options	typeref:typename:std::string	access:public
+Options::configfile	options.hpp	/^    std::string configfile;$/;"	m	class:Options	typeref:typename:std::string	access:public
+Options::debug	options.hpp	/^    int debug;$/;"	m	class:Options	typeref:typename:int	access:public
+Options::fullscreen	options.hpp	/^    bool fullscreen;$/;"	m	class:Options	typeref:typename:bool	access:public
+Options::height	options.hpp	/^    int height;$/;"	m	class:Options	typeref:typename:int	access:public
+Options::homedir	options.hpp	/^    std::string homedir;$/;"	m	class:Options	typeref:typename:std::string	access:public
+Options::modelsdir	options.hpp	/^    std::string modelsdir;$/;"	m	class:Options	typeref:typename:std::string	access:public
+Options::operator =	options.hpp	/^    Options& operator=(Options&&) = delete;$/;"	p	class:Options	typeref:typename:Options &	access:public	signature:(Options &&)
+Options::operator =	options.hpp	/^    Options& operator=(const Options&) = delete;$/;"	p	class:Options	typeref:typename:Options &	access:public	signature:(const Options &)
+Options::print	options.cpp	/^void Options::print(std::string name)$/;"	f	class:Options	typeref:typename:void	signature:(std::string name)
+Options::print	options.hpp	/^    void print(std::string title);$/;"	p	class:Options	typeref:typename:void	access:public	signature:(std::string title)
+Options::searchpath	options.hpp	/^    std::string searchpath;$/;"	m	class:Options	typeref:typename:std::string	access:public
+Options::shadersdir	options.hpp	/^    std::string shadersdir;$/;"	m	class:Options	typeref:typename:std::string	access:public
+Options::sourcedir	options.hpp	/^    std::string sourcedir;$/;"	m	class:Options	typeref:typename:std::string	access:public
+Options::texturesdir	options.hpp	/^    std::string texturesdir;$/;"	m	class:Options	typeref:typename:std::string	access:public
+Options::verbose	options.hpp	/^    bool verbose;$/;"	m	class:Options	typeref:typename:bool	access:public
+Options::width	options.hpp	/^    int width;$/;"	m	class:Options	typeref:typename:int	access:public
+Options::~Options	options.hpp	/^    ~Options() = default;$/;"	p	class:Options	access:public	signature:()
+SNIPPETS_APP_HPP	app.hpp	/^#define SNIPPETS_APP_HPP$/;"	d
+SNIPPETS_CS_CONFIG_HPP	cs_config.hpp	/^#define SNIPPETS_CS_CONFIG_HPP$/;"	d
 SNIPPETS_CS_CONFIG_H_IN	cs_config.h.in	/^#define SNIPPETS_CS_CONFIG_H_IN$/;"	d	file:
-SNIPPETS_DEBUG_H	debug.h	/^#define SNIPPETS_DEBUG_H$/;"	d
-SNIPPETS_DO_ARGS_H	do_args.h	/^#define SNIPPETS_DO_ARGS_H$/;"	d
-SNIPPETS_DO_ENV_H	do_env.h	/^#define SNIPPETS_DO_ENV_H$/;"	d
-SNIPPETS_DO_MESON_H	do_meson.h	/^#define SNIPPETS_DO_MESON_H$/;"	d
-SNIPPETS_DO_YAML_H	do_yaml.h	/^#define SNIPPETS_DO_YAML_H$/;"	d
-SNIPPETS_GLOBAL_H	global.h	/^#define SNIPPETS_GLOBAL_H$/;"	d
-SNIPPETS_IMG_STUFF_H	img_stuff.h	/^#define SNIPPETS_IMG_STUFF_H$/;"	d
-SNIPPETS_MODEL_BASE_H	model_base.h	/^#define SNIPPETS_MODEL_BASE_H$/;"	d
-SNIPPETS_MODEL_CUBE_H	model_cube.h	/^#define SNIPPETS_MODEL_CUBE_H$/;"	d
-SNIPPETS_OPTIONS_STORE_H	options_store.h	/^#define SNIPPETS_OPTIONS_STORE_H$/;"	d
-SNIPPETS_SHADER_STUFF_H	shader_stuff.h	/^#define SNIPPETS_SHADER_STUFF_H$/;"	d
-SNIPPETS_WINDOW_GLFW_H	window_glfw.h	/^#define SNIPPETS_WINDOW_GLFW_H$/;"	d
-SNIPPETS_WINDOW_H	window.h	/^#define SNIPPETS_WINDOW_H$/;"	d
-STB_IMAGE_IMPLEMENTATION	stb_image_impl.cpp	/^#define STB_IMAGE_IMPLEMENTATION$/;"	d	file:
-Shader_data	shader_stuff.cpp	/^    struct Shader_data {$/;"	s	function:create_program	file:
+SNIPPETS_DO_ARGS_HPP	do_args.hpp	/^#define SNIPPETS_DO_ARGS_HPP$/;"	d
+SNIPPETS_DO_ENV_HPP	do_env.hpp	/^#define SNIPPETS_DO_ENV_HPP$/;"	d
+SNIPPETS_DO_MESON_HPP	do_meson.hpp	/^#define SNIPPETS_DO_MESON_HPP$/;"	d
+SNIPPETS_DO_YAML_HPP	do_yaml.hpp	/^#define SNIPPETS_DO_YAML_HPP$/;"	d
+SNIPPETS_GLOBAL_HPP	global.hpp	/^#define SNIPPETS_GLOBAL_HPP$/;"	d
+SNIPPETS_OPTIONS_HPP	options.hpp	/^#define SNIPPETS_OPTIONS_HPP$/;"	d
 Vector	app.cpp	/^using Vector = std::vector<T, std::allocator<T>>;$/;"	t	typeref:typename:std::vector<T,std::allocator<T>>	file:
-Vertex_data	model_base.h	/^struct Vertex_data {$/;"	s
-Vertex_data::normal	model_base.h	/^    GLfloat normal[3];$/;"	m	struct:Vertex_data	typeref:typename:GLfloat[3]	access:public
-Vertex_data::pos	model_base.h	/^    GLfloat pos[3];$/;"	m	struct:Vertex_data	typeref:typename:GLfloat[3]	access:public
-Vertex_data::txtr	model_base.h	/^    GLfloat txtr[2];$/;"	m	struct:Vertex_data	typeref:typename:GLfloat[2]	access:public
-Window	window.h	/^    Window(){};$/;"	f	class:Window	access:public	signature:()
-Window	window.h	/^class Window {$/;"	c
-Window::Window	window.h	/^    Window(){};$/;"	f	class:Window	access:public	signature:()
-Window::get_aspect	window.h	/^    virtual float get_aspect() const = 0;$/;"	p	class:Window	typeref:typename:float	access:public	signature:() const
-Window::get_fovy	window.h	/^    virtual float get_fovy() const = 0;$/;"	p	class:Window	typeref:typename:float	access:public	signature:() const
-Window::initialize	window.h	/^    virtual bool initialize(std::string title, int width, int height, bool fullscreen) = 0;$/;"	p	class:Window	typeref:typename:bool	access:public	signature:(std::string title,int width,int height,bool fullscreen)
-Window::is_valid	window.h	/^    virtual bool is_valid() = 0;$/;"	p	class:Window	typeref:typename:bool	access:public	signature:()
-Window::make_current	window.h	/^    virtual void make_current() = 0;$/;"	p	class:Window	typeref:typename:void	access:public	signature:()
-Window::render_begin	window.h	/^    virtual void render_begin() = 0;$/;"	p	class:Window	typeref:typename:void	access:public	signature:()
-Window::render_cond	window.h	/^    virtual bool render_cond() = 0;$/;"	p	class:Window	typeref:typename:bool	access:public	signature:()
-Window::render_end	window.h	/^    virtual void render_end() = 0;$/;"	p	class:Window	typeref:typename:void	access:public	signature:()
-Window::terminate	window.h	/^    virtual void terminate() = 0;$/;"	p	class:Window	typeref:typename:void	access:public	signature:()
-Window::~Window	window.h	/^    virtual ~Window(){};$/;"	f	class:Window	access:public	signature:()
-Window_glfw	window_glfw.cpp	/^    Window_glfw() : Window(), window(nullptr){};$/;"	f	class:__anon73622fdd0111::Window_glfw	file:	access:public	signature:()
-Window_glfw	window_glfw.cpp	/^class Window_glfw : public Window {$/;"	c	namespace:__anon73622fdd0111	file:	inherits:Window
-Window_glfw::initialize	window_glfw.cpp	/^bool Window_glfw::initialize(std::string title, int width, int height, bool fullscreen)$/;"	f	class:Window_glfw	typeref:typename:bool	signature:(std::string title,int width,int height,bool fullscreen)
-Window_glfw::is_valid	window_glfw.cpp	/^bool Window_glfw::is_valid()$/;"	f	class:Window_glfw	typeref:typename:bool	signature:()
-Window_glfw::make_current	window_glfw.cpp	/^void Window_glfw::make_current()$/;"	f	class:Window_glfw	typeref:typename:void	signature:()
-Window_glfw::render_begin	window_glfw.cpp	/^void Window_glfw::render_begin()$/;"	f	class:Window_glfw	typeref:typename:void	signature:()
-Window_glfw::render_cond	window_glfw.cpp	/^bool Window_glfw::render_cond()$/;"	f	class:Window_glfw	typeref:typename:bool	signature:()
-Window_glfw::render_end	window_glfw.cpp	/^void Window_glfw::render_end()$/;"	f	class:Window_glfw	typeref:typename:void	signature:()
-Window_glfw::terminate	window_glfw.cpp	/^void Window_glfw::terminate() { glfwTerminate(); }$/;"	f	class:Window_glfw	typeref:typename:void	signature:()
-__anon0dd293ac0111	global.h	/^namespace {$/;"	n
-__anon0dd293ac0111::global	global.h	/^Global& global = Global::Instance();$/;"	v	namespace:__anon0dd293ac0111	typeref:typename:Global &
-__anon38cb489d0111	debug.cpp	/^namespace {$/;"	n	file:
-__anon38cb489d0111::dbg_filename	debug.cpp	/^std::string dbg_filename = "\/dev\/stderr";$/;"	v	namespace:__anon38cb489d0111	typeref:typename:std::string
-__anon38cb489d0111::dbg_filep	debug.cpp	/^FILE* dbg_filep = stderr;$/;"	v	namespace:__anon38cb489d0111	typeref:typename:FILE *
-__anon38cb489d0111::dbg_indent	debug.cpp	/^int dbg_indent = 0;$/;"	v	namespace:__anon38cb489d0111	typeref:typename:int
-__anon38cb489d0111::dbg_level	debug.cpp	/^int dbg_level = 0;$/;"	v	namespace:__anon38cb489d0111	typeref:typename:int
-__anon38cb489d0111::dbg_suffix	debug.cpp	/^std::string dbg_suffix = "D";$/;"	v	namespace:__anon38cb489d0111	typeref:typename:std::string
-__anon38cb489d0111::tabwidth	debug.cpp	/^const int tabwidth = 2;$/;"	v	namespace:__anon38cb489d0111	typeref:typename:const int
 __anon3bd80ed70111	app.cpp	/^namespace {$/;"	n	file:
+__anon3bd80ed70111::angle	app.cpp	/^auto angle = (GLfloat)0.0f;	     \/\/ model rotation angle$/;"	v	namespace:__anon3bd80ed70111	typeref:typename:auto
+__anon3bd80ed70111::axis	app.cpp	/^auto axis = vec3(1.0f, 1.0f, 1.0f);  \/\/ model rotational axis$/;"	v	namespace:__anon3bd80ed70111	typeref:typename:auto
 __anon3bd80ed70111::cube	app.cpp	/^Model_cube cube;$/;"	v	namespace:__anon3bd80ed70111	typeref:typename:Model_cube
-__anon3bd80ed70111::cubemap_loc	app.cpp	/^GLuint cubemap_loc = 0;$/;"	v	namespace:__anon3bd80ed70111	typeref:typename:GLuint
+__anon3bd80ed70111::cubemap_num	app.cpp	/^GLfloat cubemap_num = 0.0f;$/;"	v	namespace:__anon3bd80ed70111	typeref:typename:GLfloat
 __anon3bd80ed70111::cubeobj_prog	app.cpp	/^GLuint cubeobj_prog = 0;$/;"	v	namespace:__anon3bd80ed70111	typeref:typename:GLuint
+__anon3bd80ed70111::delta	app.cpp	/^constexpr GLfloat delta = 0.1f;$/;"	v	namespace:__anon3bd80ed70111	typeref:typename:GLfloat
+__anon3bd80ed70111::delta_alpha	app.cpp	/^constexpr GLfloat delta_alpha = 0.5f;$/;"	v	namespace:__anon3bd80ed70111	typeref:typename:GLfloat
+__anon3bd80ed70111::delta_theta	app.cpp	/^constexpr GLfloat delta_theta = 0.005f;$/;"	v	namespace:__anon3bd80ed70111	typeref:typename:GLfloat
 __anon3bd80ed70111::ebo	app.cpp	/^GLuint ebo = 0;$/;"	v	namespace:__anon3bd80ed70111	typeref:typename:GLuint
+__anon3bd80ed70111::eye_dist	app.cpp	/^auto eye_dist = start_dist;$/;"	v	namespace:__anon3bd80ed70111	typeref:typename:auto
+__anon3bd80ed70111::eye_front	app.cpp	/^auto eye_front = vec3(0, 0, -1);  \/\/ Front is -ive Z$/;"	v	namespace:__anon3bd80ed70111	typeref:typename:auto
+__anon3bd80ed70111::eye_lookat	app.cpp	/^auto eye_lookat = vec3(0, 0, 0);	\/\/ Look at the origin$/;"	v	namespace:__anon3bd80ed70111	typeref:typename:auto
+__anon3bd80ed70111::eye_pos	app.cpp	/^auto eye_pos = vec3(0, 0, start_dist);	\/\/ Camera at (8,0,0), in World Space$/;"	v	namespace:__anon3bd80ed70111	typeref:typename:auto
+__anon3bd80ed70111::eye_right	app.cpp	/^auto eye_right = vec3(1, 0, 0);	  \/\/ Right is +ive X$/;"	v	namespace:__anon3bd80ed70111	typeref:typename:auto
+__anon3bd80ed70111::eye_up	app.cpp	/^auto eye_up = vec3(0, 1, 0);	  \/\/ Up is +ive Y (will be (0,-1,0) to look upside-down)$/;"	v	namespace:__anon3bd80ed70111	typeref:typename:auto
 __anon3bd80ed70111::mvp	app.cpp	/^glm::mat4 mvp = glm::mat4(1.0f);$/;"	v	namespace:__anon3bd80ed70111	typeref:typename:glm::mat4
 __anon3bd80ed70111::mvp_id	app.cpp	/^GLuint mvp_id = 0;$/;"	v	namespace:__anon3bd80ed70111	typeref:typename:GLuint
-__anon3bd80ed70111::nskyboxes	app.cpp	/^int nskyboxes = 0;$/;"	v	namespace:__anon3bd80ed70111	typeref:typename:int
+__anon3bd80ed70111::pos	app.cpp	/^auto pos = vec3(0.0f, -4.0f, 0.0f);  \/\/ model location$/;"	v	namespace:__anon3bd80ed70111	typeref:typename:auto
+__anon3bd80ed70111::sf	app.cpp	/^auto sf = vec3(1.0f, 1.0f, 1.0f);    \/\/ model scaling factor$/;"	v	namespace:__anon3bd80ed70111	typeref:typename:auto
 __anon3bd80ed70111::skybox_loc	app.cpp	/^GLuint skybox_loc = 0;$/;"	v	namespace:__anon3bd80ed70111	typeref:typename:GLuint
 __anon3bd80ed70111::skybox_prog	app.cpp	/^GLuint skybox_prog = 0;$/;"	v	namespace:__anon3bd80ed70111	typeref:typename:GLuint
 __anon3bd80ed70111::skybox_txtr	app.cpp	/^GLuint skybox_txtr = 0;$/;"	v	namespace:__anon3bd80ed70111	typeref:typename:GLuint
+__anon3bd80ed70111::start_dist	app.cpp	/^constexpr GLfloat start_dist = 20.0f;$/;"	v	namespace:__anon3bd80ed70111	typeref:typename:GLfloat
 __anon3bd80ed70111::vao	app.cpp	/^GLuint vao = 0;$/;"	v	namespace:__anon3bd80ed70111	typeref:typename:GLuint
 __anon3bd80ed70111::vbo	app.cpp	/^GLuint vbo = 0;$/;"	v	namespace:__anon3bd80ed70111	typeref:typename:GLuint
 __anon3bd80ed70111::vp	app.cpp	/^glm::mat4 vp = glm::mat4(1.0f);$/;"	v	namespace:__anon3bd80ed70111	typeref:typename:glm::mat4
 __anon3bd80ed70111::vp_id	app.cpp	/^GLuint vp_id = 0;$/;"	v	namespace:__anon3bd80ed70111	typeref:typename:GLuint
-__anon73622fdd0111	window_glfw.cpp	/^namespace {$/;"	n	file:
-__anon73622fdd0111::Window_glfw	window_glfw.cpp	/^class Window_glfw : public Window {$/;"	c	namespace:__anon73622fdd0111	file:	inherits:Window
-__anon73622fdd0111::Window_glfw::Window_glfw	window_glfw.cpp	/^    Window_glfw() : Window(), window(nullptr){};$/;"	f	class:__anon73622fdd0111::Window_glfw	file:	access:public	signature:()
-__anon73622fdd0111::Window_glfw::aspect	window_glfw.cpp	/^    float aspect;$/;"	m	class:__anon73622fdd0111::Window_glfw	typeref:typename:float	file:	access:private
-__anon73622fdd0111::Window_glfw::fovy	window_glfw.cpp	/^    float fovy;$/;"	m	class:__anon73622fdd0111::Window_glfw	typeref:typename:float	file:	access:private
-__anon73622fdd0111::Window_glfw::get_aspect	window_glfw.cpp	/^    float get_aspect() const { return aspect; };$/;"	f	class:__anon73622fdd0111::Window_glfw	typeref:typename:float	file:	access:public	signature:() const
-__anon73622fdd0111::Window_glfw::get_fovy	window_glfw.cpp	/^    float get_fovy() const { return fovy; };$/;"	f	class:__anon73622fdd0111::Window_glfw	typeref:typename:float	file:	access:public	signature:() const
-__anon73622fdd0111::Window_glfw::height	window_glfw.cpp	/^    int height;$/;"	m	class:__anon73622fdd0111::Window_glfw	typeref:typename:int	file:	access:private
-__anon73622fdd0111::Window_glfw::initialize	window_glfw.cpp	/^    bool initialize(std::string title, int width, int height, bool fullscreen);$/;"	p	class:__anon73622fdd0111::Window_glfw	typeref:typename:bool	file:	access:public	signature:(std::string title,int width,int height,bool fullscreen)
-__anon73622fdd0111::Window_glfw::is_valid	window_glfw.cpp	/^    bool is_valid();$/;"	p	class:__anon73622fdd0111::Window_glfw	typeref:typename:bool	file:	access:public	signature:()
-__anon73622fdd0111::Window_glfw::make_current	window_glfw.cpp	/^    void make_current();$/;"	p	class:__anon73622fdd0111::Window_glfw	typeref:typename:void	file:	access:public	signature:()
-__anon73622fdd0111::Window_glfw::render_begin	window_glfw.cpp	/^    void render_begin();$/;"	p	class:__anon73622fdd0111::Window_glfw	typeref:typename:void	file:	access:public	signature:()
-__anon73622fdd0111::Window_glfw::render_cond	window_glfw.cpp	/^    bool render_cond();$/;"	p	class:__anon73622fdd0111::Window_glfw	typeref:typename:bool	file:	access:public	signature:()
-__anon73622fdd0111::Window_glfw::render_end	window_glfw.cpp	/^    void render_end();$/;"	p	class:__anon73622fdd0111::Window_glfw	typeref:typename:void	file:	access:public	signature:()
-__anon73622fdd0111::Window_glfw::terminate	window_glfw.cpp	/^    void terminate();$/;"	p	class:__anon73622fdd0111::Window_glfw	typeref:typename:void	file:	access:public	signature:()
-__anon73622fdd0111::Window_glfw::width	window_glfw.cpp	/^    int width;$/;"	m	class:__anon73622fdd0111::Window_glfw	typeref:typename:int	file:	access:private
-__anon73622fdd0111::Window_glfw::~Window_glfw	window_glfw.cpp	/^    virtual ~Window_glfw(){};$/;"	f	class:__anon73622fdd0111::Window_glfw	file:	access:public	signature:()
-__anon73622fdd0111::error_callback	window_glfw.cpp	/^void error_callback(int error, const char *description)$/;"	f	namespace:__anon73622fdd0111	typeref:typename:void	signature:(int error,const char * description)
-__anon73622fdd0111::framebuffer_size_callback	window_glfw.cpp	/^void framebuffer_size_callback(GLFWwindow *window, int width, int height)$/;"	f	namespace:__anon73622fdd0111	typeref:typename:void	signature:(GLFWwindow * window,int width,int height)
-__anon73622fdd0111::view_distance	window_glfw.cpp	/^constexpr float view_distance = 2016.0f;  \/\/ Viewing distance in pixels$/;"	v	namespace:__anon73622fdd0111	typeref:typename:float
-active	debug.h	/^const int active = 1;$/;"	v	namespace:debug	typeref:typename:const int
-aspect	window_glfw.cpp	/^    float aspect;$/;"	m	class:__anon73622fdd0111::Window_glfw	typeref:typename:float	file:	access:private
-assetspath	options_store.h	/^    std::string assetspath;$/;"	m	class:Options_store	typeref:typename:std::string	access:public
-builddir	options_store.h	/^    std::string builddir;$/;"	m	class:Options_store	typeref:typename:std::string	access:public
-configfile	options_store.h	/^    std::string configfile;$/;"	m	class:Options_store	typeref:typename:std::string	access:public
-create_program	shader_stuff.cpp	/^GLuint create_program(string name, std::vector<string> shaders)$/;"	f	typeref:typename:GLuint	signature:(string name,std::vector<string> shaders)
-create_program	shader_stuff.h	/^GLuint create_program(std::string, std::vector<std::string>);$/;"	p	typeref:typename:GLuint	signature:(std::string,std::vector<std::string>)
-create_program::Shader_data::ext	shader_stuff.cpp	/^	string ext;$/;"	m	struct:create_program::Shader_data	typeref:typename:string	file:	access:public
-create_program::Shader_data::file	shader_stuff.cpp	/^	string file;$/;"	m	struct:create_program::Shader_data	typeref:typename:string	file:	access:public
-create_program::Shader_data::id	shader_stuff.cpp	/^	GLuint id;$/;"	m	struct:create_program::Shader_data	typeref:typename:GLuint	file:	access:public
-create_program::Shader_data::name	shader_stuff.cpp	/^	string name;$/;"	m	struct:create_program::Shader_data	typeref:typename:string	file:	access:public
-create_program::Shader_data::present	shader_stuff.cpp	/^	bool present;$/;"	m	struct:create_program::Shader_data	typeref:typename:bool	file:	access:public
-create_program::Shader_data::type	shader_stuff.cpp	/^	GLenum type;$/;"	m	struct:create_program::Shader_data	typeref:typename:GLenum	file:	access:public
-create_shader	shader_stuff.cpp	/^GLuint create_shader(const string fn, const GLenum type)$/;"	f	typeref:typename:GLuint	signature:(const string fn,const GLenum type)
-create_shader	shader_stuff.cpp	/^GLuint create_shader(const string, const GLenum);$/;"	p	typeref:typename:GLuint	file:	signature:(const string,const GLenum)
-create_window	window.h	/^Window *create_window();$/;"	p	typeref:typename:Window *	signature:()
-create_window	window_glfw.cpp	/^Window *create_window() { return new Window_glfw; }$/;"	f	typeref:typename:Window *	signature:()
-cs_build_dir	cs_config.h	/^constexpr char cs_build_dir[] = ".";$/;"	v	namespace:cs_config	typeref:typename:char[]
+__anonccc63d8c0111	global.hpp	/^namespace {$/;"	n
+__anonccc63d8c0111::global	global.hpp	/^Global& global = Global::Instance();$/;"	v	namespace:__anonccc63d8c0111	typeref:typename:Global &
+angle	app.cpp	/^auto angle = (GLfloat)0.0f;	     \/\/ model rotation angle$/;"	v	namespace:__anon3bd80ed70111	typeref:typename:auto
+assetspath	options.hpp	/^    std::string assetspath;$/;"	m	class:Options	typeref:typename:std::string	access:public
+axis	app.cpp	/^auto axis = vec3(1.0f, 1.0f, 1.0f);  \/\/ model rotational axis$/;"	v	namespace:__anon3bd80ed70111	typeref:typename:auto
+builddir	options.hpp	/^    std::string builddir;$/;"	m	class:Options	typeref:typename:std::string	access:public
+calculate_camera	app.cpp	/^static void calculate_camera() { eye_pos = -eye_dist * eye_front; }$/;"	f	typeref:typename:void	file:	signature:()
+calculate_camera	app.cpp	/^static void calculate_camera();$/;"	p	typeref:typename:void	file:	signature:()
+configfile	options.hpp	/^    std::string configfile;$/;"	m	class:Options	typeref:typename:std::string	access:public
 cs_build_dir	cs_config.h.in	/^constexpr char cs_build_dir[] = "@CS_BUILD_DIR@";$/;"	v	namespace:cs_config	typeref:typename:char[]
-cs_config	cs_config.h	/^namespace cs_config {$/;"	n
+cs_build_dir	cs_config.hpp	/^constexpr char cs_build_dir[] = ".";$/;"	v	namespace:cs_config	typeref:typename:char[]
 cs_config	cs_config.h.in	/^namespace cs_config {$/;"	n	file:
-cs_config::cs_build_dir	cs_config.h	/^constexpr char cs_build_dir[] = ".";$/;"	v	namespace:cs_config	typeref:typename:char[]
+cs_config	cs_config.hpp	/^namespace cs_config {$/;"	n
 cs_config::cs_build_dir	cs_config.h.in	/^constexpr char cs_build_dir[] = "@CS_BUILD_DIR@";$/;"	v	namespace:cs_config	typeref:typename:char[]
-cs_config::cs_config_file	cs_config.h	/^constexpr char cs_config_file[] = "cs3.yml";$/;"	v	namespace:cs_config	typeref:typename:char[]
+cs_config::cs_build_dir	cs_config.hpp	/^constexpr char cs_build_dir[] = ".";$/;"	v	namespace:cs_config	typeref:typename:char[]
 cs_config::cs_config_file	cs_config.h.in	/^constexpr char cs_config_file[] = "@CS_CONFIG_FILE@";$/;"	v	namespace:cs_config	typeref:typename:char[]
-cs_config::cs_source_dir	cs_config.h	/^constexpr char cs_source_dir[] = ".";$/;"	v	namespace:cs_config	typeref:typename:char[]
+cs_config::cs_config_file	cs_config.hpp	/^constexpr char cs_config_file[] = "cs3.yml";$/;"	v	namespace:cs_config	typeref:typename:char[]
 cs_config::cs_source_dir	cs_config.h.in	/^constexpr char cs_source_dir[] = "@CS_SOURCE_DIR@";$/;"	v	namespace:cs_config	typeref:typename:char[]
-cs_config_file	cs_config.h	/^constexpr char cs_config_file[] = "cs3.yml";$/;"	v	namespace:cs_config	typeref:typename:char[]
+cs_config::cs_source_dir	cs_config.hpp	/^constexpr char cs_source_dir[] = ".";$/;"	v	namespace:cs_config	typeref:typename:char[]
 cs_config_file	cs_config.h.in	/^constexpr char cs_config_file[] = "@CS_CONFIG_FILE@";$/;"	v	namespace:cs_config	typeref:typename:char[]
-cs_source_dir	cs_config.h	/^constexpr char cs_source_dir[] = ".";$/;"	v	namespace:cs_config	typeref:typename:char[]
+cs_config_file	cs_config.hpp	/^constexpr char cs_config_file[] = "cs3.yml";$/;"	v	namespace:cs_config	typeref:typename:char[]
 cs_source_dir	cs_config.h.in	/^constexpr char cs_source_dir[] = "@CS_SOURCE_DIR@";$/;"	v	namespace:cs_config	typeref:typename:char[]
+cs_source_dir	cs_config.hpp	/^constexpr char cs_source_dir[] = ".";$/;"	v	namespace:cs_config	typeref:typename:char[]
 cube	app.cpp	/^Model_cube cube;$/;"	v	namespace:__anon3bd80ed70111	typeref:typename:Model_cube
-cubemap_loc	app.cpp	/^GLuint cubemap_loc = 0;$/;"	v	namespace:__anon3bd80ed70111	typeref:typename:GLuint
+cubemap_num	app.cpp	/^GLfloat cubemap_num = 0.0f;$/;"	v	namespace:__anon3bd80ed70111	typeref:typename:GLfloat
 cubeobj_prog	app.cpp	/^GLuint cubeobj_prog = 0;$/;"	v	namespace:__anon3bd80ed70111	typeref:typename:GLuint
-data	img_stuff.h	/^    void* data;$/;"	m	class:Image	typeref:typename:void *	access:private
-data	model_base.h	/^    Vertex_data* data = nullptr;$/;"	m	class:Model_base	typeref:typename:Vertex_data *	access:public
-dbg_filename	debug.cpp	/^std::string dbg_filename = "\/dev\/stderr";$/;"	v	namespace:__anon38cb489d0111	typeref:typename:std::string
-dbg_filep	debug.cpp	/^FILE* dbg_filep = stderr;$/;"	v	namespace:__anon38cb489d0111	typeref:typename:FILE *
-dbg_indent	debug.cpp	/^int dbg_indent = 0;$/;"	v	namespace:__anon38cb489d0111	typeref:typename:int
-dbg_level	debug.cpp	/^int dbg_level = 0;$/;"	v	namespace:__anon38cb489d0111	typeref:typename:int
-dbg_suffix	debug.cpp	/^std::string dbg_suffix = "D";$/;"	v	namespace:__anon38cb489d0111	typeref:typename:std::string
-debug	debug.h	/^namespace debug {$/;"	n
-debug	options_store.h	/^    int debug;$/;"	m	class:Options_store	typeref:typename:int	access:public
-debug::active	debug.h	/^const int active = 1;$/;"	v	namespace:debug	typeref:typename:const int
-debug::getdebug	debug.cpp	/^int debug::getdebug(void) { return dbg_level; }$/;"	f	class:debug	typeref:typename:int	signature:(void)
-debug::getdebug	debug.h	/^extern int getdebug(void);$/;"	p	namespace:debug	typeref:typename:int	signature:(void)
-debug::getindent	debug.cpp	/^int debug::getindent(void) { return dbg_indent; }$/;"	f	class:debug	typeref:typename:int	signature:(void)
-debug::getindent	debug.h	/^extern int getindent(void);$/;"	p	namespace:debug	typeref:typename:int	signature:(void)
-debug::print	debug.cpp	/^void debug::print(int level, const char* fmt, ...)$/;"	f	class:debug	typeref:typename:void	signature:(int level,const char * fmt,...)
-debug::print	debug.h	/^extern void print(int level, const char* fmt, ...);$/;"	p	namespace:debug	typeref:typename:void	signature:(int level,const char * fmt,...)
-debug::printloc	debug.cpp	/^void debug::printloc(int level, const char* fn, int lno, const char* fmt, ...)$/;"	f	class:debug	typeref:typename:void	signature:(int level,const char * fn,int lno,const char * fmt,...)
-debug::printloc	debug.h	/^extern void printloc(int level, const char* fn, int lno, const char* fmt, ...);$/;"	p	namespace:debug	typeref:typename:void	signature:(int level,const char * fn,int lno,const char * fmt,...)
-debug::setdebug	debug.cpp	/^int debug::setdebug(int level)$/;"	f	class:debug	typeref:typename:int	signature:(int level)
-debug::setdebug	debug.h	/^extern int setdebug(int level);$/;"	p	namespace:debug	typeref:typename:int	signature:(int level)
-debug::setfilename	debug.cpp	/^void debug::setfilename(const std::string fn)$/;"	f	class:debug	typeref:typename:void	signature:(const std::string fn)
-debug::setfilename	debug.h	/^extern void setfilename(const std::string fn);$/;"	p	namespace:debug	typeref:typename:void	signature:(const std::string fn)
-debug::setfilep	debug.cpp	/^FILE* debug::setfilep(FILE* fp)$/;"	f	class:debug	typeref:typename:FILE *	signature:(FILE * fp)
-debug::setfilep	debug.h	/^extern FILE* setfilep(FILE* fp);$/;"	p	namespace:debug	typeref:typename:FILE *	signature:(FILE * fp)
-debug::setindent	debug.cpp	/^int debug::setindent(int val)$/;"	f	class:debug	typeref:typename:int	signature:(int val)
-debug::setindent	debug.h	/^extern int setindent(int val);$/;"	p	namespace:debug	typeref:typename:int	signature:(int val)
-debug::setsuffix	debug.cpp	/^const std::string debug::setsuffix(const std::string s)$/;"	f	class:debug	typeref:typename:const std::string	signature:(const std::string s)
-debug::setsuffix	debug.h	/^extern const std::string setsuffix(const std::string s);$/;"	p	namespace:debug	typeref:typename:const std::string	signature:(const std::string s)
-destroy_window	window.h	/^void destroy_window(Window *);$/;"	p	typeref:typename:void	signature:(Window *)
-destroy_window	window_glfw.cpp	/^void destroy_window(Window *aw) { delete aw; }$/;"	f	typeref:typename:void	signature:(Window * aw)
+debug	options.hpp	/^    int debug;$/;"	m	class:Options	typeref:typename:int	access:public
+delta	app.cpp	/^constexpr GLfloat delta = 0.1f;$/;"	v	namespace:__anon3bd80ed70111	typeref:typename:GLfloat
+delta_alpha	app.cpp	/^constexpr GLfloat delta_alpha = 0.5f;$/;"	v	namespace:__anon3bd80ed70111	typeref:typename:GLfloat
+delta_theta	app.cpp	/^constexpr GLfloat delta_theta = 0.005f;$/;"	v	namespace:__anon3bd80ed70111	typeref:typename:GLfloat
 do_draw_commands	app.cpp	/^static void do_draw_commands(const Window &);$/;"	p	typeref:typename:void	file:	signature:(const Window &)
 do_draw_commands	app.cpp	/^static void do_draw_commands(const Window &win)$/;"	f	typeref:typename:void	file:	signature:(const Window & win)
 ebo	app.cpp	/^GLuint ebo = 0;$/;"	v	namespace:__anon3bd80ed70111	typeref:typename:GLuint
-error_callback	window_glfw.cpp	/^void error_callback(int error, const char *description)$/;"	f	namespace:__anon73622fdd0111	typeref:typename:void	signature:(int error,const char * description)
-ext	shader_stuff.cpp	/^	string ext;$/;"	m	struct:create_program::Shader_data	typeref:typename:string	file:	access:public
-file	shader_stuff.cpp	/^	string file;$/;"	m	struct:create_program::Shader_data	typeref:typename:string	file:	access:public
-fovy	window_glfw.cpp	/^    float fovy;$/;"	m	class:__anon73622fdd0111::Window_glfw	typeref:typename:float	file:	access:private
-framebuffer_size_callback	window_glfw.cpp	/^void framebuffer_size_callback(GLFWwindow *window, int width, int height)$/;"	f	namespace:__anon73622fdd0111	typeref:typename:void	signature:(GLFWwindow * window,int width,int height)
-free_data	img_stuff.cpp	/^void Image::free_data() { stbi_image_free(data); }$/;"	f	class:Image	typeref:typename:void	signature:()
-free_data	img_stuff.h	/^    void free_data();$/;"	p	class:Image	typeref:typename:void	access:public	signature:()
-fullscreen	options_store.h	/^    bool fullscreen;$/;"	m	class:Options_store	typeref:typename:bool	access:public
-get_aspect	window.h	/^    virtual float get_aspect() const = 0;$/;"	p	class:Window	typeref:typename:float	access:public	signature:() const
-get_aspect	window_glfw.cpp	/^    float get_aspect() const { return aspect; };$/;"	f	class:__anon73622fdd0111::Window_glfw	typeref:typename:float	file:	access:public	signature:() const
-get_bytes_per_pixel	img_stuff.h	/^    inline int get_bytes_per_pixel() { return no_channels; };$/;"	f	class:Image	typeref:typename:int	access:public	signature:()
-get_fovy	window.h	/^    virtual float get_fovy() const = 0;$/;"	p	class:Window	typeref:typename:float	access:public	signature:() const
-get_fovy	window_glfw.cpp	/^    float get_fovy() const { return fovy; };$/;"	f	class:__anon73622fdd0111::Window_glfw	typeref:typename:float	file:	access:public	signature:() const
-get_height	img_stuff.h	/^    inline GLsizei get_height() { return height; };$/;"	f	class:Image	typeref:typename:GLsizei	access:public	signature:()
-get_width	img_stuff.h	/^    inline GLsizei get_width() { return width; };$/;"	f	class:Image	typeref:typename:GLsizei	access:public	signature:()
-getdebug	debug.cpp	/^int debug::getdebug(void) { return dbg_level; }$/;"	f	class:debug	typeref:typename:int	signature:(void)
-getdebug	debug.h	/^extern int getdebug(void);$/;"	p	namespace:debug	typeref:typename:int	signature:(void)
-getindent	debug.cpp	/^int debug::getindent(void) { return dbg_indent; }$/;"	f	class:debug	typeref:typename:int	signature:(void)
-getindent	debug.h	/^extern int getindent(void);$/;"	p	namespace:debug	typeref:typename:int	signature:(void)
+eye_dist	app.cpp	/^auto eye_dist = start_dist;$/;"	v	namespace:__anon3bd80ed70111	typeref:typename:auto
+eye_front	app.cpp	/^auto eye_front = vec3(0, 0, -1);  \/\/ Front is -ive Z$/;"	v	namespace:__anon3bd80ed70111	typeref:typename:auto
+eye_lookat	app.cpp	/^auto eye_lookat = vec3(0, 0, 0);	\/\/ Look at the origin$/;"	v	namespace:__anon3bd80ed70111	typeref:typename:auto
+eye_pos	app.cpp	/^auto eye_pos = vec3(0, 0, start_dist);	\/\/ Camera at (8,0,0), in World Space$/;"	v	namespace:__anon3bd80ed70111	typeref:typename:auto
+eye_right	app.cpp	/^auto eye_right = vec3(1, 0, 0);	  \/\/ Right is +ive X$/;"	v	namespace:__anon3bd80ed70111	typeref:typename:auto
+eye_up	app.cpp	/^auto eye_up = vec3(0, 1, 0);	  \/\/ Up is +ive Y (will be (0,-1,0) to look upside-down)$/;"	v	namespace:__anon3bd80ed70111	typeref:typename:auto
+fullscreen	options.hpp	/^    bool fullscreen;$/;"	m	class:Options	typeref:typename:bool	access:public
 getnumarg	do_args.cpp	/^static int getnumarg(char *);$/;"	p	typeref:typename:int	file:	signature:(char *)
 getnumarg	do_args.cpp	/^static int getnumarg(char *s)$/;"	f	typeref:typename:int	file:	signature:(char * s)
-global	global.h	/^Global& global = Global::Instance();$/;"	v	namespace:__anon0dd293ac0111	typeref:typename:Global &
-height	img_stuff.h	/^    GLsizei height;$/;"	m	class:Image	typeref:typename:GLsizei	access:private
-height	options_store.h	/^    int height;$/;"	m	class:Options_store	typeref:typename:int	access:public
-height	window_glfw.cpp	/^    int height;$/;"	m	class:__anon73622fdd0111::Window_glfw	typeref:typename:int	file:	access:private
-homedir	options_store.h	/^    std::string homedir;$/;"	m	class:Options_store	typeref:typename:std::string	access:public
-id	shader_stuff.cpp	/^	GLuint id;$/;"	m	struct:create_program::Shader_data	typeref:typename:GLuint	file:	access:public
-idx	model_base.h	/^    GLushort* idx = nullptr;$/;"	m	class:Model_base	typeref:typename:GLushort *	access:public
-idx_num	model_base.h	/^    GLsizei idx_num = 0;$/;"	m	class:Model_base	typeref:typename:GLsizei	access:public
-initialize	app_base.cpp	/^void App_base::initialize(Options_store& os)$/;"	f	class:App_base	typeref:typename:void	signature:(Options_store & os)
-initialize	app_base.h	/^    virtual void initialize(Options_store& os);$/;"	p	class:App_base	typeref:typename:void	access:public	signature:(Options_store & os)
-initialize	window.h	/^    virtual bool initialize(std::string title, int width, int height, bool fullscreen) = 0;$/;"	p	class:Window	typeref:typename:bool	access:public	signature:(std::string title,int width,int height,bool fullscreen)
-initialize	window_glfw.cpp	/^    bool initialize(std::string title, int width, int height, bool fullscreen);$/;"	p	class:__anon73622fdd0111::Window_glfw	typeref:typename:bool	file:	access:public	signature:(std::string title,int width,int height,bool fullscreen)
-initialize	window_glfw.cpp	/^bool Window_glfw::initialize(std::string title, int width, int height, bool fullscreen)$/;"	f	class:Window_glfw	typeref:typename:bool	signature:(std::string title,int width,int height,bool fullscreen)
-is_valid	window.h	/^    virtual bool is_valid() = 0;$/;"	p	class:Window	typeref:typename:bool	access:public	signature:()
-is_valid	window_glfw.cpp	/^    bool is_valid();$/;"	p	class:__anon73622fdd0111::Window_glfw	typeref:typename:bool	file:	access:public	signature:()
-is_valid	window_glfw.cpp	/^bool Window_glfw::is_valid()$/;"	f	class:Window_glfw	typeref:typename:bool	signature:()
-line	model_base.h	/^enum class Model_type { none = 0, point = 1, line = 2, triangle = 3 };$/;"	e	enum:Model_type	access:public
+global	global.hpp	/^Global& global = Global::Instance();$/;"	v	namespace:__anonccc63d8c0111	typeref:typename:Global &
+height	options.hpp	/^    int height;$/;"	m	class:Options	typeref:typename:int	access:public
+homedir	options.hpp	/^    std::string homedir;$/;"	m	class:Options	typeref:typename:std::string	access:public
+init_camera	app.cpp	/^static void init_camera()$/;"	f	typeref:typename:void	file:	signature:()
+init_camera	app.cpp	/^static void init_camera();$/;"	p	typeref:typename:void	file:	signature:()
+key_callback	app.cpp	/^static void key_callback(Window *win, int key, int scancode, int action, int mods);$/;"	p	typeref:typename:void	file:	signature:(Window * win,int key,int scancode,int action,int mods)
+key_callback	app.cpp	/^void App::key_callback(Key key, int scancode, Key_action action, Key_mods mods)$/;"	f	class:App	typeref:typename:void	signature:(Key key,int scancode,Key_action action,Key_mods mods)
+key_callback	app.hpp	/^    virtual void key_callback(Key, int, Key_action, Key_mods);$/;"	p	class:App	typeref:typename:void	access:public	signature:(Key,int,Key_action,Key_mods)
 load_texture_data	app.cpp	/^static void load_texture_data()$/;"	f	typeref:typename:void	file:	signature:()
 load_texture_data	app.cpp	/^static void load_texture_data();$/;"	p	typeref:typename:void	file:	signature:()
-main	debug.cpp	/^int main(int argc, char** argv)$/;"	f	typeref:typename:int	signature:(int argc,char ** argv)
 main	main.cpp	/^int main(int argc, char* argv[])$/;"	f	typeref:typename:int	signature:(int argc,char * argv[])
-make_current	window.h	/^    virtual void make_current() = 0;$/;"	p	class:Window	typeref:typename:void	access:public	signature:()
-make_current	window_glfw.cpp	/^    void make_current();$/;"	p	class:__anon73622fdd0111::Window_glfw	typeref:typename:void	file:	access:public	signature:()
-make_current	window_glfw.cpp	/^void Window_glfw::make_current()$/;"	f	class:Window_glfw	typeref:typename:void	signature:()
-modelsdir	options_store.h	/^    std::string modelsdir;$/;"	m	class:Options_store	typeref:typename:std::string	access:public
+modelsdir	options.hpp	/^    std::string modelsdir;$/;"	m	class:Options	typeref:typename:std::string	access:public
+move_back	app.cpp	/^static void move_back(float delta) { eye_dist += delta; }$/;"	f	typeref:typename:void	file:	signature:(float delta)
+move_back	app.cpp	/^static void move_back(float delta);$/;"	p	typeref:typename:void	file:	signature:(float delta)
 mvp	app.cpp	/^glm::mat4 mvp = glm::mat4(1.0f);$/;"	v	namespace:__anon3bd80ed70111	typeref:typename:glm::mat4
 mvp_id	app.cpp	/^GLuint mvp_id = 0;$/;"	v	namespace:__anon3bd80ed70111	typeref:typename:GLuint
-name	shader_stuff.cpp	/^	string name;$/;"	m	struct:create_program::Shader_data	typeref:typename:string	file:	access:public
-no_channels	img_stuff.h	/^    GLenum no_channels;$/;"	m	class:Image	typeref:typename:GLenum	access:private
-none	model_base.h	/^enum class Model_type { none = 0, point = 1, line = 2, triangle = 3 };$/;"	e	enum:Model_type	access:public
-normal	model_base.h	/^    GLfloat normal[3];$/;"	m	struct:Vertex_data	typeref:typename:GLfloat[3]	access:public
-nskyboxes	app.cpp	/^int nskyboxes = 0;$/;"	v	namespace:__anon3bd80ed70111	typeref:typename:int
-operator =	global.h	/^    Global& operator=(Global&&) = delete;$/;"	p	class:Global	typeref:typename:Global &	access:public	signature:(Global &&)
-operator =	global.h	/^    Global& operator=(const Global&) = delete;$/;"	p	class:Global	typeref:typename:Global &	access:public	signature:(const Global &)
-operator =	options_store.h	/^    Options_store& operator=(Options_store&&) = delete;$/;"	p	class:Options_store	typeref:typename:Options_store &	access:public	signature:(Options_store &&)
-operator =	options_store.h	/^    Options_store& operator=(const Options_store&) = delete;$/;"	p	class:Options_store	typeref:typename:Options_store &	access:public	signature:(const Options_store &)
-pixels	img_stuff.h	/^    inline void* pixels() { return data; };$/;"	f	class:Image	typeref:typename:void *	access:public	signature:()
-point	model_base.h	/^enum class Model_type { none = 0, point = 1, line = 2, triangle = 3 };$/;"	e	enum:Model_type	access:public
-pos	model_base.h	/^    GLfloat pos[3];$/;"	m	struct:Vertex_data	typeref:typename:GLfloat[3]	access:public
+operator =	global.hpp	/^    Global& operator=(Global&&) = delete;$/;"	p	class:Global	typeref:typename:Global &	access:public	signature:(Global &&)
+operator =	global.hpp	/^    Global& operator=(const Global&) = delete;$/;"	p	class:Global	typeref:typename:Global &	access:public	signature:(const Global &)
+operator =	options.hpp	/^    Options& operator=(Options&&) = delete;$/;"	p	class:Options	typeref:typename:Options &	access:public	signature:(Options &&)
+operator =	options.hpp	/^    Options& operator=(const Options&) = delete;$/;"	p	class:Options	typeref:typename:Options &	access:public	signature:(const Options &)
+pos	app.cpp	/^auto pos = vec3(0.0f, -4.0f, 0.0f);  \/\/ model location$/;"	v	namespace:__anon3bd80ed70111	typeref:typename:auto
 prepare	app.cpp	/^static void prepare(const Window &);$/;"	p	typeref:typename:void	file:	signature:(const Window &)
 prepare	app.cpp	/^static void prepare(const Window &win)$/;"	f	typeref:typename:void	file:	signature:(const Window & win)
 prepare	app.cpp	/^static void prepare(const Window &win);$/;"	p	typeref:typename:void	file:	signature:(const Window & win)
@@ -347,113 +178,45 @@ prepare_textures	app.cpp	/^static void prepare_textures()$/;"	f	typeref:typename
 prepare_textures	app.cpp	/^static void prepare_textures();$/;"	p	typeref:typename:void	file:	signature:()
 prepare_uniforms	app.cpp	/^static void prepare_uniforms()$/;"	f	typeref:typename:void	file:	signature:()
 prepare_uniforms	app.cpp	/^static void prepare_uniforms();$/;"	p	typeref:typename:void	file:	signature:()
-present	shader_stuff.cpp	/^	bool present;$/;"	m	struct:create_program::Shader_data	typeref:typename:bool	file:	access:public
-print	debug.cpp	/^void debug::print(int level, const char* fmt, ...)$/;"	f	class:debug	typeref:typename:void	signature:(int level,const char * fmt,...)
-print	debug.h	/^extern void print(int level, const char* fmt, ...);$/;"	p	namespace:debug	typeref:typename:void	signature:(int level,const char * fmt,...)
 print	global.cpp	/^void Global::print() {}$/;"	f	class:Global	typeref:typename:void	signature:()
-print	global.h	/^    void print();$/;"	p	class:Global	typeref:typename:void	access:public	signature:()
-print	model_base.cpp	/^void Model_base::print()$/;"	f	class:Model_base	typeref:typename:void	signature:()
-print	model_base.h	/^    void print();$/;"	p	class:Model_base	typeref:typename:void	access:public	signature:()
-print	options_store.cpp	/^void Options_store::print(std::string name)$/;"	f	class:Options_store	typeref:typename:void	signature:(std::string name)
-print	options_store.h	/^    void print(std::string title);$/;"	p	class:Options_store	typeref:typename:void	access:public	signature:(std::string title)
+print	global.hpp	/^    void print();$/;"	p	class:Global	typeref:typename:void	access:public	signature:()
+print	options.cpp	/^void Options::print(std::string name)$/;"	f	class:Options	typeref:typename:void	signature:(std::string name)
+print	options.hpp	/^    void print(std::string title);$/;"	p	class:Options	typeref:typename:void	access:public	signature:(std::string title)
 print_usage	do_args.cpp	/^static void print_usage(char *);$/;"	p	typeref:typename:void	file:	signature:(char *)
 print_usage	do_args.cpp	/^static void print_usage(char *program_name)$/;"	f	typeref:typename:void	file:	signature:(char * program_name)
-printloc	debug.cpp	/^void debug::printloc(int level, const char* fn, int lno, const char* fmt, ...)$/;"	f	class:debug	typeref:typename:void	signature:(int level,const char * fn,int lno,const char * fmt,...)
-printloc	debug.h	/^extern void printloc(int level, const char* fn, int lno, const char* fmt, ...);$/;"	p	namespace:debug	typeref:typename:void	signature:(int level,const char * fn,int lno,const char * fmt,...)
 process_args	do_args.cpp	/^void process_args(int argc, char **argv, Options_store &os)$/;"	f	typeref:typename:void	signature:(int argc,char ** argv,Options_store & os)
-process_args	do_args.h	/^void process_args(int, char**, Options_store& os);$/;"	p	typeref:typename:void	signature:(int,char **,Options_store & os)
+process_args	do_args.hpp	/^void process_args(int, char**, Options_store& os);$/;"	p	typeref:typename:void	signature:(int,char **,Options_store & os)
 process_buildconf	do_meson.cpp	/^void process_buildconf(Options_store& os)$/;"	f	typeref:typename:void	signature:(Options_store & os)
-process_buildconf	do_meson.h	/^void process_buildconf(Options_store& os);$/;"	p	typeref:typename:void	signature:(Options_store & os)
+process_buildconf	do_meson.hpp	/^void process_buildconf(Options_store& os);$/;"	p	typeref:typename:void	signature:(Options_store & os)
 process_env	do_env.cpp	/^void process_env(Options_store& os)$/;"	f	typeref:typename:void	signature:(Options_store & os)
-process_env	do_env.h	/^void process_env(Options_store&);$/;"	p	typeref:typename:void	signature:(Options_store &)
+process_env	do_env.hpp	/^void process_env(Options_store&);$/;"	p	typeref:typename:void	signature:(Options_store &)
 process_yaml	do_yaml.cpp	/^void process_yaml(std::string conffile, Options_store& os)$/;"	f	typeref:typename:void	signature:(std::string conffile,Options_store & os)
-process_yaml	do_yaml.h	/^void process_yaml(std::string, Options_store&);$/;"	p	typeref:typename:void	signature:(std::string,Options_store &)
-prog	model_base.h	/^    GLuint prog;$/;"	m	class:Model_base	typeref:typename:GLuint	access:public
-read_file	img_stuff.cpp	/^void Image::read_file(std::string fname)$/;"	f	class:Image	typeref:typename:void	signature:(std::string fname)
-read_file	img_stuff.h	/^    void read_file(std::string filename);$/;"	p	class:Image	typeref:typename:void	access:public	signature:(std::string filename)
-read_file	shader_stuff.cpp	/^static string read_file(std::string filename)$/;"	f	typeref:typename:string	file:	signature:(std::string filename)
-read_file	shader_stuff.cpp	/^static string read_file(std::string);$/;"	p	typeref:typename:string	file:	signature:(std::string)
-render_begin	window.h	/^    virtual void render_begin() = 0;$/;"	p	class:Window	typeref:typename:void	access:public	signature:()
-render_begin	window_glfw.cpp	/^    void render_begin();$/;"	p	class:__anon73622fdd0111::Window_glfw	typeref:typename:void	file:	access:public	signature:()
-render_begin	window_glfw.cpp	/^void Window_glfw::render_begin()$/;"	f	class:Window_glfw	typeref:typename:void	signature:()
-render_cond	window.h	/^    virtual bool render_cond() = 0;$/;"	p	class:Window	typeref:typename:bool	access:public	signature:()
-render_cond	window_glfw.cpp	/^    bool render_cond();$/;"	p	class:__anon73622fdd0111::Window_glfw	typeref:typename:bool	file:	access:public	signature:()
-render_cond	window_glfw.cpp	/^bool Window_glfw::render_cond()$/;"	f	class:Window_glfw	typeref:typename:bool	signature:()
-render_end	window.h	/^    virtual void render_end() = 0;$/;"	p	class:Window	typeref:typename:void	access:public	signature:()
-render_end	window_glfw.cpp	/^    void render_end();$/;"	p	class:__anon73622fdd0111::Window_glfw	typeref:typename:void	file:	access:public	signature:()
-render_end	window_glfw.cpp	/^void Window_glfw::render_end()$/;"	f	class:Window_glfw	typeref:typename:void	signature:()
+process_yaml	do_yaml.hpp	/^void process_yaml(std::string, Options_store&);$/;"	p	typeref:typename:void	signature:(std::string,Options_store &)
 render_loop	app.cpp	/^void App::render_loop()$/;"	f	class:App	typeref:typename:void	signature:()
-render_loop	app.h	/^    void render_loop();$/;"	p	class:App	typeref:typename:void	access:public	signature:()
-render_loop	app_base.cpp	/^void App_base::render_loop()$/;"	f	class:App_base	typeref:typename:void	signature:()
-render_loop	app_base.h	/^    virtual void render_loop();$/;"	p	class:App_base	typeref:typename:void	access:public	signature:()
-searchpath	options_store.h	/^    std::string searchpath;$/;"	m	class:Options_store	typeref:typename:std::string	access:public
-set_char_cb	window_glfw.h	/^void set_char_cb(Window&, App_func1);$/;"	p	typeref:typename:void	signature:(Window &,App_func1)
-set_cur_enter_cb	window_glfw.h	/^void set_cur_enter_cb(Window&, App_func1);$/;"	p	typeref:typename:void	signature:(Window &,App_func1)
-set_cur_pos_cb	window_glfw.h	/^void set_cur_pos_cb(Window&, App_func2d);$/;"	p	typeref:typename:void	signature:(Window &,App_func2d)
-set_framebuffer_size_cb	window_glfw.h	/^void set_framebuffer_size_cb(Window&, App_func2);$/;"	p	typeref:typename:void	signature:(Window &,App_func2)
-set_key_cb	window_glfw.h	/^void set_key_cb(Window&, App_func4);$/;"	p	typeref:typename:void	signature:(Window &,App_func4)
-set_mouse_cb	window_glfw.h	/^void set_mouse_cb(Window&, App_func3);$/;"	p	typeref:typename:void	signature:(Window &,App_func3)
-set_scroll_cb	window_glfw.h	/^void set_scroll_cb(Window&, App_func2d);$/;"	p	typeref:typename:void	signature:(Window &,App_func2d)
-set_window_close_cb	window_glfw.h	/^void set_window_close_cb(Window&, App_func0);$/;"	p	typeref:typename:void	signature:(Window &,App_func0)
-set_window_content_scale_cb	window_glfw.h	/^void set_window_content_scale_cb(Window&, App_func2d);$/;"	p	typeref:typename:void	signature:(Window &,App_func2d)
-set_window_focus_cb	window_glfw.h	/^void set_window_focus_cb(Window&, App_func0);$/;"	p	typeref:typename:void	signature:(Window &,App_func0)
-set_window_iconfiy_cb	window_glfw.h	/^void set_window_iconfiy_cb(Window&, App_func0);$/;"	p	typeref:typename:void	signature:(Window &,App_func0)
-set_window_maximize_cb	window_glfw.h	/^void set_window_maximize_cb(Window&, App_func0);$/;"	p	typeref:typename:void	signature:(Window &,App_func0)
-set_window_pos_cb	window_glfw.h	/^void set_window_pos_cb(Window&, App_func2);$/;"	p	typeref:typename:void	signature:(Window &,App_func2)
-set_window_refresh_cb	window_glfw.h	/^void set_window_refresh_cb(Window&, App_func0);$/;"	p	typeref:typename:void	signature:(Window &,App_func0)
-set_window_size_cb	window_glfw.h	/^void set_window_size_cb(Window&, App_func2);$/;"	p	typeref:typename:void	signature:(Window &,App_func2)
-setdebug	debug.cpp	/^int debug::setdebug(int level)$/;"	f	class:debug	typeref:typename:int	signature:(int level)
-setdebug	debug.h	/^extern int setdebug(int level);$/;"	p	namespace:debug	typeref:typename:int	signature:(int level)
-setfilename	debug.cpp	/^void debug::setfilename(const std::string fn)$/;"	f	class:debug	typeref:typename:void	signature:(const std::string fn)
-setfilename	debug.h	/^extern void setfilename(const std::string fn);$/;"	p	namespace:debug	typeref:typename:void	signature:(const std::string fn)
-setfilep	debug.cpp	/^FILE* debug::setfilep(FILE* fp)$/;"	f	class:debug	typeref:typename:FILE *	signature:(FILE * fp)
-setfilep	debug.h	/^extern FILE* setfilep(FILE* fp);$/;"	p	namespace:debug	typeref:typename:FILE *	signature:(FILE * fp)
-setindent	debug.cpp	/^int debug::setindent(int val)$/;"	f	class:debug	typeref:typename:int	signature:(int val)
-setindent	debug.h	/^extern int setindent(int val);$/;"	p	namespace:debug	typeref:typename:int	signature:(int val)
-setsuffix	debug.cpp	/^const std::string debug::setsuffix(const std::string s)$/;"	f	class:debug	typeref:typename:const std::string	signature:(const std::string s)
-setsuffix	debug.h	/^extern const std::string setsuffix(const std::string s);$/;"	p	namespace:debug	typeref:typename:const std::string	signature:(const std::string s)
-shadersdir	options_store.h	/^    std::string shadersdir;$/;"	m	class:Options_store	typeref:typename:std::string	access:public
+render_loop	app.hpp	/^    void render_loop();$/;"	p	class:App	typeref:typename:void	access:public	signature:()
+rotate_right	app.cpp	/^static void rotate_right(float theta)$/;"	f	typeref:typename:void	file:	signature:(float theta)
+rotate_right	app.cpp	/^static void rotate_right(float theta);$/;"	p	typeref:typename:void	file:	signature:(float theta)
+rotate_up	app.cpp	/^static void rotate_up(float theta)$/;"	f	typeref:typename:void	file:	signature:(float theta)
+rotate_up	app.cpp	/^static void rotate_up(float theta);$/;"	p	typeref:typename:void	file:	signature:(float theta)
+searchpath	options.hpp	/^    std::string searchpath;$/;"	m	class:Options	typeref:typename:std::string	access:public
+sf	app.cpp	/^auto sf = vec3(1.0f, 1.0f, 1.0f);    \/\/ model scaling factor$/;"	v	namespace:__anon3bd80ed70111	typeref:typename:auto
+shadersdir	options.hpp	/^    std::string shadersdir;$/;"	m	class:Options	typeref:typename:std::string	access:public
 skybox_loc	app.cpp	/^GLuint skybox_loc = 0;$/;"	v	namespace:__anon3bd80ed70111	typeref:typename:GLuint
 skybox_prog	app.cpp	/^GLuint skybox_prog = 0;$/;"	v	namespace:__anon3bd80ed70111	typeref:typename:GLuint
 skybox_txtr	app.cpp	/^GLuint skybox_txtr = 0;$/;"	v	namespace:__anon3bd80ed70111	typeref:typename:GLuint
-sourcedir	options_store.h	/^    std::string sourcedir;$/;"	m	class:Options_store	typeref:typename:std::string	access:public
-splice_texture_data	app.cpp	/^static void splice_texture_data(Vector<Image> &image)$/;"	f	typeref:typename:void	file:	signature:(Vector<Image> & image)
-splice_texture_data	app.cpp	/^static void splice_texture_data(Vector<Image> &image);$/;"	p	typeref:typename:void	file:	signature:(Vector<Image> & image)
-splice_texture_data::Offset::x	app.cpp	/^	int x;$/;"	m	struct:splice_texture_data::Offset	typeref:typename:int	file:	access:public
-splice_texture_data::Offset::y	app.cpp	/^	int y;$/;"	m	struct:splice_texture_data::Offset	typeref:typename:int	file:	access:public
-tabwidth	debug.cpp	/^const int tabwidth = 2;$/;"	v	namespace:__anon38cb489d0111	typeref:typename:const int
-terminate	app_base.cpp	/^void App_base::terminate() { w.terminate(); }$/;"	f	class:App_base	typeref:typename:void	signature:()
-terminate	app_base.h	/^    virtual void terminate();$/;"	p	class:App_base	typeref:typename:void	access:public	signature:()
-terminate	window.h	/^    virtual void terminate() = 0;$/;"	p	class:Window	typeref:typename:void	access:public	signature:()
-terminate	window_glfw.cpp	/^    void terminate();$/;"	p	class:__anon73622fdd0111::Window_glfw	typeref:typename:void	file:	access:public	signature:()
-terminate	window_glfw.cpp	/^void Window_glfw::terminate() { glfwTerminate(); }$/;"	f	class:Window_glfw	typeref:typename:void	signature:()
-test	debug.cpp	/^static void test(void)$/;"	f	typeref:typename:void	file:	signature:(void)
-test1	debug.cpp	/^static void test1(int i)$/;"	f	typeref:typename:void	file:	signature:(int i)
-test_debug	debug.cpp	/^static void test_debug(int argc, char** argv)$/;"	f	typeref:typename:void	file:	signature:(int argc,char ** argv)
-texturesdir	options_store.h	/^    std::string texturesdir;$/;"	m	class:Options_store	typeref:typename:std::string	access:public
-triangle	model_base.h	/^enum class Model_type { none = 0, point = 1, line = 2, triangle = 3 };$/;"	e	enum:Model_type	access:public
-txtr	model_base.h	/^    GLfloat txtr[2];$/;"	m	struct:Vertex_data	typeref:typename:GLfloat[2]	access:public
-type	model_base.h	/^    Model_type type;$/;"	m	class:Model_base	typeref:typename:Model_type	access:public
-type	shader_stuff.cpp	/^	GLenum type;$/;"	m	struct:create_program::Shader_data	typeref:typename:GLenum	file:	access:public
-v_num	model_base.h	/^    GLsizei v_num = 0;$/;"	m	class:Model_base	typeref:typename:GLsizei	access:public
+sourcedir	options.hpp	/^    std::string sourcedir;$/;"	m	class:Options	typeref:typename:std::string	access:public
+start_dist	app.cpp	/^constexpr GLfloat start_dist = 20.0f;$/;"	v	namespace:__anon3bd80ed70111	typeref:typename:GLfloat
+store_texture_data	app.cpp	/^static void store_texture_data(Vector<Image> &image)$/;"	f	typeref:typename:void	file:	signature:(Vector<Image> & image)
+store_texture_data	app.cpp	/^static void store_texture_data(Vector<Image> &image);$/;"	p	typeref:typename:void	file:	signature:(Vector<Image> & image)
+texturesdir	options.hpp	/^    std::string texturesdir;$/;"	m	class:Options	typeref:typename:std::string	access:public
 vao	app.cpp	/^GLuint vao = 0;$/;"	v	namespace:__anon3bd80ed70111	typeref:typename:GLuint
 vbo	app.cpp	/^GLuint vbo = 0;$/;"	v	namespace:__anon3bd80ed70111	typeref:typename:GLuint
-verbose	options_store.h	/^    bool verbose;$/;"	m	class:Options_store	typeref:typename:bool	access:public
-view_distance	window_glfw.cpp	/^constexpr float view_distance = 2016.0f;  \/\/ Viewing distance in pixels$/;"	v	namespace:__anon73622fdd0111	typeref:typename:float
+verbose	options.hpp	/^    bool verbose;$/;"	m	class:Options	typeref:typename:bool	access:public
 vp	app.cpp	/^glm::mat4 vp = glm::mat4(1.0f);$/;"	v	namespace:__anon3bd80ed70111	typeref:typename:glm::mat4
 vp_id	app.cpp	/^GLuint vp_id = 0;$/;"	v	namespace:__anon3bd80ed70111	typeref:typename:GLuint
-w	app_base.h	/^    Window& w;$/;"	m	class:App_base	typeref:typename:Window &	access:protected
-width	img_stuff.h	/^    GLsizei width;$/;"	m	class:Image	typeref:typename:GLsizei	access:private
-width	options_store.h	/^    int width;$/;"	m	class:Options_store	typeref:typename:int	access:public
-width	window_glfw.cpp	/^    int width;$/;"	m	class:__anon73622fdd0111::Window_glfw	typeref:typename:int	file:	access:private
-x	app.cpp	/^	int x;$/;"	m	struct:splice_texture_data::Offset	typeref:typename:int	file:	access:public
-y	app.cpp	/^	int y;$/;"	m	struct:splice_texture_data::Offset	typeref:typename:int	file:	access:public
-zero	global.h	/^    int zero = 0;$/;"	m	class:Global	typeref:typename:int	access:public
-zerof	global.h	/^    float zerof = 0.0f;$/;"	m	class:Global	typeref:typename:float	access:public
-~App	app.h	/^    virtual ~App() = default;$/;"	p	class:App	access:public	signature:()
-~App_base	app_base.h	/^    virtual ~App_base() = default;$/;"	p	class:App_base	access:public	signature:()
-~Global	global.h	/^    ~Global() = default;$/;"	p	class:Global	access:public	signature:()
-~Model_cube	model_cube.h	/^    virtual ~Model_cube(){};$/;"	f	class:Model_cube	access:public	signature:()
-~Options_store	options_store.h	/^    ~Options_store() = default;$/;"	p	class:Options_store	access:public	signature:()
-~Window	window.h	/^    virtual ~Window(){};$/;"	f	class:Window	access:public	signature:()
-~Window_glfw	window_glfw.cpp	/^    virtual ~Window_glfw(){};$/;"	f	class:__anon73622fdd0111::Window_glfw	file:	access:public	signature:()
+width	options.hpp	/^    int width;$/;"	m	class:Options	typeref:typename:int	access:public
+zero	global.hpp	/^    int zero = 0;$/;"	m	class:Global	typeref:typename:int	access:public
+zerof	global.hpp	/^    float zerof = 0.0f;$/;"	m	class:Global	typeref:typename:float	access:public
+~App	app.hpp	/^    virtual ~App() = default;$/;"	p	class:App	access:public	signature:()
+~Global	global.hpp	/^    ~Global() = default;$/;"	p	class:Global	access:public	signature:()
+~Options	options.hpp	/^    ~Options() = default;$/;"	p	class:Options	access:public	signature:()

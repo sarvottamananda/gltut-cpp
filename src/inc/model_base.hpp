@@ -12,9 +12,9 @@
 enum class Model_type { none = 0, point = 1, line = 2, triangle = 3 };
 
 struct Vertex_data {
-    GLfloat pos[3];
-    GLfloat normal[3];
-    GLfloat txtr[2];
+    GLfloat pos[4];
+    GLfloat normal[4];
+    GLfloat txtr[4];
 };
 
 class Model_base {

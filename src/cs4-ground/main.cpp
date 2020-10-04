@@ -5,18 +5,17 @@
 //	Main function for the code snippet.
 
 #include "app.hpp"
-#include "do_args.hpp"
-#include "options_store.hpp"
+#include "options.hpp"
 #include "window.hpp"
 #include "window_factory.hpp"
 
 int main(int argc, char* argv[])
 {
-    Options_store opts_store;
+    Options opts;
 
     // debug::setdebug(9);
-    process_args(argc, argv, opts_store);
-    opts_store.print("Options store");
+    opts.process_options(argc, argv);
+    opts.print("Options store");
 
     Window* win_glfw = Window_factory::create_window(
 	Window_type::glfw);	 // Create a glfw window using factory idiom
@@ -26,7 +25,7 @@ int main(int argc, char* argv[])
 				 //
     win_glfw->set_app(&code_snippet);
 
-    code_snippet.initialize(opts_store);
+    code_snippet.initialize(opts);
     code_snippet.render_loop();
     code_snippet.terminate();
 

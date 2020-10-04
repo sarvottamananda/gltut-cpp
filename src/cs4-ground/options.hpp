@@ -3,13 +3,19 @@
 // options_store.hpp v0.0 (OpenGL Code Snippets)
 //
 // Options_store class
+//
+//     While processing command line arguments, we get
+//     1) Meson build configuration parameters
+//     2) Environment variables
+//     3) Configuration options
+//     4) Command line options
 
-#ifndef SNIPPETS_OPTIONS_STORE_HPP
-#define SNIPPETS_OPTIONS_STORE_HPP
+#ifndef SNIPPETS_OPTIONS_HPP
+#define SNIPPETS_OPTIONS_HPP
 
 #include <string>
 
-class Options_store {
+class Options {
    public:
     bool verbose;
     int debug;
@@ -27,18 +33,20 @@ class Options_store {
     std::string builddir;
     std::string sourcedir;
     std::string homedir;
+    std::string configdir;
 
    public:
-    Options_store();
-    ~Options_store() = default;
+    Options();
+    ~Options() = default;
     // Copy
-    Options_store(const Options_store&) = default;
-    Options_store& operator=(const Options_store&) = delete;
+    Options(const Options&) = default;
+    Options& operator=(const Options&) = delete;
     // Move
-    Options_store(Options_store&&) = delete;
-    Options_store& operator=(Options_store&&) = delete;
+    Options(Options&&) = delete;
+    Options& operator=(Options&&) = delete;
     // Print all the contents, with a title string
     void print(std::string title);
+    void process_options(int, char**);
 };
 
-#endif	// SNIPPETS_OPTIONS_STORE_HPP
+#endif	// SNIPPETS_OPTIONS_HPP

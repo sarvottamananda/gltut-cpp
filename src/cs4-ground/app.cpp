@@ -17,6 +17,8 @@
 #include "window.hpp"
 #include <cmath>
 #include <iostream>
+#include <vector>
+
 #define GLM_ENABLE_EXPERIMENTAL
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtx/rotate_vector.hpp>
@@ -94,6 +96,9 @@ static void rotate_right(float theta);
 static void move_back(float delta);
 static void calculate_camera();
 static void init_camera();
+static void GLAPIENTRY debug_callback(GLenum source, GLenum type, GLuint id, GLenum severity,
+				      GLsizei length, const GLchar *message,
+				      const void *userParam);
 
 /*
  * App::render_loop() is the main function defined in this file.
@@ -105,27 +110,32 @@ void App::render_loop()
     // This makes w's OpenGL context current, just in case if there are multiple windows too.
     w.make_current();
 
+    // Various OpenGL settings, can be set only after window is created and made current
+
     // Some information
     std::cout << "OpenGL version : " << glGetString(GL_VERSION) << "\n";
     std::cout << "Renderer : " << glGetString(GL_VERSION) << "\n\n";
-
-    std::cout << "Preparing to draw\n";
-    prepare(w);
-
-    // Various OpenGL settings
 
     glEnable(GL_DEPTH_TEST);		     // Enables depth testing for triangles in the back
     glEnable(GL_BLEND);			     // Enable Blending for transparency
     glEnable(GL_CULL_FACE);		     // Enables culling of away facing triangles
     glEnable(GL_TEXTURE_CUBE_MAP_SEAMLESS);  // Remove slight gap between cubemap boundaries
     glEnable(GL_MULTISAMPLE);		     // Mix the texture if more pixels are transposing
-    glDepthFunc(GL_LEQUAL);		     // Cull farther triangles
+    glEnable(GL_DEBUG_OUTPUT);		     // Debug require OpenGL 4.3
+    glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);   // Flush debug messages
+
+    glDebugMessageCallback(debug_callback, nullptr);	// Simple debug callback
+    glDepthFunc(GL_LEQUAL);				// Cull farther triangles
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);	// Alpha channel decides the final color
     glFrontFace(GL_CCW);				// Faces are counter-clockwise
     glCullFace(GL_BACK);				// Cull back facing faces
-    glClearDepth(1.0f);					// Depth buffer clear value 
+    glClearDepth(1.0f);					// Depth buffer clear value
     glClearColor(0.0f, 0.051f, 0.1f, 0.0f);		// Color clear value
     glPointSize(1);					// Size of screen points
+
+    // Preparing data
+    std::cout << "Preparing to draw\n";
+    prepare(w);
 
     // The render loop
     while (w.render_cond()) {
@@ -133,8 +143,16 @@ void App::render_loop()
 	do_draw_commands(w);
 	w.render_end();	 // This also swaps buffer
     }
+}  // render_loop()
+
+static void GLAPIENTRY debug_callback(GLenum source, GLenum type, GLuint id, GLenum severity,
+				      GLsizei length, const GLchar *message,
+				      const void *userParam)
+// Directly copied from OpenGL khronos.org website
+{
+    fprintf(stderr, "GL CALLBACK: %s type = 0x%x, severity = 0x%x, message = %s\n",
+	    (type == GL_DEBUG_TYPE_ERROR ? "** GL ERROR **" : ""), type, severity, message);
 }
-// render_loop()
 
 static void prepare(const Window &win)
 // Prepare various stuff to draw
@@ -223,9 +241,9 @@ static void prepare_textures()
     // Set reasonable texture parameters
     glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    //glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-    //glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-    //glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
+    // glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+    // glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+    // glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
 
     //// If we want repeating textures
     glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_REPEAT);
@@ -240,13 +258,13 @@ static void load_texture_data()
 {
     Vector<string> file = {
 	"assets/textures/skybox-right.jpg", "assets/textures/skybox-left.jpg",
-	"assets/textures/skybox-top.jpg", "assets/textures/skybox-bottom.jpg",
+	"assets/textures/skybox-top.jpg",   "assets/textures/skybox-bottom.jpg",
 	"assets/textures/skybox-front.jpg", "assets/textures/skybox-back.jpg",
     };
     auto num_images = file.size();  // Number of images
 
     Vector<Image> image(num_images);
-    for (int i = 0; i < num_images; i++) {
+    for (auto i = 0u; i < num_images; i++) {
 	image[i].read_file(file[i]);
     }
     store_texture_data(image);
@@ -270,7 +288,6 @@ static void store_texture_data(Vector<Image> &image)
     std::cout << "Cubemap resolution : " << w << " x " << h << "\n";
     std::cout << "No. of channels : " << nc << "\n";
 
-
     // Create the textures in OpenGL state machine
     glGenTextures(1, &skybox_txtr);
     glActiveTexture(GL_TEXTURE0);
@@ -280,7 +297,7 @@ static void store_texture_data(Vector<Image> &image)
     int cnt_mip_level = 1;
     glTexStorage2D(GL_TEXTURE_CUBE_MAP, cnt_mip_level, GL_RGB8, w, h);
 
-    for(auto i = 0; i< num_images; i++) {
+    for (auto i = 0u; i < num_images; i++) {
 	// Array holding the texels
 	GLubyte *p = (GLubyte *)image[i].pixels();
 
@@ -290,13 +307,13 @@ static void store_texture_data(Vector<Image> &image)
 	    exit(EXIT_FAILURE);
 	}
 
-	glTexSubImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, 0, 0, w, h,
-			    GL_RGB, GL_UNSIGNED_BYTE, (void *)p);
+	glTexSubImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, 0, 0, w, h, GL_RGB,
+			GL_UNSIGNED_BYTE, (void *)p);
     }
-    //glGenerateMipmap(GL_TEXTURE_CUBE_MAP);
+    // glGenerateMipmap(GL_TEXTURE_CUBE_MAP);
 
     // Free the image data
-    for (int i = 0; i < num_images; i++) {
+    for (auto i = 0u; i < num_images; i++) {
 	image[i].free_data();
     }
 }
@@ -504,7 +521,6 @@ static void rotate_up(float theta)
 static void move_back(float delta) { eye_dist += delta; }
 
 static void calculate_camera() { eye_pos = -eye_dist * eye_front; }
-
 static void init_camera()
 {
     eye_right = vec3(1.0f, 0.0f, 0.0f);

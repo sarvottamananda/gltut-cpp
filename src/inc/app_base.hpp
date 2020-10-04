@@ -10,7 +10,7 @@
 #include <string>
 
 class Window;
-class Options_store;
+class Options;
 
 enum class Key : uint8_t;
 enum class Key_action : uint8_t;
@@ -22,7 +22,7 @@ class App_base {
     App_base(Window* win) : w(*win){};
     virtual ~App_base() = default;
 
-    virtual void initialize(Options_store& os);
+    virtual void initialize(Options& os);
     virtual void render_loop();
     virtual void terminate();
     virtual void key_callback(Key, int, Key_action, Key_mods);

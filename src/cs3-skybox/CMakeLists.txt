@@ -18,20 +18,7 @@ if (PKGCONFIG_FOUND)
     link_libraries(${GLFW_LIBRARIES})
 endif()
 
-#add_subdirectory (external)
-
 #cmake_policy(SET CMP0026 OLD)
-
-#list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/external/rpavlik-cmake-modules-fe2273")
-#include(CreateLaunchers)
-
-#include_directories(
-#   external/glfw-3.1.2/include/
-#   external/glm-0.9.7.1/
-#   external/glew-1.13.0/include/
-#   external/assimp-3.0.1270/include/
-#   .
-#)
 
 set(ALL_LIBS
 	${OPENGL_LIBRARY}
@@ -43,7 +30,6 @@ add_definitions(
         -std=c++20
 )
 
-# Tutorial 2
 add_executable(cs3 
     app_base.cpp
     app_base.h
@@ -85,12 +71,3 @@ add_executable(cs3
 target_link_libraries(cs3
 	${ALL_LIBS}
 )
-
-#SOURCE_GROUP(common REGULAR_EXPRESSION ".*/common/.*" )
-#SOURCE_GROUP(shaders REGULAR_EXPRESSION ".*/.*shader$" )
-
-#add_custom_command(
-#   TARGET tutorial02_red_triangle POST_BUILD
-#   COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_CFG_INTDIR}/tutorial02_red_triangle${CMAKE_EXECUTABLE_SUFFIX}" "${CMAKE_CURRENT_SOURCE_DIR}/tutorial02_red_triangle/"
-#)
-

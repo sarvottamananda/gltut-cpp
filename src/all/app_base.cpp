@@ -6,13 +6,13 @@
 
 #include "app_base.hpp"
 
-#include "options_store.hpp"
 #include "window.hpp"
+#include <iostream>
 
-void App_base::initialize(Options_store& os)
+void App_base::initialize(Options& os)
 {
     // Opens a window of required resolution and mode
-    w.initialize("OpenGL Snippets : Cubemap Arrays", os.width, os.height, os.fullscreen);
+    w.initialize("OpenGL Snippets : Basic App", 800, 600, false);
 }
 
 void App_base::render_loop()
@@ -30,3 +30,4 @@ void App_base::render_loop()
 
 void App_base::terminate() { w.terminate(); }
 void App_base::key_callback(Key k, int sc, Key_action ka, Key_mods km) { return; }
+

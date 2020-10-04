@@ -88,8 +88,8 @@ static void prepare_uniforms();
 static void prepare_textures();
 static void prepare_buffers();
 static void prepare_attributes();
-static void load_texture_data();
-static void store_texture_data(Vector<Image> &image);
+static void prepare_cubemap_texture();
+static void store_cubemap_texture_data(Vector<Image> &image);
 static void key_callback(Window *win, int key, int scancode, int action, int mods);
 static void rotate_up(float theta);
 static void rotate_right(float theta);
@@ -236,7 +236,7 @@ static void prepare_models()
 static void prepare_textures()
 // Create texture buffers
 {
-    load_texture_data();
+    prepare_cubemap_texture();
 
     // Set reasonable texture parameters
     glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
@@ -253,7 +253,7 @@ static void prepare_textures()
 // 1}}}
 
 // Fold: load_texture_data() {{{1
-static void load_texture_data()
+static void prepare_cubemap_texture()
 // Upload pixel data on textures.
 {
     Vector<string> file = {
@@ -267,10 +267,10 @@ static void load_texture_data()
     for (auto i = 0u; i < num_images; i++) {
 	image[i].read_file(file[i]);
     }
-    store_texture_data(image);
+    store_cubemap_texture_data(image);
 }
 
-static void store_texture_data(Vector<Image> &image)
+static void store_cubemap_texture_data(Vector<Image> &image)
 // Our images are cubemap images in a single file
 {
     // For a cube map array, all the sizes of the images should be equal. We assume that it is
@@ -348,11 +348,11 @@ static void prepare_attributes()
 
     glBindBuffer(GL_ARRAY_BUFFER, vbo);
 
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex_data),
+    glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, sizeof(Vertex_data),
 			  (GLvoid *)(offsetof(Vertex_data, pos)));
-    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex_data),
+    glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, sizeof(Vertex_data),
 			  (GLvoid *)(offsetof(Vertex_data, normal)));
-    glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex_data),
+    glVertexAttribPointer(2, 4, GL_FLOAT, GL_FALSE, sizeof(Vertex_data),
 			  (GLvoid *)(offsetof(Vertex_data, txtr)));
 
     glEnableVertexAttribArray(0);

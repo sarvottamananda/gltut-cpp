@@ -4,7 +4,7 @@
 //
 //	Base App class implementation
 
-#include "opengl_stuff.hpp"
+#include "opengl_stuff.h"
 
 #include <iostream>
 

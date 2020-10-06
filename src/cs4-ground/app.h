@@ -4,10 +4,11 @@
 //
 //	Interface for derived App class
 
-#ifndef SNIPPETS_APP_HPP
-#define SNIPPETS_APP_HPP
+#ifndef APP_H
+#define APP_H
 
-#include "app_base.hpp"
+#include "app_base.h"
+#include "options.h"
 
 class App : public App_base {
    public:
@@ -16,8 +17,9 @@ class App : public App_base {
     void render_loop();
 
     virtual void key_callback(Key, int, Key_action, Key_mods);
+    virtual void initialize(Options& opts);
 
    private:
 };
 
-#endif	// SNIPPETS_APP_HPP
+#endif	// APP_H

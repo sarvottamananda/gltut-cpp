@@ -1,11 +1,11 @@
 //	Sarvottamananda (shreesh)
 //	2020-09-28
-//	app_base.hpp v0.0 (OpenGL Code Snippets)
+//	app_base.h v0.0 (OpenGL Code Snippets)
 //
 //	Base App class
 
-#ifndef SNIPPETS_APP_BASE_HPP
-#define SNIPPETS_APP_BASE_HPP
+#ifndef APP_BASE_H
+#define APP_BASE_H
 
 #include <string>
 
@@ -33,4 +33,4 @@ class App_base {
    private:
 };
 
-#endif	// SNIPPETS_APP_BASE_HPP
+#endif	// APP_BASE_H

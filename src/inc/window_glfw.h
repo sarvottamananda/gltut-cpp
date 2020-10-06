@@ -1,11 +1,11 @@
 // Sarvottamananda (shreesh)
 // 2020-09-28
-// window_glfw.hpp v0.0 (OpenGL Code Snippets)
+// window_glfw.h v0.0 (OpenGL Code Snippets)
 //
 // Interface for GLFW3 stuff
 
-#ifndef SNIPPETS_WINDOW_GLFW_HPP
-#define SNIPPETS_WINDOW_GLFW_HPP
+#ifndef WINDOW_GLFW_H
+#define WINDOW_GLFW_H
 
 class Window;
 
@@ -42,4 +42,4 @@ void set_cur_enter_cb(Window&, App_func1);
 extern Window* create_glfw_window();
 extern void destroy_glfw_window(Window*);
 
-#endif	// SNIPPETS_WINDOW_GLFW_HPP
+#endif	// WINDOW_GLFW_H

@@ -4,12 +4,13 @@
 //
 //	Main function for the code snippet.
 
-#include "app.hpp"
-#include "options.hpp"
-#include "window.hpp"
-#include "window_factory.hpp"
+#include "app.h"
+#include "options.h"
+#include "window.h"
+#include "window_factory.h"
 
-int main(int argc, char* argv[])
+int
+main(int argc, char* argv[])
 {
     Options opts;
 
@@ -22,7 +23,7 @@ int main(int argc, char* argv[])
     App code_snippet(win_glfw);	 // Create an app instance using glfw window, we did not want to
 				 // hardcode glfw instance of window inside the app, hence we
 				 // create it first and then pass it to app instance
-				 //
+
     win_glfw->set_app(&code_snippet);
 
     code_snippet.initialize(opts);

@@ -1,11 +1,11 @@
 //	Sarvottamananda (shreesh)
 //	2020-09-28
-//	img_stuff.hpp v0.0 (OpenGL Code Snippets)
+//	img_stuff.h v0.0 (OpenGL Code Snippets)
 //
 //	Image Utility Library
 
-#ifndef SNIPPETS_IMG_STUFF_HPP
-#define SNIPPETS_IMG_STUFF_HPP
+#ifndef IMG_STUFF_H
+#define IMG_STUFF_H
 
 #include <GL/gl.h>
 
@@ -27,4 +27,4 @@ class Image {
     void* data;
 };
 
-#endif	// SNIPPETS_IMG_STUFF_HPP
+#endif	// IMG_STUFF_H

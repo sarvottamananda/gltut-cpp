@@ -1,11 +1,11 @@
 //	Sarvottamananda (shreesh)
 //	2020-09-28
-//	model_base.hpp v0.0 (OpenGL Code Snippets)
+//	model_base.h v0.0 (OpenGL Code Snippets)
 //
 //      Base Model class
 
-#ifndef SNIPPETS_MODEL_BASE_HPP
-#define SNIPPETS_MODEL_BASE_HPP
+#ifndef MODEL_BASE_H
+#define MODEL_BASE_H
 
 #include <GL/gl.h>
 
@@ -14,7 +14,7 @@ enum class Model_type { none = 0, point = 1, line = 2, triangle = 3 };
 struct Vertex_data {
     GLfloat pos[4];
     GLfloat normal[4];
-    GLfloat txtr[4];
+    GLfloat tx[4];
 };
 
 class Model_base {
@@ -30,4 +30,4 @@ class Model_base {
 
     void print();
 };
-#endif	// SNIPPETS_MODEL_BASE_HPP
+#endif	// MODEL_BASE_H

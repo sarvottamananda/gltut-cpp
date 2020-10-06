@@ -11,7 +11,7 @@
 #include <iostream>
 #include <sstream>
 
-#include "shader_stuff.hpp"
+#include "shader_stuff.h"
 
 using std::cerr;
 using std::cout;

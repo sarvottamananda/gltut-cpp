@@ -1,10 +1,9 @@
-#version 400 core
+#version 430 core
 out vec4 fragcolor;
 
 in vec4 texcoords;
 
 uniform samplerCube skybox;
-uniform float cubemap;
 
 void main()
 {    

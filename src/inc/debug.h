@@ -1,14 +1,14 @@
 //	Sarvottamananda (shreesh)
 //	2020-09-28
-//	debug.hpp v0.0 (OpenGL Code Snippets)
+//	debug.h v0.0 (OpenGL Code Snippets)
 //
 //      Debugging by printing idiom
 //
 //      The debugging by printing idiom mainly follows
 //      Jonathan Leffler's ideas from stackoverflow, but it is simplified.
 
-#ifndef SNIPPETS_DEBUG_HPP
-#define SNIPPETS_DEBUG_HPP
+#ifndef DEBUG_H
+#define DEBUG_H
 
 #include <cstdio>
 #include <string>
@@ -83,4 +83,4 @@ extern void printloc(int level, const char* fn, int lno, const char* fmt, ...);
 	}                                                                    \
     } while (0)
 
-#endif	// SNIPPETS_DEBUG_HPP
+#endif	// DEBUG_H

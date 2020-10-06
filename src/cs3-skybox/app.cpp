@@ -101,7 +101,8 @@ static void init_camera();
  * App::render_loop() is the main function defined in this file.
  */
 
-void App::render_loop()
+void
+App::render_loop()
 // Function for rendering, later on we will make a Renderable class for  doing this.
 {
     // This makes w's OpenGL context current, just in case if there are multiple windows too.
@@ -139,7 +140,8 @@ void App::render_loop()
 }
 // render_loop()
 
-static void prepare(const Window &win)
+static void
+prepare(const Window &win)
 // Prepare various stuff to draw
 {
     prepare_models();
@@ -150,7 +152,8 @@ static void prepare(const Window &win)
     prepare_attributes();  // textures and buffers info is stored in vao
 }  // end of prepare()
 
-static void prepare_programs()
+static void
+prepare_programs()
 // Create glsl programs for the shader
 {
     Vector<string> skybox_shaders = {
@@ -165,7 +168,8 @@ static void prepare_programs()
     cubeobj_prog = create_program("cubeobj", cubeobj_shaders);
 }
 
-static void prepare_uniforms()
+static void
+prepare_uniforms()
 {
     vp_id = glGetUniformLocation(skybox_prog, "vp");
     skybox_loc = glGetUniformLocation(skybox_prog, "skybox");
@@ -174,7 +178,8 @@ static void prepare_uniforms()
 }
 
 // Fold: static void prepare_matrices(const Window &win) {{{1
-static void prepare_matrices(const Window &win)
+static void
+prepare_matrices(const Window &win)
 // Comput model, view, project matrices for the cube object and the cubemap
 {
     // Model
@@ -191,7 +196,7 @@ static void prepare_matrices(const Window &win)
 
     // Projection
 
-    GLfloat fovy = win.get_fovy() * 2;
+    GLfloat fovy = win.get_fovy() * 3;
     GLfloat aspect = win.get_aspect();
     GLfloat near = 0.1f;
     GLfloat far = 100.0f;
@@ -212,14 +217,16 @@ static void prepare_matrices(const Window &win)
 }
 // 1}}}
 
-static void prepare_models()
+static void
+prepare_models()
 // We have only one model for both cube map and the cube object
 {
     cube.print();
 }
 
 // static void prepare_textures() {{{1
-static void prepare_textures()
+static void
+prepare_textures()
 // Create texture buffers
 {
     load_texture_data();
@@ -239,7 +246,8 @@ static void prepare_textures()
 // 1}}}
 
 // Fold: load_texture_data() {{{1
-static void load_texture_data()
+static void
+load_texture_data()
 // Upload pixel data on textures.
 {
     Vector<string> file = {
@@ -259,7 +267,8 @@ static void load_texture_data()
     splice_texture_data(image);
 }
 
-static void splice_texture_data(Vector<Image> &image)
+static void
+splice_texture_data(Vector<Image> &image)
 // Our images are cubemap images in a single file
 {
     // For a cube map array, all the sizes of the images should be equal. We assume that it is
@@ -357,7 +366,8 @@ static void splice_texture_data(Vector<Image> &image)
 }
 // 1}}}
 
-static void prepare_buffers()
+static void
+prepare_buffers()
 {
     glGenBuffers(1, &vbo);
     glBindBuffer(GL_ARRAY_BUFFER, vbo);
@@ -372,7 +382,8 @@ static void prepare_buffers()
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 }
 
-static void prepare_attributes()
+static void
+prepare_attributes()
 {
     glGenVertexArrays(1, &vao);
     glBindVertexArray(vao);
@@ -398,7 +409,6 @@ static void prepare_attributes()
     glEnableVertexAttribArray(2);
 
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
-    glActiveTexture(GL_TEXTURE0);
 
     glBindVertexArray(0);
     // note that following is not needed, the call to glVertexAttribPointer is registered
@@ -407,7 +417,8 @@ static void prepare_attributes()
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 }
 
-static void do_draw_commands(const Window &win)
+static void
+do_draw_commands(const Window &win)
 {
     //// Since we are drawing a cubemap we do not need to clear the window,
     //// however we stll need to clear the depth buffer
@@ -433,7 +444,8 @@ static void do_draw_commands(const Window &win)
     glDrawElements(GL_TRIANGLES, cube.idx_num, GL_UNSIGNED_SHORT, (void *)0);
 }
 
-void App::key_callback(Key key, int scancode, Key_action action, Key_mods mods)
+void
+App::key_callback(Key key, int scancode, Key_action action, Key_mods mods)
 {
     using std::cout;
 
@@ -546,23 +558,34 @@ void App::key_callback(Key key, int scancode, Key_action action, Key_mods mods)
     return;
 }
 
-static void rotate_right(float theta)
+static void
+rotate_right(float theta)
 {
     eye_front = glm::rotate(eye_front, theta, eye_up);
     eye_right = glm::cross(eye_front, eye_up);
 }
 
-static void rotate_up(float theta)
+static void
+rotate_up(float theta)
 {
     eye_up = glm::rotate(eye_up, theta, eye_right);
     eye_front = glm::cross(eye_up, eye_right);
 }
 
-static void move_back(float delta) { eye_dist += delta; }
+static void
+move_back(float delta)
+{
+    eye_dist += delta;
+}
 
-static void calculate_camera() { eye_pos = -eye_dist * eye_front; }
+static void
+calculate_camera()
+{
+    eye_pos = -eye_dist * eye_front;
+}
 
-static void init_camera()
+static void
+init_camera()
 {
     eye_right = vec3(1.0f, 0.0f, 0.0f);
     eye_up = vec3(0.0f, 1.0f, 0.0f);

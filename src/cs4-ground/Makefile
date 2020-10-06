@@ -3,71 +3,68 @@
 
 srcs := \
     app.cpp \
-    app_base.cpp \
-    debug.cpp \
-    do_args.cpp \
-    do_meson.cpp \
-    do_env.cpp \
-    do_yaml.cpp  \
-    global.cpp \
-    img_stuff.cpp \
     main.cpp \
-    model_base.cpp \
-    model_cube.cpp \
-    options_store.cpp \
-    shader_stuff.cpp \
-    stb_image_impl.cpp \
-    window.cpp \
-    window_factory.cpp \
-    window_glfw.cpp \
+    options.cpp \
 
 
 hdrs := \
     app.h \
-    app_base.h \
-    cs_config.h \
-    debug.h \
-    do_args.h \
-    do_meson.h \
-    do_env.h \
-    do_yaml.h \
-    global.h \
-    img_stuff.h \
-    model_base.h \
-    model_cube.h \
-    options_store.h \
-    shader_stuff.h \
-    window.h \
-    window_factory.h \
-    window_glfw.h \
+    options.h \
+    config/cs_config.h \
+
+
+lib_srcs := \
+	app_base.cpp \
+	debug.cpp \
+	img_stuff.cpp \
+	model_base.cpp \
+	model_cube.cpp \
+	model_ground.cpp \
+	opengl_stuff.cpp \
+	shader_stuff.cpp \
+	stb_image_impl.cpp \
+	window.cpp \
+	window_factory.cpp \
+	window_glfw.cpp \
 
 
 bin_dir ?= bin
-target ?= $(bin_dir)/cs3
 dep_dir ?= dep
 src_dir ?= .
+lib_dir ?= ../all/
+
+target := $(bin_dir)/cs4
+lib_target = $(bin_dir)/libcs.a
+
+
 #inc_dirs := $(shell find $(src_dir) -type d -name inc)
 #inc_dirs ?= ../../subprojects/glad/
+inc_dirs := ../inc ./inc
 
 #objs := $(srcs:%.cpp=$(bin_dir)/%.o) bin/glad.o 
 objs := $(srcs:%.cpp=$(bin_dir)/%.o) 
 deps := $(srcs:%.cpp=$(dep_dir)/%.d)
+lib_objs := $(lib_srcs:%.cpp=$(bin_dir)/%.o) 
+lib_deps := $(lib_srcs:%.cpp=$(dep_dir)/%.d)
 
-inc_flags := $(addprefix -I,$(inc_dirs)) -I.
 
-CPPFLAGS =  $(inc_flags)
-CFLAGS = -std=c11 -g
-CXXFLAGS = -std=c++20 -DDEBUG -g
+includes := $(addprefix -I,$(inc_dirs)) 
+libs := -lcs -lm -lstdc++ -lyaml-cpp -lGL -lGLEW -lglfw 
 
-#LDFLAGS = -lglfw -lm -lstdc++ -lyaml-cpp -ldl
-LDFLAGS = -lm -lstdc++ -lyaml-cpp -lGL -lGLEW -lglfw
+CPPFLAGS := $(CPPfLAGS)  $(includes)
+CFLAGS := $(CFLAGS) -std=c11 -g
+CXXFLAGS := $(CXXFLAGS) -std=c++20 -DDEBUG -g
+LDFLAGS := $(LDFLAGS) $(libs) -L$(bin_dir)
 
-.PHONY: clean format tags
+.PHONY: clean format tags all
 
 all : $(target)
 
-$(target) : $(objs)
+$(target) : $(objs) $(lib_target)
 	$(CXX) $(CXXFLAGS) $(objs) -o $@ $(LDFLAGS)
+
+$(lib_target) : $(lib_objs)
+	ar rcs $@ $(lib_objs)
 
 
 $(bin_dir)/glad.o : ../../subprojects/glad/glad.c
@@ -77,8 +74,10 @@ clean :
 	$(RM) $(objs)
 	$(RM) $(deps)
 	$(RM) $(target)
+	$(RM) $(lib_objs)
+	$(RM) $(lib_target)
 
-deps : $(deps)
+deps : $(deps) $(lib_deps)
 	@echo "Dependencies are created in directory dep"
 
 format : 
@@ -110,8 +109,16 @@ $(bin_dir)/%.o: %.c
 $(bin_dir)/%.o: %.cpp 
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $< -o $@
 
+# c++ source for lib
+$(bin_dir)/%.o: $(lib_dir)/%.cpp 
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $< -o $@
+
+
 # dependencies
 $(dep_dir)/%.d: %.cpp
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -MM -MT '$(patsubst %.cpp,$(bin_dir)/%.o,$<)' $< -MF $@
+
+$(dep_dir)/%.d: $(lib_dir)/%.cpp
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -MM -MT '$(patsubst %.cpp,$(bin_dir)/%.o,$<)' $< -MF $@
 
 -include $(deps)

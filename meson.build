@@ -1,14 +1,15 @@
 project('opengl-snippets',
 	['c', 'cpp'],
-	version : '0.1.3',
+	version : '0.1.4',
 	license : 'MIT',
-	meson_version : '>= 0.49',
+	meson_version : '>= 0.50',
   	default_options : [
 		'buildtype=release', 
 		'c_std=c11', 
 		'cpp_std=c++17', 
 		'warning_level=3', 
-		'layout=mirror'
+		'layout=mirror',
+                'default_library=static'
 	]
 )
 
@@ -18,6 +19,7 @@ cpp_compiler = meson.get_compiler('cpp')
 add_project_arguments('-Wno-unused-parameter', language: ['c', 'cpp'])
 add_project_arguments('-Wno-unused-function', language: ['c', 'cpp'])
 add_project_arguments('-Wno-unused-result', language: ['c', 'cpp'])
+
 
 dl_dep = c_compiler.find_library('dl', required : true)
 glew_dep = dependency('glew')
@@ -29,5 +31,14 @@ yaml_dep = dependency('yaml-cpp')
 glad_prj = subproject('glad')
 
 glad_dep = glad_prj.get_variable('glad_dep')
+
+copy_to_build = find_program('scripts/copy_to_build.py')
+copy = find_program('scripts/copy.py')
+
+#run_command(
+#    copy,
+#    join_paths('.', 'LICENSE'),
+#    join_paths('.', 'license')
+#)
 
 subdir('src')

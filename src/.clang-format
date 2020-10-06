@@ -8,4 +8,5 @@ Language: Cpp
 BreakBeforeBraces: Stroustrup
 ColumnLimit: 96
 Standard: Auto
+AlwaysBreakAfterReturnType: TopLevelDefinitions
 ...

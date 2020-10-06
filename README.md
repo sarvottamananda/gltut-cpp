@@ -48,7 +48,7 @@ $ meson test -C build
 $ ./build/src/cs0-window/cs0-window 
 ```
 
-![Tutorial 0](imgs/cs0-window.png)
+![Tutorial 0](https://raw.githubusercontent.com/wiki/sarvottamananda/opengl-snippets/imgs/cs0-window.png)
 
 
 
@@ -58,7 +58,7 @@ $ ./build/src/cs0-window/cs0-window
 $ ./build/src/cs1-triangles/cs1-triangles
 ```
 
-![Tutorial 1](imgs/cs1-triangles.png)
+![Tutorial 1](https://raw.githubusercontent.com/wiki/sarvottamananda/opengl-snippets/imgs/cs1-triangles.png)
 
 
 #### Tutorial 2 - Moving Triangles
@@ -67,7 +67,7 @@ $ ./build/src/cs1-triangles/cs1-triangles
 $ ./build/src/cs2-moving/cs2-moving
 ```
 
-![Tutorial 2](imgs/cs2-moving.png)
+![Tutorial 2](https://raw.githubusercontent.com/wiki/sarvottamananda/opengl-snippets/imgs/cs2-moving.png)
 
 #### Tutorial 3 - Skybox
 
@@ -75,7 +75,7 @@ $ ./build/src/cs2-moving/cs2-moving
 $ ./build/src/cs3-skybox/cs3-skybox
 ```
 
-![Tutorial 3](imgs/cs3-skybox.png)
+![Tutorial 3](https://raw.githubusercontent.com/wiki/sarvottamananda/opengl-snippets/imgs/cs3-skybox.png)
 
 Contol the camera and the cube with following keys
 
@@ -95,6 +95,16 @@ Options :
 -    **--windowed** for window
 -    **--height** _h_ for window height _h_
 -    **--width** _w_ for window width _w_
+
+#### Tutorial 4 - Terrain
+
+```
+$ ./build/src/cs4-ground/cs4-ground
+```
+
+![Tutorial 1](https://raw.githubusercontent.com/wiki/sarvottamananda/opengl-snippets/imgs/cs4-ground.png)
+
+Same options and controls as before.
 
 ***
 

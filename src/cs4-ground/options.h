@@ -1,8 +1,8 @@
 // Sarvottamananda (shreesh)
 // 2020-09-28
-// options_store.hpp v0.0 (OpenGL Code Snippets)
+// options.hpp v0.0 (OpenGL Code Snippets)
 //
-// Options_store class
+// Options class
 //
 //     While processing command line arguments, we get
 //     1) Meson build configuration parameters
@@ -10,8 +10,8 @@
 //     3) Configuration options
 //     4) Command line options
 
-#ifndef SNIPPETS_OPTIONS_HPP
-#define SNIPPETS_OPTIONS_HPP
+#ifndef SNIPPETS_OPTIONS_H
+#define SNIPPETS_OPTIONS_H
 
 #include <string>
 
@@ -49,4 +49,4 @@ class Options {
     void process_options(int, char**);
 };
 
-#endif	// SNIPPETS_OPTIONS_HPP
+#endif	// SNIPPETS_OPTIONS_H

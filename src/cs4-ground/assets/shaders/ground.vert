@@ -6,7 +6,7 @@ layout (location = 2) in vec4 texpos;
 
 uniform mat4 mvp;
 
-out vec4 f_texpos;
+out vec4 f_pos;
 
 void main()
 {
@@ -14,7 +14,7 @@ void main()
 
     //fcol = vec4(0.5+0.5*pos.x, 0.5+0.5*pos.y, 0.5+0.5*pos.z, 1.0);
 
-    f_texpos = texpos;
+    f_pos = pos;
 
 }
 

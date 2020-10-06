@@ -5,7 +5,7 @@
 // Factory design pattern for window creation
 //
 
-#include "window_factory.hpp"
+#include "window_factory.h"
 
 #include <iostream>
 

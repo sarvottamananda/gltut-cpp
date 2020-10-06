@@ -4,7 +4,7 @@
 //
 // Base Model class
 
-#include "model_base.hpp"
+#include "model_base.h"
 
 #include <iostream>
 
@@ -21,7 +21,7 @@ void Model_base::print()
 	cout << "\t(";
 	for (auto j = 0; j < 4; j++) {
 	    cout << data[i].pos[j];
-	    if (j == 2)
+	    if (j == 3)
 		cout << ") ";
 	    else
 		cout << ", ";
@@ -30,7 +30,7 @@ void Model_base::print()
 	cout << "(";
 	for (auto j = 0; j < 4; j++) {
 	    cout << data[i].normal[j];
-	    if (j == 2)
+	    if (j == 3)
 		cout << ") ";
 	    else
 		cout << ", ";
@@ -38,8 +38,8 @@ void Model_base::print()
 
 	cout << "(";
 	for (auto j = 0; j < 4; j++) {
-	    cout << data[i].txtr[0];
-	    if (j == 1)
+	    cout << data[i].tx[0];
+	    if (j == 3)
 		cout << ")\n";
 	    else
 		cout << ", ";

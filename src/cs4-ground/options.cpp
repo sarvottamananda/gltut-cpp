@@ -1,9 +1,9 @@
 //	Sarvottamananda (shreesh)
 //	2020-09-28
-//	options_store.cpp v0.0 (OpenGL Code Snippets)
+//	options.cpp v0.0 (OpenGL Code Snippets)
 //      Opt class implementation
 
-#include "options.hpp"
+#include "options.h"
 
 #include <getopt.h>
 #include <yaml-cpp/yaml.h>
@@ -14,7 +14,7 @@
 #include <string>
 #include <vector>
 
-#include "config/cs_config.hpp"
+#include "config/cs_config.h"
 
 static int getnumarg(char*);
 static void print_usage(char*);
@@ -42,13 +42,14 @@ Options::Options()
     return;
 }
 
-void Options::print(std::string name)
+void
+Options::print(std::string name)
 {
     printf(
 	"Options (%s) {\n"
+	"\tfullscreen = %d\n"
 	"\tverbose = %d\n"
 	"\tdebug = %d\n"
-	"\tfullscreen = %d\n"
 	"\theight = %d\n"
 	"\twidth = %d\n"
 	"\tconfigfile = %s\n"
@@ -67,7 +68,8 @@ void Options::print(std::string name)
     fflush(stdout);
 }
 
-void Options::process_options(int argc, char** argv)
+void
+Options::process_options(int argc, char** argv)
 {
     int res = -1;
 
@@ -133,7 +135,7 @@ void Options::process_options(int argc, char** argv)
 
 	switch (res) {
 	    case 'v':
-		verbose = 1;
+		verbose = true;
 		has_vopt = true;
 		break;
 	    case 'd':
@@ -185,7 +187,8 @@ void Options::process_options(int argc, char** argv)
     return;
 }
 
-static int getnumarg(char* s)
+static int
+getnumarg(char* s)
 {
     try {
 	std::size_t pos;
@@ -204,7 +207,8 @@ static int getnumarg(char* s)
     abort();
 }
 
-static void print_usage(char* program_name)
+static void
+print_usage(char* program_name)
 {
     printf(
 	"Usage: %s <options>\n"
@@ -222,7 +226,8 @@ static void print_usage(char* program_name)
 	program_name);
 }
 
-void process_buildconf(Options* os)
+void
+process_buildconf(Options* os)
 {
     // Currently we are directly setting the builddir and srcdir variable in the config.h using
     // meson build system.
@@ -233,7 +238,8 @@ void process_buildconf(Options* os)
     // os->configfile = cs_config::cs_config_file;
 }
 
-void process_yaml(std::string conffile, Options* os)
+void
+process_yaml(std::string conffile, Options* os)
 {
     try {
 	YAML::Node config = YAML::LoadFile(conffile);
@@ -255,7 +261,8 @@ void process_yaml(std::string conffile, Options* os)
     }
 }
 
-void process_env(Options* os)
+void
+process_env(Options* os)
 {
     std::vector<std::string> namelist{
 	"CS_ASSETS_PATH", "CS_SEARCH_PATH",  "CS_MODELS_DIR",

@@ -1,14 +1,14 @@
 // Sarvottamananda (shreesh)
 // 2020-09-29
-// window_factory.hpp v0.0 (OpenGL Code Snippets)
+// window_factory.h v0.0 (OpenGL Code Snippets)
 //
 // Use factory design pattern on windows
 //
 // We use factory design pattern on window creation, so that we may port the program to other
 // platforms.
 
-#ifndef SNIPPETS_WINDOW_FACTORY_HPP
-#define SNIPPETS_WINDOW_FACTORY_HPP
+#ifndef WINDOW_FACTORY_H
+#define WINDOW_FACTORY_H
 
 class Window;
 
@@ -20,4 +20,4 @@ class Window_factory {
     static void destroy_window(Window*, Window_type);
 };
 
-#endif	// SNIPPETS_WINDOW_FACTORY_HPP
+#endif	// WINDOW_FACTORY_H

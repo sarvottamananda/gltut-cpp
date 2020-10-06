@@ -8,6 +8,9 @@ config_data = configuration_data()
 config_data.set('CS_BUILD_DIR', meson.current_build_dir())
 config_data.set('CS_SOURCE_DIR', meson.current_source_dir())
 
+run_command('ctags', '-R', '--languages=C,C++', '--kinds-C++=+p', \
+    '--fields=+iaS', '--extras=+qFr', '--sort=yes')
+
 subdir('config')
 
 subdir('assets')

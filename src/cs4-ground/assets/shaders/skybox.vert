@@ -1,4 +1,4 @@
-#version 400 core
+#version 430 core
 layout (location = 0) in vec4 apos;
 
 out vec4 texcoords;

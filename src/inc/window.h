@@ -1,11 +1,11 @@
 // Sarvottamananda (shreesh)
 // 2020-09-28
-// window.hpp v0.0 (OpenGL Code Snippets)
+// window.h v0.0 (OpenGL Code Snippets)
 //
 // Wrapper for GLFWwindow*
 
-#ifndef SNIPPETS_WINDOW_HPP
-#define SNIPPETS_WINDOW_HPP
+#ifndef WINDOW_H
+#define WINDOW_H
 
 #include <string>
 
@@ -99,4 +99,4 @@ enum class Key_mods : uint8_t {
     num_lock = 1 << 5,
 };
 
-#endif	// SNIPPETS_WINDOW_HPP
+#endif	// WINDOW_H

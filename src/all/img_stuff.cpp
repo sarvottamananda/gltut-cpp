@@ -4,7 +4,7 @@
 //
 // Image Utility Library
 
-#include "img_stuff.hpp"
+#include "img_stuff.h"
 
 #include <stb/stb_image.h>
 

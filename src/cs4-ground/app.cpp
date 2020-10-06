@@ -4,17 +4,18 @@
 //
 // Apps derived from App_base
 
-#include "app.hpp"
+#include "app.h"
 
 // clang-format off
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 // clang-format on
 
-#include "img_stuff.hpp"
-#include "model_cube.hpp"
-#include "shader_stuff.hpp"
-#include "window.hpp"
+#include "img_stuff.h"
+#include "model_cube.h"
+#include "model_ground.h"
+#include "shader_stuff.h"
+#include "window.h"
 #include <cmath>
 #include <iostream>
 #include <vector>
@@ -35,29 +36,50 @@ using std::string;
 // unnamed namespace declarations
 //
 
+// Fold: local variables {{{1
 namespace {
 
 constexpr GLfloat delta_theta = 0.005f;
 constexpr GLfloat delta = 0.1f;
 constexpr GLfloat delta_alpha = 0.5f;
-constexpr GLfloat start_dist = 20.0f;
+constexpr GLfloat start_dist = 32.0f;
+constexpr GLfloat start_alt = 8.0f;
 
 Model_cube cube;
+Model_ground ground;
+
 GLuint vao = 0;
 GLuint vbo = 0;
 GLuint ebo = 0;
-GLuint mvp_id = 0;
+
+GLuint cmvp_id = 0;
+GLuint gmvp_id = 0;
 GLuint vp_id = 0;
-GLuint skybox_loc = 0;
+
+GLintptr cube_off = 0;
+GLintptr cube_base = 0;
+GLintptr ground_base = 0;
+GLintptr ground_off = 0;
+
+GLuint skybox_tex_loc = 0;
+GLuint cube_tex_loc = 0;
+GLuint ground_tex_loc = 0;
+
 GLuint skybox_prog = 0;
 GLuint cubeobj_prog = 0;
-GLuint skybox_txtr = 0;
-glm::mat4 mvp = glm::mat4(1.0f);
+GLuint ground_prog = 0;
+
+GLuint skybox_tex = 0;
+GLuint ground_tex = 0;
+GLuint cube_tex = 0;
+
+glm::mat4 cmvp = glm::mat4(1.0f);
+glm::mat4 gmvp = glm::mat4(1.0f);
 glm::mat4 vp = glm::mat4(1.0f);
 
 using glm::vec3;
 
-auto pos = vec3(0.0f, -4.0f, 0.0f);  // model location
+auto pos = vec3(0.0f, 2.0f, 0.0f);   // model location
 auto sf = vec3(1.0f, 1.0f, 1.0f);    // model scaling factor
 auto angle = (GLfloat)0.0f;	     // model rotation angle
 auto axis = vec3(1.0f, 1.0f, 1.0f);  // model rotational axis
@@ -66,13 +88,16 @@ auto eye_up = vec3(0, 1, 0);	  // Up is +ive Y (will be (0,-1,0) to look upside-
 auto eye_right = vec3(1, 0, 0);	  // Right is +ive X
 auto eye_front = vec3(0, 0, -1);  // Front is -ive Z
 auto eye_dist = start_dist;
+auto eye_alt = start_alt;
 
-auto eye_pos = vec3(0, 0, start_dist);	// Camera at (8,0,0), in World Space
-auto eye_lookat = vec3(0, 0, 0);	// Look at the origin
+auto eye_pos = vec3(0, start_alt, start_dist);	// Camera at (8,0,0), in World Space
+auto eye_lookat = vec3(0, start_alt, 0);	// Look at the origin
 
 GLfloat cubemap_num = 0.0f;
 
 }  // unnamed namespace
+
+// 1}}}
 
 //
 // helper functions: in order of their use
@@ -86,9 +111,11 @@ static void prepare_matrices(const Window &);
 static void prepare_programs();
 static void prepare_uniforms();
 static void prepare_textures();
+static void prepare_cubemap_texture();
+static void prepare_ground_texture();
+static void prepare_cube_texture();
 static void prepare_buffers();
 static void prepare_attributes();
-static void prepare_cubemap_texture();
 static void store_cubemap_texture_data(Vector<Image> &image);
 static void key_callback(Window *win, int key, int scancode, int action, int mods);
 static void rotate_up(float theta);
@@ -104,7 +131,9 @@ static void GLAPIENTRY debug_callback(GLenum source, GLenum type, GLuint id, GLe
  * App::render_loop() is the main function defined in this file.
  */
 
-void App::render_loop()
+// App::render_loop() {{{1
+void
+App::render_loop()
 // Function for rendering, later on we will make a Renderable class for  doing this.
 {
     // This makes w's OpenGL context current, just in case if there are multiple windows too.
@@ -119,6 +148,7 @@ void App::render_loop()
     glEnable(GL_DEPTH_TEST);		     // Enables depth testing for triangles in the back
     glEnable(GL_BLEND);			     // Enable Blending for transparency
     glEnable(GL_CULL_FACE);		     // Enables culling of away facing triangles
+    glCullFace(GL_BACK);		     // Cull back facing faces
     glEnable(GL_TEXTURE_CUBE_MAP_SEAMLESS);  // Remove slight gap between cubemap boundaries
     glEnable(GL_MULTISAMPLE);		     // Mix the texture if more pixels are transposing
     glEnable(GL_DEBUG_OUTPUT);		     // Debug require OpenGL 4.3
@@ -144,17 +174,19 @@ void App::render_loop()
 	w.render_end();	 // This also swaps buffer
     }
 }  // render_loop()
+// 1}}}
 
-static void GLAPIENTRY debug_callback(GLenum source, GLenum type, GLuint id, GLenum severity,
-				      GLsizei length, const GLchar *message,
-				      const void *userParam)
+static void GLAPIENTRY
+debug_callback(GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length,
+	       const GLchar *message, const void *userParam)
 // Directly copied from OpenGL khronos.org website
 {
     fprintf(stderr, "GL CALLBACK: %s type = 0x%x, severity = 0x%x, message = %s\n",
 	    (type == GL_DEBUG_TYPE_ERROR ? "** GL ERROR **" : ""), type, severity, message);
 }
 
-static void prepare(const Window &win)
+static void
+prepare(const Window &win)
 // Prepare various stuff to draw
 {
     prepare_models();
@@ -165,40 +197,55 @@ static void prepare(const Window &win)
     prepare_attributes();  // textures and buffers info is stored in vao
 }  // end of prepare()
 
-static void prepare_programs()
+static void
+prepare_models()
+// We have only one model for both cube map and the cube object
+{
+    cube.print();
+    ground.print();
+}
+
+static void
+prepare_programs()
 // Create glsl programs for the shader
 {
     Vector<string> skybox_shaders = {
 	"assets/shaders/skybox.vert",
 	"assets/shaders/skybox.frag",
     };
+    skybox_prog = create_program("Skybox", skybox_shaders);
+
+    Vector<string> ground_shaders = {
+	"assets/shaders/ground.vert",
+	"assets/shaders/ground.frag",
+    };
+    ground_prog = create_program("Ground", ground_shaders);
+
     Vector<string> cubeobj_shaders = {
 	"assets/shaders/cubeobj.vert",
 	"assets/shaders/cubeobj.frag",
     };
-    skybox_prog = create_program("Skybox", skybox_shaders);
-    cubeobj_prog = create_program("cubeobj", cubeobj_shaders);
+    cubeobj_prog = create_program("Cubeobj", cubeobj_shaders);
 }
 
-static void prepare_uniforms()
+static void
+prepare_uniforms()
 {
     vp_id = glGetUniformLocation(skybox_prog, "vp");
-    skybox_loc = glGetUniformLocation(skybox_prog, "skybox");
-    mvp_id = glGetUniformLocation(cubeobj_prog, "mvp");
+    skybox_tex_loc = glGetUniformLocation(skybox_prog, "skybox");
+
+    cmvp_id = glGetUniformLocation(cubeobj_prog, "mvp");
+    cube_tex_loc = glGetUniformLocation(cubeobj_prog, "cube_tex");
+
+    gmvp_id = glGetUniformLocation(ground_prog, "mvp");
+    ground_tex_loc = glGetUniformLocation(ground_prog, "ground_tex");
 }
 
-// Fold: static void prepare_matrices(const Window &win) {{{1
-static void prepare_matrices(const Window &win)
+// Fold: prepare_matrices(const Window &win) {{{1
+static void
+prepare_matrices(const Window &win)
 // Comput model, view, project matrices for the cube object and the cubemap
 {
-    // Model
-
-    glm::mat4 model = glm::mat4(1.0f);	// Identity matrix
-
-    model = glm::scale(model, sf);
-    model = glm::rotate(model, glm::radians(angle), axis);
-    model = glm::translate(model, pos);
-
     // View
 
     glm::mat4 view = glm::lookAt(eye_pos, eye_lookat, eye_up);
@@ -207,14 +254,34 @@ static void prepare_matrices(const Window &win)
 
     GLfloat fovy = win.get_fovy() * 2;
     GLfloat aspect = win.get_aspect();
-    GLfloat near = 0.1f;
-    GLfloat far = 100.0f;
+    GLfloat near = 1 / 1024.0f;
+    GLfloat far = 1024.0f;
 
     glm::mat4 projection = glm::perspective(fovy, aspect, near, far);
 
+    // Model matric for cube
+
+    glm::mat4 cmodel = glm::mat4(1.0f);	 // Identity matrix
+
+    cmodel = glm::scale(cmodel, sf);
+    cmodel = glm::rotate(cmodel, glm::radians(angle), axis);
+    cmodel = glm::translate(cmodel, pos);
+
     // mvp for cube object
 
-    mvp = projection * view * model;
+    cmvp = projection * view * cmodel;
+
+    // Model matric for ground
+
+    glm::mat4 gmodel = glm::mat4(1.0f);	 // Identity matrix
+
+    gmodel = glm::scale(gmodel, vec3(1.0f, 1.0f, 1.0f));
+    gmodel = glm::rotate(gmodel, glm::radians(90.0f), vec3(-1.0f, 0.0f, 0.0f));
+    gmodel = glm::translate(gmodel, vec3(0.0f, 0.0f, 0.0f));
+
+    // mvp for ground
+
+    gmvp = projection * view * gmodel;
 
     // Remove translation for the camera
 
@@ -226,34 +293,25 @@ static void prepare_matrices(const Window &win)
 }
 // 1}}}
 
-static void prepare_models()
-// We have only one model for both cube map and the cube object
-{
-    cube.print();
-}
-
 // static void prepare_textures() {{{1
-static void prepare_textures()
+static void
+prepare_textures()
 // Create texture buffers
 {
+    glActiveTexture(GL_TEXTURE0);
     prepare_cubemap_texture();
 
-    // Set reasonable texture parameters
-    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    // glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-    // glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-    // glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
+    glActiveTexture(GL_TEXTURE1);
+    prepare_ground_texture();
 
-    //// If we want repeating textures
-    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_REPEAT);
-    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_REPEAT);
-    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_REPEAT);
+    glActiveTexture(GL_TEXTURE2);
+    prepare_cube_texture();
 }
 // 1}}}
 
-// Fold: load_texture_data() {{{1
-static void prepare_cubemap_texture()
+// Fold: prepare_cupemap_texture() {{{1
+static void
+prepare_cubemap_texture()
 // Upload pixel data on textures.
 {
     Vector<string> file = {
@@ -270,7 +328,8 @@ static void prepare_cubemap_texture()
     store_cubemap_texture_data(image);
 }
 
-static void store_cubemap_texture_data(Vector<Image> &image)
+static void
+store_cubemap_texture_data(Vector<Image> &image)
 // Our images are cubemap images in a single file
 {
     // For a cube map array, all the sizes of the images should be equal. We assume that it is
@@ -289,9 +348,14 @@ static void store_cubemap_texture_data(Vector<Image> &image)
     std::cout << "No. of channels : " << nc << "\n";
 
     // Create the textures in OpenGL state machine
-    glGenTextures(1, &skybox_txtr);
-    glActiveTexture(GL_TEXTURE0);
-    glBindTexture(GL_TEXTURE_CUBE_MAP, skybox_txtr);
+    glGenTextures(1, &skybox_tex);
+    // Set reasonable texture parameters
+    glBindTexture(GL_TEXTURE_CUBE_MAP, skybox_tex);
+    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
 
     // We do not need any mipmap levels for cubemaps as the triangles are at a fixed distance.
     int cnt_mip_level = 1;
@@ -319,22 +383,136 @@ static void store_cubemap_texture_data(Vector<Image> &image)
 }
 // 1}}}
 
-static void prepare_buffers()
+// Fold: prepare_ground_texture() {{{1
+static void
+prepare_ground_texture()
 {
-    glGenBuffers(1, &vbo);
-    glBindBuffer(GL_ARRAY_BUFFER, vbo);
-    glBufferData(GL_ARRAY_BUFFER, cube.v_num * sizeof(struct Vertex_data),
-		 (const GLvoid *)cube.data, GL_STATIC_DRAW);
-    glBindBuffer(GL_ARRAY_BUFFER, 0);
+    constexpr GLsizei tex_sz = 64;
 
-    glGenBuffers(1, &ebo);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, cube.idx_num * sizeof(GLushort),
-		 (const void *)cube.idx, GL_STATIC_DRAW);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+    GLubyte image[tex_sz][tex_sz][4];  // RGBA storage
+
+    for (auto i = 0u; i < tex_sz; i++) {
+	for (auto j = 0u; j < tex_sz; j++) {
+	    GLubyte c = (((i & 0x20) == 0) ^ ((j & 0x20) == 0)) * 255;
+	    image[i][j][0] = (GLubyte)c;
+	    image[i][j][1] = (GLubyte)c;
+	    image[i][j][2] = (GLubyte)c;
+	    image[i][j][3] = (GLubyte)255;
+	}
+    }
+
+    glGenTextures(1, &ground_tex);
+    glBindTexture(GL_TEXTURE_2D, ground_tex);
+
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    // we want repeating textures
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_R, GL_REPEAT);
+
+    int cnt_mip_level = 7;
+    glTexStorage2D(GL_TEXTURE_2D, cnt_mip_level, GL_RGB8, tex_sz, tex_sz);
+    glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, tex_sz, tex_sz, GL_RGBA, GL_UNSIGNED_BYTE,
+		    (void *)image);
+    glGenerateMipmap(GL_TEXTURE_2D);
+}
+// 1}}}
+
+static void
+prepare_cube_texture()
+{
+    Image image;
+
+    image.read_file("assets/textures/cc-textures.jpg");
+
+    auto w = image.get_width();
+    auto h = image.get_height();
+    auto nc = image.get_bytes_per_pixel();
+
+    assert(nc == 3);
+
+    // glActiveTexture(GL_TEXTURE1);
+    glGenTextures(1, &cube_tex);
+    glBindTexture(GL_TEXTURE_2D, cube_tex);
+
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
+
+    int cnt_mip_level = 8;
+    glTexStorage2D(GL_TEXTURE_2D, cnt_mip_level, GL_RGB8, w, h);
+    glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, w, h, GL_RGB, GL_UNSIGNED_BYTE,
+		    (void *)image.pixels());
+
+    image.free_data();
 }
 
-static void prepare_attributes()
+// prepare_buffers() {{{1
+static void
+prepare_buffers()
+{
+    glGenBuffers(1, &vbo);
+    glGenBuffers(1, &ebo);
+    glBindBuffer(GL_ARRAY_BUFFER, vbo);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
+
+    auto sum_v_num = cube.v_num + ground.v_num;
+    auto sum_idx_num = cube.idx_num + ground.idx_num;
+
+    glBufferStorage(GL_ARRAY_BUFFER, sum_v_num * sizeof(struct Vertex_data), (GLvoid *)nullptr,
+		    GL_DYNAMIC_STORAGE_BIT);
+    glBufferStorage(GL_ELEMENT_ARRAY_BUFFER, sum_idx_num * sizeof(GLushort), (GLvoid *)nullptr,
+		    GL_DYNAMIC_STORAGE_BIT);
+
+    GLint base = 0;
+
+    GLsizeiptr vbo_off = 0;
+    GLsizeiptr ebo_off = 0;
+
+    GLsizeiptr vbo_sz = 0;
+    GLsizeiptr ebo_sz = 0;
+
+    // Add cube data
+
+    cube_base = base;
+    cube_off = ebo_off;
+
+    vbo_sz = cube.v_num * sizeof(struct Vertex_data);
+    ebo_sz = cube.idx_num * sizeof(GLushort);
+
+    glBufferSubData(GL_ARRAY_BUFFER, (GLintptr)vbo_off, vbo_sz, (const GLvoid *)cube.data);
+    glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, (GLintptr)ebo_off, ebo_sz, (const void *)cube.idx);
+
+    vbo_off += vbo_sz;
+    ebo_off += ebo_sz;
+    base += cube.v_num;
+
+    // Add ground data
+
+    ground_base = base;
+    ground_off = ebo_off;
+
+    vbo_sz = ground.v_num * sizeof(struct Vertex_data);
+    ebo_sz = ground.idx_num * sizeof(GLushort);
+
+    glBufferSubData(GL_ARRAY_BUFFER, (GLintptr)vbo_off, vbo_sz, (const GLvoid *)ground.data);
+    glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, (GLintptr)ebo_off, ebo_sz,
+		    (const void *)ground.idx);
+
+    vbo_off += vbo_sz;
+    ebo_off += ebo_sz;
+    base += ground.v_num;
+
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+}
+// 1}}}
+
+static void
+prepare_attributes()
 {
     glGenVertexArrays(1, &vao);
     glBindVertexArray(vao);
@@ -344,7 +522,7 @@ static void prepare_attributes()
     // std::cout << "Size : " << sizeof(Vertex_data) << "\n";
     // std::cout << "pos : " << offsetof(Vertex_data, pos) << "\n";
     // std::cout << "normal : " << offsetof(Vertex_data, normal) << "\n";
-    // std::cout << "txtr : " << offsetof(Vertex_data, txtr) << "\n";
+    // std::cout << "tx : " << offsetof(Vertex_data, tx) << "\n";
 
     glBindBuffer(GL_ARRAY_BUFFER, vbo);
 
@@ -353,7 +531,7 @@ static void prepare_attributes()
     glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, sizeof(Vertex_data),
 			  (GLvoid *)(offsetof(Vertex_data, normal)));
     glVertexAttribPointer(2, 4, GL_FLOAT, GL_FALSE, sizeof(Vertex_data),
-			  (GLvoid *)(offsetof(Vertex_data, txtr)));
+			  (GLvoid *)(offsetof(Vertex_data, tx)));
 
     glEnableVertexAttribArray(0);
     glEnableVertexAttribArray(1);
@@ -368,7 +546,9 @@ static void prepare_attributes()
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 }
 
-static void do_draw_commands(const Window &win)
+// do_draw_commands(const Window &win) {{{1
+static void
+do_draw_commands(const Window &win)
 {
     //// Since we are drawing a cubemap we do not need to clear the window,
     //// however we stll need to clear the depth buffer
@@ -379,21 +559,48 @@ static void do_draw_commands(const Window &win)
     calculate_camera();
     prepare_matrices(win);
 
-    glDepthMask(GL_FALSE);
+    // Draw skybox
+    // /*
     glUseProgram(skybox_prog);
     glUniformMatrix4fv(vp_id, 1, GL_FALSE, &vp[0][0]);
-    glUniform1i(skybox_loc, 0);
+    glUniform1i(skybox_tex_loc, 0);
     glCullFace(GL_FRONT);
-    glDrawElements(GL_TRIANGLES, cube.idx_num, GL_UNSIGNED_SHORT, (void *)0);
 
+    glDepthMask(GL_FALSE);
+    glDrawElementsBaseVertex(GL_TRIANGLES, cube.idx_num, GL_UNSIGNED_SHORT, (void *)cube_off,
+			     (GLint)cube_base);
     glDepthMask(GL_TRUE);
-    glUseProgram(cubeobj_prog);
-    glUniformMatrix4fv(mvp_id, 1, GL_FALSE, &mvp[0][0]);
-    glCullFace(GL_BACK);
-    glDrawElements(GL_TRIANGLES, cube.idx_num, GL_UNSIGNED_SHORT, (void *)0);
-}
+    // */
 
-void App::key_callback(Key key, int scancode, Key_action action, Key_mods mods)
+    // Draw ground
+    // /*
+    glUseProgram(ground_prog);
+    glUniform1i(ground_tex_loc, 1);
+    glUniformMatrix4fv(gmvp_id, 1, GL_FALSE, &gmvp[0][0]);
+
+    glDisable(GL_CULL_FACE);  // Enables culling of away facing triangles
+    glDrawElementsBaseVertex(GL_TRIANGLES, ground.idx_num, GL_UNSIGNED_SHORT,
+			     (void *)ground_off, (GLint)ground_base);
+    glEnable(GL_CULL_FACE);  // Enables culling of away facing triangles
+    // */
+
+    // Draw cube
+    // /*
+    glUseProgram(cubeobj_prog);
+    glUniform1i(cube_tex_loc, 2);
+    glUniformMatrix4fv(cmvp_id, 1, GL_FALSE, &cmvp[0][0]);
+    glCullFace(GL_BACK);
+    // glDrawElements(GL_TRIANGLES, cube.idx_num, GL_UNSIGNED_SHORT, (void *)0);
+
+    glDrawElementsBaseVertex(GL_TRIANGLES, cube.idx_num, GL_UNSIGNED_SHORT, (void *)cube_off,
+			     (GLint)cube_base);
+    // */
+}
+// 1}}}
+
+// App::key_callback {{{1
+void
+App::key_callback(Key key, int scancode, Key_action action, Key_mods mods)
 {
     using std::cout;
 
@@ -505,23 +712,35 @@ void App::key_callback(Key key, int scancode, Key_action action, Key_mods mods)
     }
     return;
 }
+// 1}}}
 
-static void rotate_right(float theta)
+static void
+rotate_right(float theta)
 {
     eye_front = glm::rotate(eye_front, theta, eye_up);
     eye_right = glm::cross(eye_front, eye_up);
 }
 
-static void rotate_up(float theta)
+static void
+rotate_up(float theta)
 {
     eye_up = glm::rotate(eye_up, theta, eye_right);
     eye_front = glm::cross(eye_up, eye_right);
 }
 
-static void move_back(float delta) { eye_dist += delta; }
+static void
+move_back(float delta)
+{
+    eye_dist += delta;
+}
 
-static void calculate_camera() { eye_pos = -eye_dist * eye_front; }
-static void init_camera()
+static void
+calculate_camera()
+{
+    eye_pos = -eye_dist * eye_front + eye_alt * vec3(0.0f, 1.0f, 0.0f);
+}
+static void
+init_camera()
 {
     eye_right = vec3(1.0f, 0.0f, 0.0f);
     eye_up = vec3(0.0f, 1.0f, 0.0f);
@@ -529,4 +748,11 @@ static void init_camera()
 
     angle = 0.0f;
     eye_dist = start_dist;
+    eye_alt = start_alt;
+}
+
+void
+App::initialize(Options &os)
+{
+    w.initialize("OpenGL Snippets : Textured Ground", os.width, os.height, os.fullscreen);
 }

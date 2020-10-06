@@ -7,7 +7,7 @@
 #undef DEBUG
 #define DEBUG
 
-#include "debug.hpp"
+#include "debug.h"
 
 #include <cassert>  // for assert macros
 #include <cstdarg>  // for varargs, main debug print functions

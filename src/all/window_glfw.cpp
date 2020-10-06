@@ -7,12 +7,12 @@
 //      All GLFW3 library stuff should go here. We should be sure not to include glfw.h
 //      elsewhere for portability and multi-os support.
 
-#include "window_glfw.hpp"
+#include "window_glfw.h"
 
 #include <iostream>
 
-#include "app_base.hpp"
-#include "window.hpp"
+#include "app_base.h"
+#include "window.h"
 // clang-format off
 //#include "glad.h"  // glad is written in C
 #include <GL/glew.h>

@@ -1,6 +1,6 @@
 project('opengl-snippets',
 	['c', 'cpp'],
-	version : '0.1.4',
+	version : '0.1.5',
 	license : 'MIT',
 	meson_version : '>= 0.50',
   	default_options : [

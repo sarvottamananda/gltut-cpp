@@ -1,4 +1,4 @@
-cs3_assets = [ \
+cs4_assets = [ \
     'textures/skybox-front.jpg', \
     'textures/skybox-back.jpg', \
     'textures/skybox-top.jpg', \
@@ -15,7 +15,7 @@ cs3_assets = [ \
     'shaders/ground.frag', \
 ] 
 
-foreach asset_file : cs3_assets
+foreach asset_file : cs4_assets
   run_command(
     copy_to_build,
     asset_file

@@ -7,11 +7,15 @@
 // clang-format: off
 #include <GL/glew.h>
 // clang-format: on
+
+// clang-format: off
+#include "shader_stuff.h"
+// clang-format: on
+
 #include <fstream>
 #include <iostream>
 #include <sstream>
-
-#include "shader_stuff.h"
+#include <stdexcept>
 
 using std::cerr;
 using std::cout;
@@ -20,7 +24,8 @@ using std::string;
 
 GLuint create_shader(const string, const GLenum);
 
-GLuint create_program(string name, std::vector<string> shaders)
+GLuint
+create_program(string name, std::vector<string> shaders)
 {
     cout << "Creating program (" << name << ")...\n";
 
@@ -58,9 +63,9 @@ GLuint create_program(string name, std::vector<string> shaders)
 		    break;
 		}
 		else {
-		    cerr << "Multiple shaders of same type! (" << fn << " & " << shdr.file
-			 << ")\n";
-		    exit(EXIT_FAILURE);
+		    std::stringstream msg;
+		    msg << "Multiple shaders of same type! (" << fn << " & " << shdr.file << ")";
+		    throw std::runtime_error(msg.str());
 		}
 	    }
 	}
@@ -109,9 +114,10 @@ GLuint create_program(string name, std::vector<string> shaders)
 	    cerr << infoch;
 	}
 
-	// In this simple program, we'll just exit
-	cerr << "Linking failed (" << name << ")\n";
-	exit(EXIT_FAILURE);
+	// In this simple program, we'll just throw
+	std::stringstream msg;
+	msg << "Linking failed (" << name << ")";
+	throw std::runtime_error(msg.str());
     }
     cout << "Linking successful (" << name << ")\n\n";
 
@@ -155,14 +161,13 @@ GLuint create_shader(const string fn, const GLenum type)
 	glDeleteShader(shader);
 
 	// Use the infoLog as you see fit.
-	std::cerr << "Compilation failure (" << fn << ")\n";
 	std::cerr << infoLog;
-	;
-
-	// In this simple program, we'll just leave
-	exit(EXIT_FAILURE);
+	std::stringstream msg;
+	msg << "Compilation failure (" << fn << ")";
+	// In this simple program, we'll just throw
+	throw std::runtime_error(msg.str());
     }
-    std::cout << "Compilation successful (" << fn << ")\n";
+    std::cout << "Compilation successful (" << fn << ")";
     return shader;
 }
 
@@ -176,7 +181,9 @@ static string read_file(std::string filename)
 	return ss.str();
     }
     else {
-	cerr << "File does not exist (" << filename << ")\n";
-	exit(EXIT_FAILURE);
+	std::stringstream msg;
+	msg << "File does not exist (" << filename << ")";
+	// In this simple program, we'll just throw
+	throw std::runtime_error(msg.str());
     }
 }

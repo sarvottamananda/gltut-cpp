@@ -8,6 +8,7 @@
 #include "window_factory.h"
 
 #include <iostream>
+#include <stdexcept>
 
 Window* Window_factory::create_window(Window_type type)
 {
@@ -17,8 +18,7 @@ Window* Window_factory::create_window(Window_type type)
 	case (Window_type::glfw):
 	    return create_glfw_window();
 	default:
-	    std::cerr << "Invalid window type to create.\n";
-	    exit(EXIT_FAILURE);
+	    throw std::runtime_error("Invalid window type to create");
     }
 }
 
@@ -31,7 +31,6 @@ void Window_factory::destroy_window(Window* win, Window_type type)
 	    destroy_glfw_window(win);
 	    return;
 	default:
-	    std::cerr << "Invalid window type to destroy.\n";
-	    return;
+	    throw std::runtime_error("Invalid window type to destroy");
     }
 }

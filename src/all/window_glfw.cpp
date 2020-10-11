@@ -9,7 +9,9 @@
 
 #include "window_glfw.h"
 
+#include <cassert>
 #include <iostream>
+#include <stdexcept>
 
 #include "app_base.h"
 #include "window.h"
@@ -21,6 +23,7 @@
 
 // using definitions
 using std::cerr;
+using std::cout;
 
 static Key map_key(int);
 static Key_action map_action(int);
@@ -88,8 +91,7 @@ bool Window_glfw::initialize(std::string title, int width, int height, bool full
 // needs a context to get initialized.
 {
     if (!glfwInit()) {
-	cerr << "Initialization failed (GLFW3)\n";
-	exit(EXIT_FAILURE);
+	throw std::runtime_error("Initialization failed (GLFW3)");
     }
 
     ::glfwSetErrorCallback(error_callback);
@@ -186,9 +188,8 @@ bool Window_glfw::initialize(std::string title, int width, int height, bool full
     }
 
     if (window == NULL) {
-	cerr << "Failed to open GLFW window.\n";
 	::glfwTerminate();
-	exit(EXIT_FAILURE);
+	throw std::runtime_error("Failed to open GLFW window.");
     }
 
     // Ensure we can capture the keys and mouse button being pressed and
@@ -208,20 +209,19 @@ bool Window_glfw::initialize(std::string title, int width, int height, bool full
     // ---------------------------------------
 
     // if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
-    //	std::cerr << "Failed to initialize GLAD" << std::endl;
-    //	exit(EXIT_FAILURE);
+    //	::glfwTerminate();
+    //	throw std::runtime_error("Failed to initialize GLAD");
     //}
 
     // glew stuff
 
     ::glfwMakeContextCurrent(window);
-    cerr << "Initializing glew"
+    cout << "Initializing glew"
 	 << "\n";
     // initialize glew
     if (glewInit() != GLEW_OK) {
-	cerr << "Failed to initialize glew.\n";
-	glfwTerminate();
-	exit(EXIT_FAILURE);
+	::glfwTerminate();
+    	throw std::runtime_error("Failed to initialize glew");
     }
 
 
@@ -245,8 +245,8 @@ void Window_glfw::make_current()
     //::glfwMakeContextCurrent(window);
 
     if (glfwGetCurrentContext() != window) {
-	cerr << "Window context not set.\n";
-	exit(EXIT_FAILURE);
+	::glfwTerminate();
+    	throw std::runtime_error("Window context not set");
     }
 }
 
@@ -349,10 +349,7 @@ static void initialize_key_map()
 
 static Key map_key(int key)
 {
-    if (key > GLFW_KEY_LAST || key < GLFW_KEY_UNKNOWN) {
-	cerr << "Got a key with a value more than GLFW_KEY_LAST (" << key << ")\n";
-	exit(EXIT_FAILURE);
-    }
+    assert(key <= GLFW_KEY_LAST && key >= GLFW_KEY_UNKNOWN); 
 
     if (key == GLFW_KEY_UNKNOWN) {
 	return Key::unknown;

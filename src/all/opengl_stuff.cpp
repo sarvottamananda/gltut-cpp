@@ -13,18 +13,29 @@ GLenum check_glerror(const char *file, int line)
     GLenum errorCode;
     while ((errorCode = glGetError()) != GL_NO_ERROR)
     {
+	// clang-format off
         std::string error;
         switch (errorCode)
         {
-            case GL_INVALID_ENUM:                  error = "INVALID_ENUM"; break;
-            case GL_INVALID_VALUE:                 error = "INVALID_VALUE"; break;
-            case GL_INVALID_OPERATION:             error = "INVALID_OPERATION"; break;
-            case GL_STACK_OVERFLOW:                error = "STACK_OVERFLOW"; break;
-            case GL_STACK_UNDERFLOW:               error = "STACK_UNDERFLOW"; break;
-            case GL_OUT_OF_MEMORY:                 error = "OUT_OF_MEMORY"; break;
-            case GL_INVALID_FRAMEBUFFER_OPERATION: error = "INVALID_FRAMEBUFFER_OPERATION"; break;
+            case GL_INVALID_ENUM:                  error = "invalid_enum"; 
+                                                   break;
+            case GL_INVALID_VALUE:                 error = "invalid_value"; 
+                                                   break;
+            case GL_INVALID_OPERATION:             error = "invalid_operation"; 
+                                                   break;
+            case GL_STACK_OVERFLOW:                error = "stack_overflow"; 
+                                                   break;
+	    case GL_STACK_UNDERFLOW:               error = "stack_underflow"; 
+                                                   break;
+	    case GL_OUT_OF_MEMORY:                 error = "out_of_memory"; 
+                                                   break;
+            case GL_INVALID_FRAMEBUFFER_OPERATION: error = "invalid_framebuffer_operation"; 
+                                                   break;
+            default:                               error = "unknown_gl_error"; 
+                                                   break;
         }
-        std::cerr << error << " | " << file << " (" << line << ")" << std::endl;
+	// clang-format on
+	std::cerr << error << " | " << file << " (" << line << ")" << std::endl;
     }
     return errorCode;
 }

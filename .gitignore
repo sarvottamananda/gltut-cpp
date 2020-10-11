@@ -2,6 +2,8 @@
 build/
 build-*/
 ref/
+
+.cache/
 compile_commands.json
 
 # Prerequisites

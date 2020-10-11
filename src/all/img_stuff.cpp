@@ -8,35 +8,36 @@
 
 #include <stb/stb_image.h>
 
-#include <iostream>
+#include <cassert>
+#include <stdexcept>
 #include <string>
+// #include <iostream>
 
-void Image::read_file(std::string fname)
+void
+Image::read_file(std::string fname)
 {
-    int wid = 0;
-    int hgt = 0;
-    int nc = 0;
-    void* p = nullptr;
+    int req_nc = 0;	// required number of channels
+    int wid = 0;	// image width
+    int hgt = 0;	// image height
+    int nc = 0;		// number of channels
+    void* p = nullptr;	// pixels data
 
-    std::cerr << "Reading image (" << fname << ")\n";
-
-    p = stbi_load(fname.c_str(), &wid, &hgt, &nc, 0);
-
+    // std::cerr << "Reading image (" << fname << ")\n";
+    p = stbi_load(fname.c_str(), &wid, &hgt, &nc, req_nc);
     if (p == nullptr) {
-	std::cerr << "Unable to load image (" << fname << ")\n";
-	exit(EXIT_FAILURE);
+	throw std::runtime_error("Unable to load image : " + fname);
     }
+
+    assert((nc > 0 && nc <= 4));
 
     width = wid;
     height = hgt;
-    if (nc > 0 && nc <= 4) {
-	no_channels = nc;
-    }
-    else {
-	std::cerr << "Invalid no. of channels (" << nc << ")\n";
-	exit(EXIT_FAILURE);
-    }
+    no_channels = nc;
     data = p;
 }
 
-void Image::free_data() { stbi_image_free(data); }
+void
+Image::free_data()
+{
+    stbi_image_free(data);
+}

@@ -2,6 +2,7 @@
 build/
 build-*/
 ref/
+compile_commands.json
 
 # Prerequisites
 *.d

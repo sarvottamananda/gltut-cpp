@@ -6,6 +6,7 @@ cs_lib = library('cs', \
     'model_cube.cpp', \
     'model_ground.cpp', \
     'opengl_stuff.cpp', \
+    'options.cpp', \
     'shader_stuff.cpp', \
     'stb_image_impl.cpp', \
     'window.cpp', \

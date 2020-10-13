@@ -5,6 +5,7 @@ ref/
 .cache/
 
 compile_commands.json
+tags
 
 # Prerequisites
 *.d

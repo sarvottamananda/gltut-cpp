@@ -55,7 +55,7 @@ $ ./build/src/cs0-window/cs0-window
 #### Tutorial 1 - Simple OpenGL Triangles
 
 ```
-$ ./build/src/cs1-triangles/cs1-triangles
+$ ./build/src/cs1/cs1-triangles
 ```
 
 ![Tutorial 1](https://raw.githubusercontent.com/wiki/sarvottamananda/opengl-snippets/imgs/cs1-triangles.png)
@@ -64,7 +64,7 @@ $ ./build/src/cs1-triangles/cs1-triangles
 #### Tutorial 2 - Moving Triangles
 
 ```
-$ ./build/src/cs2-moving/cs2-moving
+$ ./build/src/cs2/cs2-moving
 ```
 
 ![Tutorial 2](https://raw.githubusercontent.com/wiki/sarvottamananda/opengl-snippets/imgs/cs2-moving.png)
@@ -72,7 +72,7 @@ $ ./build/src/cs2-moving/cs2-moving
 #### Tutorial 3 - Skybox
 
 ```
-$ ./build/src/cs3-skybox/cs3-skybox
+$ ./build/src/cs3/cs3-skybox
 ```
 
 ![Tutorial 3](https://raw.githubusercontent.com/wiki/sarvottamananda/opengl-snippets/imgs/cs3-skybox.png)
@@ -99,7 +99,7 @@ Options :
 #### Tutorial 4 - Terrain
 
 ```
-$ ./build/src/cs4-ground/cs4-ground
+$ ./build/src/cs4/cs4-ground
 ```
 
 ![Tutorial 1](https://raw.githubusercontent.com/wiki/sarvottamananda/opengl-snippets/imgs/cs4-ground.png)

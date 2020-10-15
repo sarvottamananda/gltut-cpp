@@ -1,4 +1,4 @@
-# OpenGL Snippets - Simple Code Snippets for OpenGL/C++ in Linux for Students
+# OpenGL Bits  - Simple Code Bits for OpenGL/C++ in Linux for Students
 
 <p align="center">
 	<img src="https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat">
@@ -45,10 +45,10 @@ $ meson test -C build
 #### Tutorial 0 - OpenGL Sap Green window
 
 ```
-$ ./build/src/cs0-window/cs0-window 
+$ ./build/src/cs0/cs0-window 
 ```
 
-![Tutorial 0](https://raw.githubusercontent.com/wiki/sarvottamananda/opengl-snippets/imgs/cs0-window.png)
+![Tutorial 0](https://raw.githubusercontent.com/wiki/sarvottamananda/glbits-cpp/imgs/cs0-window.png)
 
 
 
@@ -58,7 +58,7 @@ $ ./build/src/cs0-window/cs0-window
 $ ./build/src/cs1/cs1-triangles
 ```
 
-![Tutorial 1](https://raw.githubusercontent.com/wiki/sarvottamananda/opengl-snippets/imgs/cs1-triangles.png)
+![Tutorial 1](https://raw.githubusercontent.com/wiki/sarvottamananda/glbits-cpp/imgs/cs1-triangles.png)
 
 
 #### Tutorial 2 - Moving Triangles
@@ -67,7 +67,7 @@ $ ./build/src/cs1/cs1-triangles
 $ ./build/src/cs2/cs2-moving
 ```
 
-![Tutorial 2](https://raw.githubusercontent.com/wiki/sarvottamananda/opengl-snippets/imgs/cs2-moving.png)
+![Tutorial 2](https://raw.githubusercontent.com/wiki/sarvottamananda/glbits-cpp/imgs/cs2-moving.png)
 
 #### Tutorial 3 - Skybox
 
@@ -75,7 +75,7 @@ $ ./build/src/cs2/cs2-moving
 $ ./build/src/cs3/cs3-skybox
 ```
 
-![Tutorial 3](https://raw.githubusercontent.com/wiki/sarvottamananda/opengl-snippets/imgs/cs3-skybox.png)
+![Tutorial 3](https://raw.githubusercontent.com/wiki/sarvottamananda/glbits-cpp/imgs/cs3-skybox.png)
 
 Contol the camera and the cube with following keys
 
@@ -102,7 +102,7 @@ Options :
 $ ./build/src/cs4/cs4-ground
 ```
 
-![Tutorial 1](https://raw.githubusercontent.com/wiki/sarvottamananda/opengl-snippets/imgs/cs4-ground.png)
+![Tutorial 1](https://raw.githubusercontent.com/wiki/sarvottamananda/glbits-cpp/imgs/cs4-ground.png)
 
 Same options and controls as before.
 

@@ -13,14 +13,11 @@ namespace cs_config {
 
 constexpr char cs_config_file[] = "conf.yml";
 constexpr char cs_config_dir[] =
-    "/home/shreesh/local/proj/opengl-snippets/"
-    "src/cs4-ground/config";
+    "../../src/cs4-ground/config";
 constexpr char cs_build_dir[] =
-    "/home/shreesh/local/proj/opengl-snippets/"
-    "build/src/cs4-ground";
+    "../../build/src/cs4-ground";
 constexpr char cs_source_dir[] =
-    "/home/shreesh/local/proj/opengl-snippets/"
-    "src/cs4-ground";
+    "../../src/cs4-ground";
 
 }  // namespace cs_config
 

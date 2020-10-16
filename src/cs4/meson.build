@@ -1,6 +1,6 @@
 cs4_src = [ \
   'app.cpp', \
-  'main.cpp', \
+  'cs4_ground.cpp', \
 ]
 
 subdir('assets')

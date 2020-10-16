@@ -1,4 +1,4 @@
-cs1_sources = ['cs1-triangles.cpp']
+cs1_sources = ['cs1_triangles.cpp']
 
 cs1_exe = executable('cs1-triangles', cs1_sources, dependencies : [glfw_dep, glew_dep]) 
 

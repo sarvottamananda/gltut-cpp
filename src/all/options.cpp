@@ -14,11 +14,9 @@
 #include <string>
 #include <vector>
 
-#include "config/cs_config.h"
-
 static int getnumarg(char*);
 static void print_usage(char*);
-static void process_buildconf(Options* os);
+static void process_build(Options* os);
 static void process_yaml(std::string conffile, Options* os);
 static void process_env(Options* os);
 
@@ -28,16 +26,16 @@ Options::Options()
       fullscreen(false),
       height(600),
       width(800),
-      configfile(cs_config::cs_config_file),
+      configfile("conf.yml"),
       assetspath("./assets"),
       searchpath("..:."),
       modelsdir("models"),
       shadersdir("shaders"),
       texturesdir("textures"),
-      builddir(cs_config::cs_build_dir),
-      sourcedir(cs_config::cs_source_dir),
+      builddir("."),
+      sourcedir("."),
       homedir("~"),
-      configdir(cs_config::cs_config_dir)
+      configdir("config")
 {
     return;
 }
@@ -61,10 +59,12 @@ Options::print(std::string name)
 	"\tbuilddir = %s\n"
 	"\tsourcedir = %s\n"
 	"\thomedir = %s\n"
+	"\tconfigdir = %s\n"
 	"}\n",
 	name.c_str(), fullscreen, verbose, debug, height, width, configfile.c_str(),
 	assetspath.c_str(), searchpath.c_str(), modelsdir.c_str(), shadersdir.c_str(),
-	texturesdir.c_str(), builddir.c_str(), sourcedir.c_str(), homedir.c_str());
+	texturesdir.c_str(), builddir.c_str(), sourcedir.c_str(), homedir.c_str(),
+	configdir.c_str());
     fflush(stdout);
 }
 
@@ -78,7 +78,7 @@ Options::process_options(int argc, char** argv)
     bool fullscreen = false;
     int height = 0;
     int width = 0;
-    std::string conffile = cs_config::cs_config_file;
+    std::string conffile = configfile;
 
     bool has_vopt = false;
     bool has_dopt = false;
@@ -170,8 +170,6 @@ Options::process_options(int argc, char** argv)
     // First process the configuration file for the options, because the environment vars and
     // then command line options overide the configuration file.
 
-    process_buildconf(this);
-
     if (has_copt) {
 	this->configfile = conffile;
     }
@@ -185,6 +183,15 @@ Options::process_options(int argc, char** argv)
     if (has_hopt) this->height = height;
     if (has_wopt) this->width = width;
     return;
+}
+
+void
+Options::process_build(const char bdir[], const char sdir[], const char cdir[], const char cfile[])
+{
+    builddir = bdir;
+    sourcedir = sdir;
+    configdir = cdir;
+    configfile = cfile;
 }
 
 static int
@@ -224,18 +231,6 @@ print_usage(char* program_name)
 	"\t--height\t\tHeight of the window otherwise it has default height\n"
 	"\t--width\t\tWidth of the window otherwise it has default width\n",
 	program_name);
-}
-
-void
-process_buildconf(Options* os)
-{
-    // Currently we are directly setting the builddir and srcdir variable in the config.h using
-    // meson build system.
-
-    // os->builddir = cs_config::cs_build_dir;
-    // os->sourcedir = cs_config::cs_source_dir;
-    // os->configdir = cs_config::cs_config_dir;
-    // os->configfile = cs_config::cs_config_file;
 }
 
 void

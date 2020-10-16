@@ -1,8 +1,8 @@
 subdir('inc')
 
 subdir('all')
-subdir('cs0-window')
-subdir('cs1-triangles')
-subdir('cs2-moving')
-subdir('cs3-skybox')
-subdir('cs4-ground')
+subdir('cs0')
+subdir('cs1')
+subdir('cs2')
+subdir('cs3')
+subdir('cs4')

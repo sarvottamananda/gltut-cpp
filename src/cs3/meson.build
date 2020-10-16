@@ -1,6 +1,7 @@
 cs3_src = [ \
   'app_base.cpp', \
   'app.cpp', \
+  'cs3_skybox.cpp', \
   'debug.cpp', \
   'do_args.cpp', \
   'do_env.cpp', \
@@ -8,7 +9,6 @@ cs3_src = [ \
   'do_yaml.cpp', \
   'global.cpp', \
   'img_stuff.cpp', \
-  'main.cpp', \
   'model_base.cpp', \
   'model_cube.cpp', \
   'options_store.cpp', \

@@ -10,13 +10,22 @@
 //     3) Configuration options
 //     4) Command line options
 
-#ifndef SNIPPETS_OPTIONS_H
-#define SNIPPETS_OPTIONS_H
+#ifndef OPTIONS_H
+#define OPTIONS_H
 
 #include <string>
 
 class Options {
    public:
+    Options();
+    ~Options() = default;
+    // Copy
+    Options(const Options&) = default;
+    Options& operator=(const Options&) = delete;
+    // Move
+    Options(Options&&) = delete;
+    Options& operator=(Options&&) = delete;
+
     bool verbose;
     int debug;
 
@@ -35,18 +44,10 @@ class Options {
     std::string homedir;
     std::string configdir;
 
-   public:
-    Options();
-    ~Options() = default;
-    // Copy
-    Options(const Options&) = default;
-    Options& operator=(const Options&) = delete;
-    // Move
-    Options(Options&&) = delete;
-    Options& operator=(Options&&) = delete;
     // Print all the contents, with a title string
     void print(std::string title);
     void process_options(int, char**);
+    void process_build(const char bdir[], const char sdir[], const char cdir[], const char cfile[]);
 };
 
-#endif	// SNIPPETS_OPTIONS_H
+#endif	// OPTIONS_H

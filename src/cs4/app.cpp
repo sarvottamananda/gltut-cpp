@@ -367,8 +367,7 @@ store_cubemap_texture_data(Vector<Image> &image)
 
 	if (image[i].get_width() != w || image[i].get_height() != h ||
 	    image[i].get_bytes_per_pixel() != nc) {
-	    std::cerr << "Images do not have same size, resize them equally.\n";
-	    exit(EXIT_FAILURE);
+            throw std::runtime_error("Images do not have same size, resize them equally");
 	}
 
 	glTexSubImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, 0, 0, w, h, GL_RGB,

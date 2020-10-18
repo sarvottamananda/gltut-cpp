@@ -1,6 +1,6 @@
 cs3_src = [ \
   'app_base.cpp', \
-  'app.cpp', \
+  'app_skybox.cpp', \
   'cs3_skybox.cpp', \
   'debug.cpp', \
   'do_args.cpp', \

@@ -1,17 +1,17 @@
-cs4_src = [ \
-  'app_ground.cpp', \
-  'cs4_ground.cpp', \
+cs5_src = [ \
+  'app_lighting.cpp', \
+  'cs5_lighting.cpp', \
 ]
 
 subdir('assets')
 
-cs4_exe = executable('cs4-ground', 
-    cs4_src,  
+cs5_exe = executable('cs5-lighting', 
+    cs5_src,  
     dependencies : [glfw_dep, yaml_dep, m_dep, glm_dep, glew_dep], 
     include_directories :  cs_inc,
     link_with : cs_lib) 
 
-test('cs4', cs4_exe, is_parallel : false, workdir : meson.current_build_dir())
+test('cs5', cs5_exe, is_parallel : false, workdir : meson.current_build_dir())
 
 config_data = configuration_data()
 config_data.set('CS_BUILD_DIR', meson.current_build_dir())

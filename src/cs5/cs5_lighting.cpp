@@ -4,32 +4,38 @@
 //
 //	Main function for the code snippet.
 
-#include "app_skybox.h"
-#include "do_args.h"
-#include "options_store.h"
+#include "app_lighting.h"
+#include "options.h"
 #include "window.h"
+#include "cs_config.h"
 #include "window_factory.h"
 
-int main(int argc, char* argv[])
+static void process_buildconf(Options& op);
+
+int
+main(int argc, char* argv[])
 {
-    Options_store opts_store;
+    Options opts;
 
     // debug::setdebug(9);
-    process_args(argc, argv, opts_store);
-    opts_store.print("Options store");
+    opts.process_build(cs_config::cs_build_dir, cs_config::cs_source_dir,
+			   cs_config::cs_config_dir, cs_config::cs_config_file);
+    opts.process_options(argc, argv);
+    opts.print("Options store");
 
     Window* win_glfw = Window_factory::create_window(
 	Window_type::glfw);	 // Create a glfw window using factory idiom
-    App_skybox code_snippet(win_glfw);	 // Create an app instance using glfw window, we did not want to
+    App_lighting code_snippet(win_glfw);	 // Create an app instance using glfw window, we did not want to
 				 // hardcode glfw instance of window inside the app, hence we
 				 // create it first and then pass it to app instance
-				 //
+
     win_glfw->set_app(&code_snippet);
 
-    code_snippet.initialize(opts_store);
+    code_snippet.initialize(opts);
     code_snippet.render_loop();
     code_snippet.terminate();
 
     Window_factory::destroy_window(
 	win_glfw, Window_type::glfw);  // Destroy the glfw window using factory idiom
 }
+

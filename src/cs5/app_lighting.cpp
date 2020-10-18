@@ -1,10 +1,13 @@
-// Sarvottamananda (shreesh)
-// 2020-09-28
-// app.cpp v0.0 (OpenGL Code Snippets)
-//
-// Apps derived from App_base
+/**
+ * Sarvottamananda (shreesh)
+ * Oct 19, 2020
+ * app_lighting.cpp v0.0 (OpenGL Code Snippets)
+ *
+ * Apps derived from App_base
+ *
+ */
 
-#include "app.h"
+#include "app_lighting.h"
 
 // clang-format off
 #include <GL/glew.h>
@@ -133,7 +136,7 @@ static void GLAPIENTRY debug_callback(GLenum source, GLenum type, GLuint id, GLe
 
 // App::render_loop() {{{1
 void
-App::render_loop()
+App_lighting::render_loop()
 // Function for rendering, later on we will make a Renderable class for  doing this.
 {
     // This makes w's OpenGL context current, just in case if there are multiple windows too.
@@ -247,6 +250,12 @@ prepare_matrices(const Window &win)
 // Comput model, view, project matrices for the cube object and the cubemap
 {
     // View
+
+    /*
+    std::cout << eye_pos[0] << " " << eye_pos[1] << " " << eye_pos[2] << "\n";
+    std::cout << eye_lookat[0] << " " << eye_lookat[1] << " " << eye_lookat[2] << "\n";
+    std::cout << eye_up[0] << " " << eye_up[1] << " " << eye_up[2] << "\n";
+    // */
 
     glm::mat4 view = glm::lookAt(eye_pos, eye_lookat, eye_up);
 
@@ -392,7 +401,10 @@ prepare_ground_texture()
 
     for (auto i = 0u; i < tex_sz; i++) {
 	for (auto j = 0u; j < tex_sz; j++) {
-	    GLubyte c = (((i & 0x20) == 0) ^ ((j & 0x20) == 0)) * 255;
+	    GLubyte c = 0;
+            c = (((i & 0x8) == 0) ^ ((j & 0x8) == 0)) ;
+            c += (((i & 0x20) == 0) ^ ((j & 0x20) == 0))*2 ;
+            c *= 85;
 	    image[i][j][0] = (GLubyte)c;
 	    image[i][j][1] = (GLubyte)c;
 	    image[i][j][2] = (GLubyte)c;
@@ -597,9 +609,9 @@ do_draw_commands(const Window &win)
 }
 // 1}}}
 
-// App::key_callback {{{1
+// App_lighting::key_callback {{{1
 void
-App::key_callback(Key key, int scancode, Key_action action, Key_mods mods)
+App_lighting::key_callback(Key key, int scancode, Key_action action, Key_mods mods)
 {
     using std::cout;
 
@@ -751,7 +763,7 @@ init_camera()
 }
 
 void
-App::initialize(Options &os)
+App_lighting::initialize(Options &os)
 {
     w.initialize("OpenGL Snippets : Textured Ground", os.width, os.height, os.fullscreen);
 }

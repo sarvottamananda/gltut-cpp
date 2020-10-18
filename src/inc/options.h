@@ -1,6 +1,6 @@
 // Sarvottamananda (shreesh)
 // 2020-09-28
-// options.hpp v0.0 (OpenGL Code Snippets)
+// options.h v0.0 (OpenGL Code Snippets)
 //
 // Options class
 //

@@ -1,19 +1,19 @@
 //	Sarvottamananda (shreesh)
 //	2020-09-28
-//	app.hpp v0.0 (OpenGL Code Snippets)
+//	app_ground.h v0.0 (OpenGL Code Snippets)
 //
 //	Interface for derived App class
 
-#ifndef APP_H
-#define APP_H
+#ifndef APP_GROUND_H
+#define APP_GROUND_H
 
 #include "app_base.h"
 #include "options.h"
 
-class App : public App_base {
+class App_ground : public App_base {
    public:
-    App(Window* win) : App_base(win){};
-    virtual ~App() = default;
+    App_ground(Window* win) : App_base(win){};
+    virtual ~App_ground() = default;
     void render_loop();
 
     virtual void key_callback(Key, int, Key_action, Key_mods);
@@ -22,4 +22,4 @@ class App : public App_base {
    private:
 };
 
-#endif	// APP_H
+#endif	// APP_GROUND_H

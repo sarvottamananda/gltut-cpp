@@ -4,7 +4,7 @@
 //
 //	Main function for the code snippet.
 
-#include "app.h"
+#include "app_ground.h"
 #include "options.h"
 #include "window.h"
 #include "cs_config.h"
@@ -25,7 +25,7 @@ main(int argc, char* argv[])
 
     Window* win_glfw = Window_factory::create_window(
 	Window_type::glfw);	 // Create a glfw window using factory idiom
-    App code_snippet(win_glfw);	 // Create an app instance using glfw window, we did not want to
+    App_ground code_snippet(win_glfw);	 // Create an app instance using glfw window, we did not want to
 				 // hardcode glfw instance of window inside the app, hence we
 				 // create it first and then pass it to app instance
 

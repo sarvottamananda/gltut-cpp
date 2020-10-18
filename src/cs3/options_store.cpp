@@ -20,7 +20,7 @@ Options_store::Options_store()
       shadersdir("shaders"),
       texturesdir("textures"),
       builddir("."),
-      sourcedir("."),
+      sourcedir("../../../src/cs3"),
       homedir("~")
 {
     return;

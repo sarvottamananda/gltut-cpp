@@ -4,7 +4,7 @@
 [![First timers only friendly](https://img.shields.io/badge/first--timers--only-friendly-blue.svg?style=flat)](https://github.com/sarvottamananda/)
 [![Open Source Love](https://firstcontributions.github.io/open-source-badges/badges/open-source-v1/open-source.svg)](https://github.com/firstcontributions/open-source-badges)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT)
-[![Build Status](https://travis-ci.com/sarvottamananda/gltut-cpp.svg?branch=master)](https://travis-ci.com/sarvottamananda/gltut-cpp)
+[![Build Status](https://travis-ci.com/sarvottamananda/gltut-cpp.svg?branch=develop)](https://travis-ci.com/sarvottamananda/gltut-cpp)
 
 ***
 

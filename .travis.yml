@@ -9,7 +9,8 @@ before_install:
     - sudo apt-get update -qq
 
 install:
-    - sudo apt-get install libglew-dev libglfw3-dev libglm-dev libyaml-cpp-dev meson ninja
+    - sudo apt install meson ninja
+    - sudo apt install libglew-dev libglfw3-dev libglm-dev libyaml-cpp-dev 
 
 script:
     - meson build && ninja -j8 -C build

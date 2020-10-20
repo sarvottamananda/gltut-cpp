@@ -5,8 +5,8 @@ project('opengl-cpp-tutorials',
 	meson_version : '>= 0.50',
   	default_options : [
 		'buildtype=release', 
-		'c_std=c18', 
-		'cpp_std=c++17', 
+		'c_std=c11', 
+		'cpp_std=c++2a', 
 		'warning_level=2', 
 		'layout=mirror',
                 'default_library=static'

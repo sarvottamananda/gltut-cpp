@@ -2,7 +2,7 @@ project('opengl-cpp-tutorials',
 	['c', 'cpp'],
 	version : '0.1.4',
 	license : 'MIT',
-	meson_version : '>= 0.44',
+	meson_version : '>= 0.50',
   	default_options : [
 		'buildtype=release', 
 		'c_std=c18', 

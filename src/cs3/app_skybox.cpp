@@ -1,10 +1,10 @@
 // Sarvottamananda (shreesh)
 // 2020-09-28
-// app.cpp v0.0 (OpenGL Code Snippets)
+// app_skybox.cpp v0.0 (OpenGL Code Snippets)
 //
 // Apps derived from App_base
 
-#include "app.h"
+#include "app_skybox.h"
 
 // clang-format off
 #include <GL/glew.h>
@@ -98,11 +98,11 @@ static void calculate_camera();
 static void init_camera();
 
 /*
- * App::render_loop() is the main function defined in this file.
+ * App_skybox::render_loop() is the main function defined in this file.
  */
 
 void
-App::render_loop()
+App_skybox::render_loop()
 // Function for rendering, later on we will make a Renderable class for  doing this.
 {
     // This makes w's OpenGL context current, just in case if there are multiple windows too.
@@ -445,7 +445,7 @@ do_draw_commands(const Window &win)
 }
 
 void
-App::key_callback(Key key, int scancode, Key_action action, Key_mods mods)
+App_skybox::key_callback(Key key, int scancode, Key_action action, Key_mods mods)
 {
     using std::cout;
 

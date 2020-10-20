@@ -12,9 +12,9 @@
 namespace cs_config {
 
 constexpr char cs_config_file[] = "conf.yml";
-constexpr char cs_config_dir[] = "../../../src/cs4/config";
-constexpr char cs_build_dir[] = "../../../build/src/cs4";
-constexpr char cs_source_dir[] = "../../../src/cs4";
+constexpr char cs_config_dir[] = "../../../src/cs5/config";
+constexpr char cs_build_dir[] = "../../../build/src/cs5";
+constexpr char cs_source_dir[] = "../../../src/cs5";
 
 }  // namespace cs_config
 

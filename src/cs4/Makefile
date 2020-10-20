@@ -2,15 +2,15 @@
 #hdrs := $(shell find $(src_dir) -type f -name '*.h' -printf '%f\n' | sort)
 
 srcs := \
-    app.cpp \
-    main.cpp \
+    app_ground.cpp \
+    cs4_ground.cpp \
     options.cpp \
 
 
 hdrs := \
-    app.h \
+    app_ground.h \
     options.h \
-    config/cs_config.h \
+    cs_config.h \
 
 
 lib_srcs := \

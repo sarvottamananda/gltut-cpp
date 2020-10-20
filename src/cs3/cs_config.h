@@ -11,9 +11,9 @@
 
 namespace cs_config {
 
-constexpr char cs_config_file[] = "cs3.yml";
+constexpr char cs_config_file[] = "../../../src/cs3/cs3.yml";
 constexpr char cs_build_dir[] = ".";
-constexpr char cs_source_dir[] = ".";
+constexpr char cs_source_dir[] = "../../../src/cs3";
 
 }  // namespace cs_config
 

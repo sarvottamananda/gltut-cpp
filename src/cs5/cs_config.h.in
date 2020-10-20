@@ -16,4 +16,4 @@ constexpr char cs_source_dir[] = "@CS_SOURCE_DIR@";
 
 }  
 
-#endif // CS_CONFIG_H
+#endif // CS_CONFIG_H 

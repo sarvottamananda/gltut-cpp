@@ -1,6 +1,6 @@
 cs3_src = [ \
   'app_base.cpp', \
-  'app.cpp', \
+  'app_skybox.cpp', \
   'cs3_skybox.cpp', \
   'debug.cpp', \
   'do_args.cpp', \
@@ -32,7 +32,7 @@ config_inc = include_directories('.')
 cs3_exe = executable('cs3-skybox', 
     cs3_src,  
     dependencies : [glfw_dep, yaml_dep, m_dep, glm_dep, glew_dep], 
-    include_directories : config_inc) 
+    include_directories : [config_inc, cs_inc]) 
 
 test('cs3', cs3_exe, is_parallel : false, workdir : meson.current_build_dir())
 

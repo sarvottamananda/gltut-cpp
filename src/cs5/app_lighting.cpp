@@ -401,13 +401,24 @@ prepare_ground_texture()
 
     for (auto i = 0u; i < tex_sz; i++) {
 	for (auto j = 0u; j < tex_sz; j++) {
-	    GLubyte c = 0;
-            c = (((i & 0x8) == 0) ^ ((j & 0x8) == 0)) ;
-            c += (((i & 0x20) == 0) ^ ((j & 0x20) == 0))*2 ;
-            c *= 85;
-	    image[i][j][0] = (GLubyte)c;
-	    image[i][j][1] = (GLubyte)c;
-	    image[i][j][2] = (GLubyte)c;
+            // clang-format off
+	    GLubyte color[4][3] = {
+		{ 0, 0, 0, },
+		{ 92, 80, 80, },
+		{ 208, 192, 192, },
+		{ 255, 255, 255, },
+	    };
+            // clang-format on
+
+            GLubyte m = 0x8;
+	    GLubyte c =  (((i & m * 0x1) == 0) ^ ((j & m * 0x1) == 0)) ;
+            GLubyte d = (((i & m * 0x4) == 0) ^ ((j & m * 0x4) == 0)) ;
+
+            auto ind = 2*d +c;
+
+	    image[i][j][0] = (GLubyte)color[ind][0];
+	    image[i][j][1] = (GLubyte)color[ind][1];
+	    image[i][j][2] = (GLubyte)color[ind][2];
 	    image[i][j][3] = (GLubyte)255;
 	}
     }

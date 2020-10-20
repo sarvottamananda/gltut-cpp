@@ -2,11 +2,11 @@ project('opengl-cpp-tutorials',
 	['c', 'cpp'],
 	version : '0.1.4',
 	license : 'MIT',
-	meson_version : '>= 0.50',
+	meson_version : '>= 0.44',
   	default_options : [
 		'buildtype=release', 
 		'c_std=c18', 
-		'cpp_std=c++2a', 
+		'cpp_std=c++17', 
 		'warning_level=2', 
 		'layout=mirror',
                 'default_library=static'

@@ -36,7 +36,6 @@ lib_dir ?= ../all/
 target := $(bin_dir)/cs5
 lib_target = $(bin_dir)/libcs.a
 
-
 #inc_dirs := $(shell find $(src_dir) -type d -name inc)
 #inc_dirs ?= ../../subprojects/glad/
 inc_dirs := ../inc ./inc

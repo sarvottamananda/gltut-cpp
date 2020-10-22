@@ -15,11 +15,11 @@
 
 #include "app_base.h"
 #include "window.h"
-// clang-format off
+// clang-format: off
 //#include "glad.h"  // glad is written in C
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>	 // GLFW3 is written in C
-// clang-format on
+// clang-format: on
 
 // using definitions
 using std::cerr;

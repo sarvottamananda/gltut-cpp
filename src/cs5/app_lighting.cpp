@@ -4,24 +4,26 @@
  * app_lighting.cpp v0.0 (OpenGL Code Snippets)
  *
  * Apps derived from App_base
- *
  */
 
 #include "app_lighting.h"
 
-// clang-format off
+// clang-format: off
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
-// clang-format on
+// clang-format: on
+
+#include <chrono>
+#include <cmath>
+#include <iostream>
+#include <random>
+#include <vector>
 
 #include "img_stuff.h"
 #include "model_cube.h"
 #include "model_ground.h"
 #include "shader_stuff.h"
 #include "window.h"
-#include <cmath>
-#include <iostream>
-#include <vector>
 
 #define GLM_ENABLE_EXPERIMENTAL
 #include <glm/gtc/matrix_transform.hpp>
@@ -376,7 +378,7 @@ store_cubemap_texture_data(Vector<Image> &image)
 
 	if (image[i].get_width() != w || image[i].get_height() != h ||
 	    image[i].get_bytes_per_pixel() != nc) {
-            throw std::runtime_error("Images do not have same size, resize them equally");
+	    throw std::runtime_error("Images do not have same size, resize them equally");
 	}
 
 	glTexSubImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, 0, 0, w, h, GL_RGB,
@@ -401,20 +403,20 @@ prepare_ground_texture()
 
     for (auto i = 0u; i < tex_sz; i++) {
 	for (auto j = 0u; j < tex_sz; j++) {
-            // clang-format off
+	    // clang-format off
 	    GLubyte color[4][3] = {
 		{ 0, 0, 0, },
 		{ 92, 80, 80, },
 		{ 208, 192, 192, },
 		{ 255, 255, 255, },
 	    };
-            // clang-format on
+	    // clang-format on
 
-            GLubyte m = 0x8;
-	    GLubyte c =  (((i & m * 0x1) == 0) ^ ((j & m * 0x1) == 0)) ;
-            GLubyte d = (((i & m * 0x4) == 0) ^ ((j & m * 0x4) == 0)) ;
+	    GLubyte m = 0x8;
+	    GLubyte c = (((i & m * 0x1) == 0) ^ ((j & m * 0x1) == 0));
+	    GLubyte d = (((i & m * 0x4) == 0) ^ ((j & m * 0x4) == 0));
 
-            auto ind = 2*d +c;
+	    auto ind = 2 * d + c;
 
 	    image[i][j][0] = (GLubyte)color[ind][0];
 	    image[i][j][1] = (GLubyte)color[ind][1];

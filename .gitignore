@@ -1,5 +1,6 @@
 # Build Directory
 .cache/
+.clangd/
 build/
 build-*/
 ref/

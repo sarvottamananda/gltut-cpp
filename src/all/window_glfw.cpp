@@ -252,8 +252,6 @@ void Window_glfw::make_current()
 
 void Window_glfw::render_begin()
 {
-    //// Poll for the events
-    //::glfwPollEvents();
 }
 
 bool Window_glfw::render_cond()
@@ -268,8 +266,10 @@ void Window_glfw::render_end()
 {
     // Swap buffers
     ::glfwSwapBuffers(window);
-    // And then idle wait
-    ::glfwWaitEvents();
+    // Poll for the events
+    ::glfwPollEvents();
+    //// or  idle wait
+    //::glfwWaitEvents();
 }
 
 void Window_glfw::terminate() { glfwTerminate(); }

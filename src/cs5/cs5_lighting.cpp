@@ -5,9 +5,10 @@
 //	Main function for the code snippet.
 
 #include "app_lighting.h"
+#include "cs_config.h"
+#include "debug.h"
 #include "options.h"
 #include "window.h"
-#include "cs_config.h"
 #include "window_factory.h"
 
 static void process_buildconf(Options& op);
@@ -17,17 +18,19 @@ main(int argc, char* argv[])
 {
     Options opts;
 
-    // debug::setdebug(9);
+    //debug::setdebug(9);
     opts.process_build(cs_config::cs_build_dir, cs_config::cs_source_dir,
-			   cs_config::cs_config_dir, cs_config::cs_config_file);
+		       cs_config::cs_config_dir, cs_config::cs_config_file);
     opts.process_options(argc, argv);
     opts.print("Options store");
 
-    Window* win_glfw = Window_factory::create_window(
-	Window_type::glfw);	 // Create a glfw window using factory idiom
-    App_lighting code_snippet(win_glfw);	 // Create an app instance using glfw window, we did not want to
-				 // hardcode glfw instance of window inside the app, hence we
-				 // create it first and then pass it to app instance
+    // Create a glfw window using factory idiom
+    Window* win_glfw = Window_factory::create_window( Window_type::glfw);  
+
+    // Create an app instance using glfw window, we did not want to
+    // hardcode glfw instance of window inside the app, hence we
+    // create it first and then pass it to app instance
+    App_lighting code_snippet( win_glfw);  
 
     win_glfw->set_app(&code_snippet);
 
@@ -38,4 +41,3 @@ main(int argc, char* argv[])
     Window_factory::destroy_window(
 	win_glfw, Window_type::glfw);  // Destroy the glfw window using factory idiom
 }
-

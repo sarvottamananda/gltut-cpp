@@ -18,19 +18,19 @@ main(int argc, char* argv[])
 {
     Options opts;
 
-    //debug::setdebug(9);
+    // debug::setdebug(9);
     opts.process_build(cs_config::cs_build_dir, cs_config::cs_source_dir,
 		       cs_config::cs_config_dir, cs_config::cs_config_file);
     opts.process_options(argc, argv);
     opts.print("Options store");
 
     // Create a glfw window using factory idiom
-    Window* win_glfw = Window_factory::create_window( Window_type::glfw);  
+    Window* win_glfw = Window_factory::create_window(Window_type::glfw);
 
     // Create an app instance using glfw window, we did not want to
     // hardcode glfw instance of window inside the app, hence we
     // create it first and then pass it to app instance
-    App_lighting code_snippet( win_glfw);  
+    App_lighting code_snippet(win_glfw);
 
     win_glfw->set_app(&code_snippet);
 

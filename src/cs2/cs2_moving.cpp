@@ -1,18 +1,25 @@
-// Include GLEW - opengl extension wrangler
-#include <GL/glew.h>
+/**
+ * Sarvottamananda (shreesh)
+ * Oct 20, 2020
+ * cs2_moving.cpp v0.0 (OpenGL/C++ Tutorials) 
+ *
+ * Moving triangles and camera app
+ */
 
-// Include GLFW -  graphics library framework
-#include <GLFW/glfw3.h>
-GLFWwindow *window;
-
-// Include C++ standard headers
-#include <iostream>
-#include <random>
-#include <chrono>
+// The following headers include order should be maintained
+// clang-format: off
+#include <GL/glew.h> // Include GLEW - opengl extension wrangler
+#include <GLFW/glfw3.h>	 // Include GLFW -  graphics library framework
+// clang-format: on
 
 // Include C/C++ standard headers
-#include <cstdlib>
+#include <chrono>
 #include <cmath>
+#include <cstdlib>
+#include <iostream>
+#include <random>
+
+GLFWwindow *window;
 
 void framebuffer_size_callback(GLFWwindow *window, const int width, const int height);
 void process_input(GLFWwindow *window);

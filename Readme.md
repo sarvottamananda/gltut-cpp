@@ -102,9 +102,17 @@ Options :
 $ ./build/src/cs4/cs4-ground
 ```
 
-![Tutorial 1](https://raw.githubusercontent.com/wiki/sarvottamananda/glbits-cpp/imgs/cs4-ground.png)
+![Tutorial 4](https://raw.githubusercontent.com/wiki/sarvottamananda/glbits-cpp/imgs/cs4-ground.png)
 
 Same options and controls as before.
+
+#### Tutorial 5 - Lighting
+
+```
+$ ./build/src/cs5/cs5-lighting
+```
+
+![Tutorial 5](https://raw.githubusercontent.com/wiki/sarvottamananda/glbits-cpp/imgs/cs5-lighting.png)
 
 ***
 

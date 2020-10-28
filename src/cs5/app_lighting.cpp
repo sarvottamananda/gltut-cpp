@@ -4,27 +4,32 @@
  * app_lighting.cpp v0.0 (OpenGL Code Snippets)
  *
  * Apps derived from App_base
- *
  */
 
 #include "app_lighting.h"
 
-// clang-format off
+// clang-format: off
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
-// clang-format on
+// clang-format: on
+
+#include <chrono>
+#include <cmath>
+#include <glm/geometric.hpp>
+#include <iostream>
+#include <random>
+#include <vector>
 
 #include "img_stuff.h"
 #include "model_cube.h"
 #include "model_ground.h"
+#include "opengl_stuff.h"
 #include "shader_stuff.h"
 #include "window.h"
-#include <cmath>
-#include <iostream>
-#include <vector>
 
 #define GLM_ENABLE_EXPERIMENTAL
 #include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
 #include <glm/gtx/rotate_vector.hpp>
 
 //
@@ -32,60 +37,115 @@
 //
 
 template <class T>
+
 using Vector = std::vector<T, std::allocator<T>>;
+using std::cout;
+using std::cerr;
 using std::string;
+
+using glm::mat4;
+using glm::vec3;
+using glm::ivec4;
 
 //
 // unnamed namespace declarations
 //
 
-// Fold: local variables {{{1
 namespace {
 
-constexpr GLfloat delta_theta = 0.005f;
-constexpr GLfloat delta = 0.1f;
-constexpr GLfloat delta_alpha = 0.5f;
-constexpr GLfloat start_dist = 32.0f;
-constexpr GLfloat start_alt = 8.0f;
+// camera interactive movement
+constexpr GLfloat delta_theta = 0.005f;	 // delta angle
+constexpr GLfloat delta = 0.1f;		 // delta distance
+constexpr GLfloat start_dist = 60.0f;	 // start position on +z axis looking towards -z
+constexpr GLfloat start_alt = 8.0f;	 // start at certain altitude to look above
 
-Model_cube cube;
-Model_ground ground;
+// models
+Model_cube cube;      // test model and the skybox
+Model_ground ground;  // flat ground
 
-GLuint vao = 0;
+// program objects
+GLuint skybox_prog = 0;	  // shader for cubemap
+GLuint cubeobj_prog = 0;  // shader for lighted test object
+GLuint ground_prog = 0;	  // shader for ground
+
+// various array object
+GLuint vao = 0;  // one vertex array object for all
+
+// various buffer objects
 GLuint vbo = 0;
 GLuint ebo = 0;
+GLuint model_ubo = 0;
 
-GLuint cmvp_id = 0;
-GLuint gmvp_id = 0;
-GLuint vp_id = 0;
+// uniform block(s)
+GLuint cmodel_ind = 0;
+GLuint model_bindpoint = 0;
 
-GLintptr cube_off = 0;
-GLintptr cube_base = 0;
-GLintptr ground_base = 0;
-GLintptr ground_off = 0;
+// uniforms
+GLuint gmvp_loc = 0;
+GLuint vp_loc = 0;
+GLuint box_sz_loc = 0;
+GLuint eye_pos_loc = 0;
+GLuint sun_dir_loc = 0;
+GLuint amb_col_loc = 0;
+GLuint sun_col_loc = 0;
 
 GLuint skybox_tex_loc = 0;
 GLuint cube_tex_loc = 0;
 GLuint ground_tex_loc = 0;
 
-GLuint skybox_prog = 0;
-GLuint cubeobj_prog = 0;
-GLuint ground_prog = 0;
-
+// texture objects
 GLuint skybox_tex = 0;
 GLuint ground_tex = 0;
 GLuint cube_tex = 0;
 
-glm::mat4 cmvp = glm::mat4(1.0f);
-glm::mat4 gmvp = glm::mat4(1.0f);
-glm::mat4 vp = glm::mat4(1.0f);
+// buffer objects and elments base and offsets
+GLintptr cube_off = 0;
+GLintptr cube_base = 0;
+GLintptr ground_base = 0;
+GLintptr ground_off = 0;
 
-using glm::vec3;
+// model global data
 
-auto pos = vec3(0.0f, 2.0f, 0.0f);   // model location
-auto sf = vec3(1.0f, 1.0f, 1.0f);    // model scaling factor
-auto angle = (GLfloat)0.0f;	     // model rotation angle
-auto axis = vec3(1.0f, 1.0f, 1.0f);  // model rotational axis
+constexpr GLsizei num_cubes = 1024;  // number of cubes to draw
+constexpr GLsizei num_ub = 64;
+
+auto sf = vec3(1.0f, 1.0f, 1.0f);  // model scaling factor
+
+struct Xform {
+    vec3 disp;
+    GLfloat yvel;
+    vec3 axis;
+    GLfloat angle;
+    GLfloat avel;
+} cube_xform[num_cubes];
+
+struct Model_data {
+    mat4 mvp;
+    mat4 model;
+    mat4 model_invxpos;
+    ivec4 material;
+};
+
+Model_data cmodel[num_cubes];
+
+mat4 gmvp = mat4(1.0f);
+mat4 vp = mat4(1.0f);
+
+// world global data
+
+auto  box_sz = vec3(120.0f, 80.0f, 60.0f);
+
+auto start_time = std::chrono::steady_clock::now();
+
+GLfloat cubemap_num = 0.0f;  // use only one hires cubemap for this program, multiple cubemap would
+			     // have been better, but since we are storing assets locally, we do
+			     // not want to copy assets multiple times unnecessarily.
+
+std::random_device rd;
+std::mt19937 gen(rd());
+
+
+// camera global data
 
 auto eye_up = vec3(0, 1, 0);	  // Up is +ive Y (will be (0,-1,0) to look upside-down)
 auto eye_right = vec3(1, 0, 0);	  // Right is +ive X
@@ -96,11 +156,13 @@ auto eye_alt = start_alt;
 auto eye_pos = vec3(0, start_alt, start_dist);	// Camera at (8,0,0), in World Space
 auto eye_lookat = vec3(0, start_alt, 0);	// Look at the origin
 
-GLfloat cubemap_num = 0.0f;
+// lights global data
+
+auto sun_dir = vec3(0.3f, 0.4f, -0.5f); 
+auto sun_color = vec3(1.0f, 1.0f, 0.75f);
+auto ambient_color = vec3(0.5f, 0.75f, 1.0f);
 
 }  // unnamed namespace
-
-// 1}}}
 
 //
 // helper functions: in order of their use
@@ -109,7 +171,9 @@ GLfloat cubemap_num = 0.0f;
 static void prepare(const Window &);
 static void do_draw_commands(const Window &);
 static void prepare(const Window &win);
+static void prepare_world();
 static void prepare_models();
+static void prepare_cubes();
 static void prepare_matrices(const Window &);
 static void prepare_programs();
 static void prepare_uniforms();
@@ -118,14 +182,17 @@ static void prepare_cubemap_texture();
 static void prepare_ground_texture();
 static void prepare_cube_texture();
 static void prepare_buffers();
+static void prepare_array_buffers();
+static void prepare_uniform_buffers();
 static void prepare_attributes();
 static void store_cubemap_texture_data(Vector<Image> &image);
 static void key_callback(Window *win, int key, int scancode, int action, int mods);
 static void rotate_up(float theta);
 static void rotate_right(float theta);
 static void move_back(float delta);
-static void calculate_camera();
 static void init_camera();
+static void calculate_camera();
+static void modify_buffers();
 static void GLAPIENTRY debug_callback(GLenum source, GLenum type, GLuint id, GLenum severity,
 				      GLsizei length, const GLchar *message,
 				      const void *userParam);
@@ -134,7 +201,6 @@ static void GLAPIENTRY debug_callback(GLenum source, GLenum type, GLuint id, GLe
  * App::render_loop() is the main function defined in this file.
  */
 
-// App::render_loop() {{{1
 void
 App_lighting::render_loop()
 // Function for rendering, later on we will make a Renderable class for  doing this.
@@ -176,8 +242,8 @@ App_lighting::render_loop()
 	do_draw_commands(w);
 	w.render_end();	 // This also swaps buffer
     }
-}  // render_loop()
-// 1}}}
+    check_glerror(__FILE__, __LINE__);
+}
 
 static void GLAPIENTRY
 debug_callback(GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length,
@@ -186,26 +252,81 @@ debug_callback(GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei l
 {
     fprintf(stderr, "GL CALLBACK: %s type = 0x%x, severity = 0x%x, message = %s\n",
 	    (type == GL_DEBUG_TYPE_ERROR ? "** GL ERROR **" : ""), type, severity, message);
-}
+} 
 
 static void
 prepare(const Window &win)
 // Prepare various stuff to draw
 {
+    prepare_programs();	 // Programs info is not stored in vao
+
+    // first we prepare data
+    prepare_world();
     prepare_models();
-    prepare_programs();	 // Programs are not stored in vao
-    prepare_uniforms();	 // Uniforms are not stored in vao
-    prepare_textures();
+    prepare_matrices(win);
+
+    // send the data to opengl and prepare to render
+    prepare_uniforms();	 // Uniforms info is not stored in vao
+    prepare_textures();	 // textures and buffers info is not stored in vao
     prepare_buffers();
-    prepare_attributes();  // textures and buffers info is stored in vao
-}  // end of prepare()
+    prepare_attributes(); 
+}  
+
+GLfloat
+rng_float()
+{
+    std::uniform_real_distribution<GLfloat> dis(0.0f, 1.0f);
+    return dis(gen);
+}
+
+static void
+prepare_world()
+{
+    start_time = std::chrono::steady_clock::now();
+
+    sun_dir = glm::normalize(sun_dir);
+}
 
 static void
 prepare_models()
 // We have only one model for both cube map and the cube object
 {
+    /*
     cube.print();
     ground.print();
+    // */
+    prepare_cubes();
+}
+
+static void
+prepare_cubes()
+{
+    for (auto i = 0u; i < num_cubes; i++) {
+	cube_xform[i].disp =
+	    vec3(rng_float() * box_sz.x - box_sz.x/2.0f, rng_float() * box_sz.y, rng_float() * -box_sz.z);
+
+	vec3 axis_vec = vec3(rng_float(), rng_float(), rng_float());
+	if (axis_vec[0] + axis_vec[1] + axis_vec[2] == 0) {
+	    axis_vec[0] = 1.0;
+	}
+	cube_xform[i].axis = axis_vec;
+
+	cube_xform[i].angle = rng_float() * 360;
+	cube_xform[i].avel = rng_float() * 30;
+	cube_xform[i].yvel = 2 + rng_float() * 4;
+
+        GLint material = 4*int(cube_xform[i].disp.x * 4/box_sz.x + 2) + int(-cube_xform[i].disp.z * 4/box_sz.z );
+        cmodel[i].material.x = material;
+    }
+
+    /*
+    std::cout << "Materials : ";
+    for (auto i = 0; i < num_cubes; i++){
+        std::cout << cmodel[i].material.x << " ";
+        std::cout << cube_xform[i].disp.x << " " << cube_xform[i].disp.z  << " ";
+    }
+    std::cout << std::endl;
+    */
 }
 
 static void
@@ -229,22 +350,46 @@ prepare_programs()
 	"assets/shaders/cubeobj.frag",
     };
     cubeobj_prog = create_program("Cubeobj", cubeobj_shaders);
+
+    // We need 64 Model_data
+    GLint info = 0;
+    glGetIntegerv(GL_MAX_UNIFORM_BLOCK_SIZE, &info);
+    std::cout << "GL_MAX_UNIFORM_BLOCK_SIZE: " << info << "\n";
+    assert(info >= (GLint)(64 * sizeof(Model_data)));
+
+    glGetActiveUniformBlockiv(cubeobj_prog, 0, GL_UNIFORM_BLOCK_DATA_SIZE, &info);
+    std::cout << "GL_UNIFORM_BLOCK_DATA_SIZE (cubeobj:0) : " << info << "\n";
+
+    glGetIntegerv(GL_UNIFORM_BUFFER_OFFSET_ALIGNMENT, &info);
+    std::cout << "GL_UNIFORM_BUFFER_OFFSET_ALIGNMENT : " << info << "\n";
+
+
 }
 
 static void
 prepare_uniforms()
 {
-    vp_id = glGetUniformLocation(skybox_prog, "vp");
+    // skybox
     skybox_tex_loc = glGetUniformLocation(skybox_prog, "skybox");
+    vp_loc = glGetUniformLocation(skybox_prog, "vp");
 
-    cmvp_id = glGetUniformLocation(cubeobj_prog, "mvp");
+    // cubes
+    cmodel_ind = glGetUniformBlockIndex(cubeobj_prog, "model_block");
     cube_tex_loc = glGetUniformLocation(cubeobj_prog, "cube_tex");
 
-    gmvp_id = glGetUniformLocation(ground_prog, "mvp");
+    box_sz_loc = glGetUniformLocation(cubeobj_prog, "box_sz");
+    eye_pos_loc = glGetUniformLocation(cubeobj_prog, "eye_pos");
+    sun_dir_loc = glGetUniformLocation(cubeobj_prog, "sun_dir");
+    amb_col_loc = glGetUniformLocation(cubeobj_prog, "ambient_color");
+    sun_col_loc = glGetUniformLocation(cubeobj_prog, "sun_color");
+
+    glUniformBlockBinding(cubeobj_prog, cmodel_ind, model_bindpoint);
+
+    // ground
     ground_tex_loc = glGetUniformLocation(ground_prog, "ground_tex");
+    gmvp_loc = glGetUniformLocation(ground_prog, "mvp");
 }
 
-// Fold: prepare_matrices(const Window &win) {{{1
 static void
 prepare_matrices(const Window &win)
 // Comput model, view, project matrices for the cube object and the cubemap
@@ -257,7 +402,7 @@ prepare_matrices(const Window &win)
     std::cout << eye_up[0] << " " << eye_up[1] << " " << eye_up[2] << "\n";
     // */
 
-    glm::mat4 view = glm::lookAt(eye_pos, eye_lookat, eye_up);
+    mat4 view = glm::lookAt(eye_pos, eye_lookat, eye_up);
 
     // Projection
 
@@ -266,23 +411,43 @@ prepare_matrices(const Window &win)
     GLfloat near = 1 / 1024.0f;
     GLfloat far = 1024.0f;
 
-    glm::mat4 projection = glm::perspective(fovy, aspect, near, far);
+    mat4 projection = glm::perspective(fovy, aspect, near, far);
 
-    // Model matric for cube
+    // Model matrix for cube
 
-    glm::mat4 cmodel = glm::mat4(1.0f);	 // Identity matrix
+    auto cur_time = std::chrono::steady_clock::now();
+    std ::chrono::duration<float> cur_dur = cur_time - start_time;
 
-    cmodel = glm::scale(cmodel, sf);
-    cmodel = glm::rotate(cmodel, glm::radians(angle), axis);
-    cmodel = glm::translate(cmodel, pos);
+    for (auto i = 0u; i < num_cubes; i++) {
+	mat4 model = mat4(1.0f);  // Identity matrix
 
-    // mvp for cube object
+	vec3 pos = cube_xform[i].disp;
+	GLfloat angle = cube_xform[i].angle;
 
-    cmvp = projection * view * cmodel;
+	pos[1] -= ((GLfloat)cur_dur.count() * cube_xform[i].yvel);
+	angle += ((GLfloat)cur_dur.count() * cube_xform[i].avel);
 
-    // Model matric for ground
+        // when the cube gets completely below the surface move it back
+	if (pos[1] < -2.0f) cube_xform[i].disp[1] += box_sz.y;
 
-    glm::mat4 gmodel = glm::mat4(1.0f);	 // Identity matrix
+	model = glm::translate(model, pos);
+	model = glm::rotate(model, glm::radians(angle), cube_xform[i].axis);
+	model = glm::scale(model, sf);
+
+	// mvp for cube object
+
+	cmodel[i].mvp = projection * view * model;
+        cmodel[i].model = model;
+        // remove translation for normal transformation matrix
+        mat4 nmodel = mat4(1.0f);
+	nmodel = glm::rotate(nmodel, glm::radians(angle), cube_xform[i].axis);
+	nmodel = glm::scale(nmodel, sf);
+        cmodel[i].model_invxpos = nmodel;
+    }
+
+    // Model matrix for ground
+
+    mat4 gmodel = mat4(1.0f);	 // Identity matrix
 
     gmodel = glm::scale(gmodel, vec3(1.0f, 1.0f, 1.0f));
     gmodel = glm::rotate(gmodel, glm::radians(90.0f), vec3(-1.0f, 0.0f, 0.0f));
@@ -294,15 +459,13 @@ prepare_matrices(const Window &win)
 
     // Remove translation for the camera
 
-    view = glm::mat4(glm::mat3(view));
+    view = mat4(glm::mat3(view));
 
     // vp  for cubemap
 
     vp = projection * view;
 }
-// 1}}}
 
-// static void prepare_textures() {{{1
 static void
 prepare_textures()
 // Create texture buffers
@@ -316,9 +479,7 @@ prepare_textures()
     glActiveTexture(GL_TEXTURE2);
     prepare_cube_texture();
 }
-// 1}}}
 
-// Fold: prepare_cupemap_texture() {{{1
 static void
 prepare_cubemap_texture()
 // Upload pixel data on textures.
@@ -376,7 +537,7 @@ store_cubemap_texture_data(Vector<Image> &image)
 
 	if (image[i].get_width() != w || image[i].get_height() != h ||
 	    image[i].get_bytes_per_pixel() != nc) {
-            throw std::runtime_error("Images do not have same size, resize them equally");
+	    throw std::runtime_error("Images do not have same size, resize them equally");
 	}
 
 	glTexSubImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, 0, 0, w, h, GL_RGB,
@@ -389,9 +550,7 @@ store_cubemap_texture_data(Vector<Image> &image)
 	image[i].free_data();
     }
 }
-// 1}}}
 
-// Fold: prepare_ground_texture() {{{1
 static void
 prepare_ground_texture()
 {
@@ -401,20 +560,20 @@ prepare_ground_texture()
 
     for (auto i = 0u; i < tex_sz; i++) {
 	for (auto j = 0u; j < tex_sz; j++) {
-            // clang-format off
+	    // clang-format off
 	    GLubyte color[4][3] = {
 		{ 0, 0, 0, },
 		{ 92, 80, 80, },
 		{ 208, 192, 192, },
 		{ 255, 255, 255, },
 	    };
-            // clang-format on
+	    // clang-format on
 
-            GLubyte m = 0x8;
-	    GLubyte c =  (((i & m * 0x1) == 0) ^ ((j & m * 0x1) == 0)) ;
-            GLubyte d = (((i & m * 0x4) == 0) ^ ((j & m * 0x4) == 0)) ;
+	    GLubyte m = 0x8;
+	    GLubyte c = (((i & m * 0x1) == 0) ^ ((j & m * 0x1) == 0));
+	    GLubyte d = (((i & m * 0x4) == 0) ^ ((j & m * 0x4) == 0));
 
-            auto ind = 2*d +c;
+	    auto ind = 2 * d + c;
 
 	    image[i][j][0] = (GLubyte)color[ind][0];
 	    image[i][j][1] = (GLubyte)color[ind][1];
@@ -439,7 +598,6 @@ prepare_ground_texture()
 		    (void *)image);
     glGenerateMipmap(GL_TEXTURE_2D);
 }
-// 1}}}
 
 static void
 prepare_cube_texture()
@@ -472,12 +630,22 @@ prepare_cube_texture()
     image.free_data();
 }
 
-// prepare_buffers() {{{1
 static void
 prepare_buffers()
 {
-    glGenBuffers(1, &vbo);
-    glGenBuffers(1, &ebo);
+    GLuint bo[3];
+
+    glGenBuffers(3, bo);
+    vbo = bo[0];
+    ebo = bo[1];
+    model_ubo = bo[2];
+    prepare_array_buffers();
+    prepare_uniform_buffers();
+}
+
+static void
+prepare_array_buffers()
+{
     glBindBuffer(GL_ARRAY_BUFFER, vbo);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
 
@@ -531,7 +699,28 @@ prepare_buffers()
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 }
-// 1}}}
+
+static void
+prepare_uniform_buffers()
+{
+    // model matrices uniform block
+    glBindBuffer(GL_UNIFORM_BUFFER, model_ubo);
+    glBufferStorage(GL_UNIFORM_BUFFER, num_cubes * sizeof(Model_data), (GLvoid *)nullptr,
+		    GL_DYNAMIC_STORAGE_BIT);
+    glBufferSubData(GL_UNIFORM_BUFFER, (GLintptr)0, (GLsizeiptr)(num_cubes * sizeof(Model_data)),
+		    (const GLvoid *)(&cmodel[0]));
+
+    /*
+    std::cout << "Materials : ";
+    std::cout << sizeof(ivec4) << ":";
+    for (auto i = 0; i < num_cubes; i++){
+        std::cout << cmaterial[i].x << " ";
+    }
+    std::cout << std::endl;
+    */
+
+    glBindBuffer(GL_UNIFORM_BUFFER, 0);
+}
 
 static void
 prepare_attributes()
@@ -568,7 +757,6 @@ prepare_attributes()
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 }
 
-// do_draw_commands(const Window &win) {{{1
 static void
 do_draw_commands(const Window &win)
 {
@@ -580,11 +768,12 @@ do_draw_commands(const Window &win)
 
     calculate_camera();
     prepare_matrices(win);
+    modify_buffers();
 
     // Draw skybox
     // /*
     glUseProgram(skybox_prog);
-    glUniformMatrix4fv(vp_id, 1, GL_FALSE, &vp[0][0]);
+    glUniformMatrix4fv(vp_loc, 1, GL_FALSE, &vp[0][0]);
     glUniform1i(skybox_tex_loc, 0);
     glCullFace(GL_FRONT);
 
@@ -598,7 +787,7 @@ do_draw_commands(const Window &win)
     // /*
     glUseProgram(ground_prog);
     glUniform1i(ground_tex_loc, 1);
-    glUniformMatrix4fv(gmvp_id, 1, GL_FALSE, &gmvp[0][0]);
+    glUniformMatrix4fv(gmvp_loc, 1, GL_FALSE, &gmvp[0][0]);
 
     glDisable(GL_CULL_FACE);  // Enables culling of away facing triangles
     glDrawElementsBaseVertex(GL_TRIANGLES, ground.idx_num, GL_UNSIGNED_SHORT,
@@ -610,21 +799,32 @@ do_draw_commands(const Window &win)
     // /*
     glUseProgram(cubeobj_prog);
     glUniform1i(cube_tex_loc, 2);
-    glUniformMatrix4fv(cmvp_id, 1, GL_FALSE, &cmvp[0][0]);
+    glUniform3fv(box_sz_loc, 1, glm::value_ptr(box_sz));
+    glUniform3fv(eye_pos_loc, 1, glm::value_ptr(eye_pos));
+    glUniform3fv(sun_dir_loc, 1, glm::value_ptr(sun_dir));
+    glUniform3fv(amb_col_loc, 1, glm::value_ptr(ambient_color));
+    glUniform3fv(sun_col_loc, 1, glm::value_ptr(sun_color));
     glCullFace(GL_BACK);
     // glDrawElements(GL_TRIANGLES, cube.idx_num, GL_UNSIGNED_SHORT, (void *)0);
 
-    glDrawElementsBaseVertex(GL_TRIANGLES, cube.idx_num, GL_UNSIGNED_SHORT, (void *)cube_off,
-			     (GLint)cube_base);
-    // */
-}
-// 1}}}
+    /*
+    glBindBufferBase(GL_UNIFORM_BUFFER, ub_bindpoint, mvp_ubo);
+    glDrawElementsInstancedBaseVertex(GL_TRIANGLES, cube.idx_num, GL_UNSIGNED_SHORT,
+				      (void *)cube_off, num_ub, (GLint)cube_base);
+    */
 
-// App_lighting::key_callback {{{1
+    for (auto i = 0; i < num_cubes / num_ub; i++) {
+	glBindBufferRange(GL_UNIFORM_BUFFER, model_bindpoint, model_ubo, i * num_ub * sizeof(Model_data),
+			  num_ub * sizeof(Model_data));
+	glDrawElementsInstancedBaseVertex(GL_TRIANGLES, cube.idx_num, GL_UNSIGNED_SHORT,
+					  (void *)cube_off, num_ub, (GLint)cube_base);
+    }
+    // *8
+}
+
 void
 App_lighting::key_callback(Key key, int scancode, Key_action action, Key_mods mods)
 {
-    using std::cout;
 
     if (action == Key_action::release) return;
 
@@ -656,11 +856,11 @@ App_lighting::key_callback(Key key, int scancode, Key_action action, Key_mods mo
 	    break;
 	case Key::ka:
 	    cout << "key (a)\n";
-	    angle += delta_alpha;
+	    // angle += delta_alpha;
 	    break;
 	case Key::kd:
 	    cout << "key (d)\n";
-	    angle -= delta_alpha;
+	    // angle -= delta_alpha;
 	    break;
 
 	case Key::k0:
@@ -707,6 +907,7 @@ App_lighting::key_callback(Key key, int scancode, Key_action action, Key_mods mo
 	case Key::space:
 	    cout << "key (space)\n";
 	    init_camera();
+	    prepare_cubes();
 	    break;
 	case Key::esc:
 	    cout << "key (esc)\n";
@@ -734,7 +935,6 @@ App_lighting::key_callback(Key key, int scancode, Key_action action, Key_mods mo
     }
     return;
 }
-// 1}}}
 
 static void
 rotate_right(float theta)
@@ -757,20 +957,31 @@ move_back(float delta)
 }
 
 static void
-calculate_camera()
-{
-    eye_pos = -eye_dist * eye_front + eye_alt * vec3(0.0f, 1.0f, 0.0f);
-}
-static void
 init_camera()
 {
     eye_right = vec3(1.0f, 0.0f, 0.0f);
     eye_up = vec3(0.0f, 1.0f, 0.0f);
     eye_front = vec3(0.0f, 0.0f, -1.0f);
 
-    angle = 0.0f;
     eye_dist = start_dist;
     eye_alt = start_alt;
+
+    // angle = 0.0f;
+}
+
+static void
+calculate_camera()
+{
+    eye_pos = -eye_dist * eye_front + eye_alt * vec3(0.0f, 1.0f, 0.0f);
+}
+
+static void
+modify_buffers()
+{
+    glBindBuffer(GL_UNIFORM_BUFFER, model_ubo);
+    glBufferSubData(GL_UNIFORM_BUFFER, (GLintptr)0, (GLsizeiptr)(num_cubes * sizeof(Model_data)),
+		    (const GLvoid *)(&cmodel[0]));
+    glBindBuffer(GL_UNIFORM_BUFFER, 0);
 }
 
 void

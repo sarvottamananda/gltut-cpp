@@ -259,7 +259,7 @@ prepare_matrices(const Window &win)
 
     glm::mat4 projection = glm::perspective(fovy, aspect, near, far);
 
-    // Model matric for cube
+    // Model matrix for cube
 
     glm::mat4 cmodel = glm::mat4(1.0f);	 // Identity matrix
 
@@ -271,7 +271,7 @@ prepare_matrices(const Window &win)
 
     cmvp = projection * view * cmodel;
 
-    // Model matric for ground
+    // Model matrix for ground
 
     glm::mat4 gmodel = glm::mat4(1.0f);	 // Identity matrix
 

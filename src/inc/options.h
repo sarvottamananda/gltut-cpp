@@ -33,21 +33,9 @@ class Options {
     int height;
     int width;
 
-    std::string configfile;
-    std::string assetspath;
-    std::string searchpath;
-    std::string modelsdir;
-    std::string shadersdir;
-    std::string texturesdir;
-    std::string builddir;
-    std::string sourcedir;
-    std::string homedir;
-    std::string configdir;
-
     // Print all the contents, with a title string
     void print(std::string title);
     void process_options(int, char**);
-    void process_build(const char bdir[], const char sdir[], const char cdir[], const char cfile[]);
 };
 
 #endif	// OPTIONS_H

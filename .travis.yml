@@ -1,18 +1,28 @@
-os: linux
 dist: focal
-language: cpp
+group: travis_latest
+os: linux
+
+language: 
+    - cpp
+
 compiler: 
-    - g++
-    - clang++
+   - gcc
+
+branches:
+    only:
+        - master
+        - develop
 
 before_install:
     - sudo apt-get update -qq
 
 install:
-    - sudo apt install meson 
-    - sudo apt install ninja-build
-    - sudo apt install libglew-dev libglfw3-dev libglm-dev libyaml-cpp-dev 
+    - sudo pip install 'meson>=0.56' ninja --force-reinstall
+    - sudo apt-get -y install libglew-dev libglfw3-dev libglm-dev 
 
 script:
-    - meson build && ninja -j8 -C build
+    - meson builddir
+    - meson compile -C builddir
+    #- meson test -C builddir
+    #- meson build && ninja -j8 -C build
     #- ninja -j8 -C build test -v

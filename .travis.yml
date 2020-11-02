@@ -23,6 +23,6 @@ install:
 script:
     - meson builddir
     - meson compile -C builddir
-    - meson test -C builddir
+    #- meson test -C builddir
     #- meson build && ninja -j8 -C build
     #- ninja -j8 -C build test -v

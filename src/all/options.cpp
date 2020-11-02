@@ -6,7 +6,6 @@
 #include "options.h"
 
 #include <getopt.h>
-#include <yaml-cpp/yaml.h>
 
 #include <cstring>
 #include <iostream>
@@ -16,26 +15,13 @@
 
 static int getnumarg(char*);
 static void print_usage(char*);
-static void process_build(Options* os);
-static void process_yaml(std::string conffile, Options* os);
-static void process_env(Options* os);
 
 Options::Options()
     : verbose(false),
       debug(0),
       fullscreen(false),
       height(600),
-      width(800),
-      configfile("conf.yml"),
-      assetspath("./assets"),
-      searchpath("..:."),
-      modelsdir("models"),
-      shadersdir("shaders"),
-      texturesdir("textures"),
-      builddir("."),
-      sourcedir("."),
-      homedir("~"),
-      configdir("config")
+      width(800)
 {
     return;
 }
@@ -50,21 +36,8 @@ Options::print(std::string name)
 	"\tdebug = %d\n"
 	"\theight = %d\n"
 	"\twidth = %d\n"
-	"\tconfigfile = %s\n"
-	"\tassetspath = %s\n"
-	"\tsearchpath = %s\n"
-	"\tmodelsdir = %s\n"
-	"\tshadersdir = %s\n"
-	"\ttexturesdir = %s\n"
-	"\tbuilddir = %s\n"
-	"\tsourcedir = %s\n"
-	"\thomedir = %s\n"
-	"\tconfigdir = %s\n"
 	"}\n",
-	name.c_str(), fullscreen, verbose, debug, height, width, configfile.c_str(),
-	assetspath.c_str(), searchpath.c_str(), modelsdir.c_str(), shadersdir.c_str(),
-	texturesdir.c_str(), builddir.c_str(), sourcedir.c_str(), homedir.c_str(),
-	configdir.c_str());
+	name.c_str(), fullscreen, verbose, debug, height, width);
     fflush(stdout);
 }
 
@@ -78,11 +51,9 @@ Options::process_options(int argc, char** argv)
     bool fullscreen = false;
     int height = 0;
     int width = 0;
-    std::string conffile = configfile;
 
     bool has_vopt = false;
     bool has_dopt = false;
-    bool has_copt = false;
     bool has_fopt = false;
     bool has_hopt = false;
     bool has_wopt = false;
@@ -95,9 +66,8 @@ Options::process_options(int argc, char** argv)
 	{"height", required_argument, nullptr, 0},  // 4
 
 	{"help", no_argument, nullptr, 'h'},	     // 5
-	{"verbose", no_argument, nullptr, 'v'},	     // 7
 	{"debug", required_argument, nullptr, 'd'},  // 6
-	{"config", no_argument, nullptr, 'c'},	     // 8
+	{"verbose", no_argument, nullptr, 'v'},	     // 7
 	{0, 0, 0, 0},
     };
     std::string short_options = "hvd:c:";
@@ -145,9 +115,6 @@ Options::process_options(int argc, char** argv)
 	    case 'h':
 		print_usage(argv[0]);
 		break;
-	    case 'c':
-		conffile = optarg;
-		break;
 	    case '?':
 		// getopt_long already printed an error message, but we print the usage
 		// nevertheless
@@ -170,28 +137,12 @@ Options::process_options(int argc, char** argv)
     // First process the configuration file for the options, because the environment vars and
     // then command line options overide the configuration file.
 
-    if (has_copt) {
-	this->configfile = conffile;
-    }
-    process_yaml(this->configdir + "/" + this->configfile, this);
-
-    process_env(this);
-
     if (has_vopt) this->verbose = verbose;
     if (has_dopt) this->debug = debug;
     if (has_fopt) this->fullscreen = fullscreen;
     if (has_hopt) this->height = height;
     if (has_wopt) this->width = width;
     return;
-}
-
-void
-Options::process_build(const char bdir[], const char sdir[], const char cdir[], const char cfile[])
-{
-    builddir = bdir;
-    sourcedir = sdir;
-    configdir = cdir;
-    configfile = cfile;
 }
 
 static int
@@ -231,50 +182,4 @@ print_usage(char* program_name)
 	"\t--height\t\tHeight of the window otherwise it has default height\n"
 	"\t--width\t\tWidth of the window otherwise it has default width\n",
 	program_name);
-}
-
-void
-process_yaml(std::string conffile, Options* os)
-{
-    try {
-	YAML::Node config = YAML::LoadFile(conffile);
-	if (config) {
-	    if (auto val = config["assets_path"]) {
-		os->assetspath = val.as<std::string>();
-	    }
-	    if (auto val = config["build_dir"]) {
-		os->builddir = val.as<std::string>();
-	    }
-	    if (auto val = config["source_dir"]) {
-		os->sourcedir = val.as<std::string>();
-	    }
-	}
-    }
-    catch (YAML::BadFile& e) {
-	std::cerr << "Bad yaml file : " << e.what() << " (" << conffile.c_str() << ")\n";
-	return;
-    }
-}
-
-void
-process_env(Options* os)
-{
-    std::vector<std::string> namelist{
-	"CS_ASSETS_PATH", "CS_SEARCH_PATH",  "CS_MODELS_DIR",
-	"CS_SHADERS_DIR", "CS_TEXTURES_DIR", "HOME",
-    };
-
-    std::vector<char*> vallist(namelist.size());
-
-    auto i = 0;
-    for (auto s : namelist) {
-	vallist[i++] = std::getenv(s.c_str());
-    }
-
-    if (vallist[0] != nullptr) os->assetspath = vallist[0];
-    if (vallist[1] != nullptr) os->searchpath = vallist[1];
-    if (vallist[2] != nullptr) os->modelsdir = vallist[2];
-    if (vallist[3] != nullptr) os->shadersdir = vallist[3];
-    if (vallist[4] != nullptr) os->texturesdir = vallist[4];
-    if (vallist[5] != nullptr) os->homedir = vallist[5];
 }

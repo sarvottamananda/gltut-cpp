@@ -4,15 +4,15 @@
 // 
 // Data for configuration produced by meson build system from cs_config.h.in
 
-#ifndef SNIPPETS_CS_CONFIG_H_IN
-#define SNIPPETS_CS_CONFIG_H_IN
+#ifndef CS_CONFIG_H
+#define CS_CONFIG_H
 
 namespace cs_config {
 
-constexpr char cs_config_file[] = "@CS_CONFIG_FILE@";
 constexpr char cs_build_dir[] = "@CS_BUILD_DIR@";
 constexpr char cs_source_dir[] = "@CS_SOURCE_DIR@";
+constexpr char cs_root_dir[] = "@CS_ROOT_DIR@";
 
 }  
 
-#endif // SNIPPETS_CS_CONFIG_H_IN 
+#endif // CS_CONFIG_H 

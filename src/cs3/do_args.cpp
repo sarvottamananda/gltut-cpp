@@ -12,10 +12,10 @@
 #include <stdexcept>
 #include <string>
 
-#include "cs_config.h"
-#include "do_env.h"
+#include "cs3_config.h"
+//#include "do_env.h"
 #include "do_meson.h"
-#include "do_yaml.h"
+//#include "do_yaml.h"
 #include "options_store.h"
 
 static int getnumarg(char *);
@@ -30,11 +30,9 @@ void process_args(int argc, char **argv, Options_store &os)
     bool fullscreen = false;
     int height = 0;
     int width = 0;
-    std::string conffile = cs_config::cs_config_file;
 
     bool has_vopt = false;
     bool has_dopt = false;
-    bool has_copt = false;
     bool has_fopt = false;
     bool has_hopt = false;
     bool has_wopt = false;
@@ -47,9 +45,8 @@ void process_args(int argc, char **argv, Options_store &os)
 	{"height", required_argument, nullptr, 0},  // 4
 
 	{"help", no_argument, nullptr, 'h'},	     // 5
-	{"verbose", no_argument, nullptr, 'v'},	     // 7
 	{"debug", required_argument, nullptr, 'd'},  // 6
-	{"config", no_argument, nullptr, 'c'},	     // 8
+	{"verbose", no_argument, nullptr, 'v'},	     // 7
 	{0, 0, 0, 0},
     };
     std::string short_options = "hvd:c:";
@@ -59,7 +56,6 @@ void process_args(int argc, char **argv, Options_store &os)
 	res = getopt_long(argc, argv, short_options.c_str(), long_options, &long_index);
 
 	if (res == 0) {
-	    // nothing to do if it is fullscreen  or windowed
 	    if (strcmp(long_options[long_index].name, "brief") == 0) {
 		verbose = false;
 		has_vopt = true;
@@ -97,9 +93,6 @@ void process_args(int argc, char **argv, Options_store &os)
 	    case 'h':
 		print_usage(argv[0]);
 		break;
-	    case 'c':
-		conffile = optarg;
-		break;
 	    case '?':
 		// getopt_long already printed an error message, but we print the usage
 		// nevertheless
@@ -119,23 +112,17 @@ void process_args(int argc, char **argv, Options_store &os)
 	fputc('\n', stderr);
     }
 
-    // First process the configuration file for the options, because the environment vars and
-    // then command line options overide the configuration file.
+    // First process the configuration file for the options, because the command line options
+    // overide the configuration file.
 
     process_buildconf(os);
-
-    if (has_copt) {
-	os.configfile = conffile;
-    }
-    process_yaml(os.configfile, os);
-
-    process_env(os);
 
     if (has_vopt) os.verbose = verbose;
     if (has_dopt) os.debug = debug;
     if (has_fopt) os.fullscreen = fullscreen;
     if (has_hopt) os.height = height;
     if (has_wopt) os.width = width;
+
     return;
 }
 

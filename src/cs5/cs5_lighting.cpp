@@ -5,7 +5,7 @@
 //	Main function for the code snippet.
 
 #include "app_lighting.h"
-#include "cs_config.h"
+#include "cs5_config.h"
 #include "debug.h"
 #include "options.h"
 #include "window.h"
@@ -19,8 +19,6 @@ main(int argc, char* argv[])
     Options opts;
 
     // debug::setdebug(9);
-    opts.process_build(cs_config::cs_build_dir, cs_config::cs_source_dir,
-		       cs_config::cs_config_dir, cs_config::cs_config_file);
     opts.process_options(argc, argv);
     opts.print("Options store");
 

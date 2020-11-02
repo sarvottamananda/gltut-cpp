@@ -12,7 +12,6 @@ cs_lib = library('cs',
     'window.cpp', 
     'window_factory.cpp', 
     'window_glfw.cpp', 
-    'glad.c',
     include_directories: cs_inc,
     dependencies: [glew_dep, glfw_dep]
     )

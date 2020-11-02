@@ -11,6 +11,7 @@
 #include <GLFW/glfw3.h>
 // clang-format on
 
+#include "cs3_config.h"
 #include "img_stuff.h"
 #include "model_cube.h"
 #include "shader_stuff.h"
@@ -157,12 +158,12 @@ prepare_programs()
 // Create glsl programs for the shader
 {
     Vector<string> skybox_shaders = {
-	"assets/shaders/skybox.vert",
-	"assets/shaders/skybox.frag",
+        string(cs_config::cs_source_dir) + "/shaders/skybox.vert",
+	string(cs_config::cs_source_dir) + "/shaders/skybox.frag",
     };
     Vector<string> cubeobj_shaders = {
-	"assets/shaders/cubeobj.vert",
-	"assets/shaders/cubeobj.frag",
+        string(cs_config::cs_source_dir) + "/shaders/cubeobj.vert",
+	string(cs_config::cs_source_dir) + "/shaders/cubeobj.frag",
     };
     skybox_prog = create_program("Skybox", skybox_shaders);
     cubeobj_prog = create_program("cubeobj", cubeobj_shaders);
@@ -251,11 +252,16 @@ load_texture_data()
 // Upload pixel data on textures.
 {
     Vector<string> file = {
-	"assets/textures/cubebox-0.png", "assets/textures/cubebox-1.png",
-	"assets/textures/cubebox-2.png", "assets/textures/cubebox-3.png",
-	"assets/textures/cubebox-4.png", "assets/textures/cubebox-5.png",
-	"assets/textures/cubebox-6.png", "assets/textures/cubebox-7.png",
-	"assets/textures/cubebox-8.png", "assets/textures/cubebox-9.png",
+	string(cs_config::cs_root_dir) + "/assets/cubeboxes/cubebox-0.png",
+	string(cs_config::cs_root_dir) + "/assets/cubeboxes/cubebox-1.png",
+	string(cs_config::cs_root_dir) + "/assets/cubeboxes/cubebox-2.png",
+	string(cs_config::cs_root_dir) + "/assets/cubeboxes/cubebox-3.png",
+	string(cs_config::cs_root_dir) + "/assets/cubeboxes/cubebox-4.png",
+	string(cs_config::cs_root_dir) + "/assets/cubeboxes/cubebox-5.png",
+	string(cs_config::cs_root_dir) + "/assets/cubeboxes/cubebox-6.png",
+	string(cs_config::cs_root_dir) + "/assets/cubeboxes/cubebox-7.png",
+	string(cs_config::cs_root_dir) + "/assets/cubeboxes/cubebox-8.png",
+	string(cs_config::cs_root_dir) + "/assets/cubeboxes/cubebox-9.png",
     };
     nskyboxes = file.size();  // Number of skyboxes
 

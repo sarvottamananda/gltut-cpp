@@ -7,10 +7,8 @@
 #include "app_ground.h"
 #include "options.h"
 #include "window.h"
-#include "cs_config.h"
+#include "cs4_config.h"
 #include "window_factory.h"
-
-static void process_buildconf(Options& op);
 
 int
 main(int argc, char* argv[])
@@ -18,8 +16,6 @@ main(int argc, char* argv[])
     Options opts;
 
     // debug::setdebug(9);
-    opts.process_build(cs_config::cs_build_dir, cs_config::cs_source_dir,
-			   cs_config::cs_config_dir, cs_config::cs_config_file);
     opts.process_options(argc, argv);
     opts.print("Options store");
 

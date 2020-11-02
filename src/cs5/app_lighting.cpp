@@ -20,6 +20,7 @@
 #include <random>
 #include <vector>
 
+#include "cs5_config.h"
 #include "img_stuff.h"
 #include "model_cube.h"
 #include "model_ground.h"
@@ -334,20 +335,20 @@ prepare_programs()
 // Create glsl programs for the shader
 {
     Vector<string> skybox_shaders = {
-	"assets/shaders/skybox.vert",
-	"assets/shaders/skybox.frag",
+	string(cs_config::cs_source_dir)+"/shaders/skybox.vert",
+	string(cs_config::cs_source_dir)+"/shaders/skybox.frag",
     };
     skybox_prog = create_program("Skybox", skybox_shaders);
 
     Vector<string> ground_shaders = {
-	"assets/shaders/ground.vert",
-	"assets/shaders/ground.frag",
+	string(cs_config::cs_source_dir)+"/shaders/ground.vert",
+	string(cs_config::cs_source_dir)+"/shaders/ground.frag",
     };
     ground_prog = create_program("Ground", ground_shaders);
 
     Vector<string> cubeobj_shaders = {
-	"assets/shaders/cubeobj.vert",
-	"assets/shaders/cubeobj.frag",
+	string(cs_config::cs_source_dir)+"/shaders/cubeobj.vert",
+	string(cs_config::cs_source_dir)+"/shaders/cubeobj.frag",
     };
     cubeobj_prog = create_program("Cubeobj", cubeobj_shaders);
 
@@ -485,9 +486,12 @@ prepare_cubemap_texture()
 // Upload pixel data on textures.
 {
     Vector<string> file = {
-	"assets/textures/skybox-right.jpg", "assets/textures/skybox-left.jpg",
-	"assets/textures/skybox-top.jpg",   "assets/textures/skybox-bottom.jpg",
-	"assets/textures/skybox-front.jpg", "assets/textures/skybox-back.jpg",
+	string(cs_config::cs_root_dir)+"/assets/skybox/skybox-right.jpg", 
+        string(cs_config::cs_root_dir)+"/assets/skybox/skybox-left.jpg",
+	string(cs_config::cs_root_dir)+"/assets/skybox/skybox-top.jpg",   
+        string(cs_config::cs_root_dir)+"/assets/skybox/skybox-bottom.jpg",
+	string(cs_config::cs_root_dir)+"/assets/skybox/skybox-front.jpg", 
+        string(cs_config::cs_root_dir)+"/assets/skybox/skybox-back.jpg",
     };
     auto num_images = file.size();  // Number of images
 
@@ -604,7 +608,8 @@ prepare_cube_texture()
 {
     Image image;
 
-    image.read_file("assets/textures/cc-textures.jpg");
+    image.read_file(
+	(string(cs_config::cs_root_dir) + "/assets/textures/cc-textures.jpg").c_str());
 
     auto w = image.get_width();
     auto h = image.get_height();
@@ -987,5 +992,5 @@ modify_buffers()
 void
 App_lighting::initialize(Options &os)
 {
-    w.initialize("OpenGL Snippets : Textured Ground", os.width, os.height, os.fullscreen);
+    w.initialize("OpenGL Snippets : Lighted Cubes", os.width, os.height, os.fullscreen);
 }

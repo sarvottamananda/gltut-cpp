@@ -18,16 +18,6 @@ class Options_store {
     int height;
     int width;
 
-    std::string configfile;
-    std::string assetspath;
-    std::string searchpath;
-    std::string modelsdir;
-    std::string shadersdir;
-    std::string texturesdir;
-    std::string builddir;
-    std::string sourcedir;
-    std::string homedir;
-
    public:
     Options_store();
     ~Options_store() = default;

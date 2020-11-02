@@ -5,9 +5,9 @@
 //	Main function for the code snippet.
 
 #include "app_ground.h"
+#include "cs4_config.h"
 #include "options.h"
 #include "window.h"
-#include "cs4_config.h"
 #include "window_factory.h"
 
 int
@@ -20,10 +20,11 @@ main(int argc, char* argv[])
     opts.print("Options store");
 
     Window* win_glfw = Window_factory::create_window(
-	Window_type::glfw);	 // Create a glfw window using factory idiom
-    App_ground code_snippet(win_glfw);	 // Create an app instance using glfw window, we did not want to
-				 // hardcode glfw instance of window inside the app, hence we
-				 // create it first and then pass it to app instance
+	Window_type::glfw);  // Create a glfw window using factory idiom
+    App_ground code_snippet(
+	win_glfw);  // Create an app instance using glfw window, we did not want to
+		    // hardcode glfw instance of window inside the app, hence we
+		    // create it first and then pass it to app instance
 
     win_glfw->set_app(&code_snippet);
 
@@ -34,4 +35,3 @@ main(int argc, char* argv[])
     Window_factory::destroy_window(
 	win_glfw, Window_type::glfw);  // Destroy the glfw window using factory idiom
 }
-

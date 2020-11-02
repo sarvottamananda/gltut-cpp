@@ -16,12 +16,7 @@
 static int getnumarg(char*);
 static void print_usage(char*);
 
-Options::Options()
-    : verbose(false),
-      debug(0),
-      fullscreen(false),
-      height(600),
-      width(800)
+Options::Options() : verbose(false), debug(0), fullscreen(false), height(600), width(800)
 {
     return;
 }

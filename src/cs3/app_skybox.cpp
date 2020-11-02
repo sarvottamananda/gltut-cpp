@@ -158,11 +158,11 @@ prepare_programs()
 // Create glsl programs for the shader
 {
     Vector<string> skybox_shaders = {
-        string(cs_config::cs_source_dir) + "/shaders/skybox.vert",
+	string(cs_config::cs_source_dir) + "/shaders/skybox.vert",
 	string(cs_config::cs_source_dir) + "/shaders/skybox.frag",
     };
     Vector<string> cubeobj_shaders = {
-        string(cs_config::cs_source_dir) + "/shaders/cubeobj.vert",
+	string(cs_config::cs_source_dir) + "/shaders/cubeobj.vert",
 	string(cs_config::cs_source_dir) + "/shaders/cubeobj.frag",
     };
     skybox_prog = create_program("Skybox", skybox_shaders);

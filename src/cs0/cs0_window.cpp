@@ -10,15 +10,16 @@
 #include <GLFW/glfw3.h>
 GLFWwindow* window;
 
-int main(void) 
+int
+main(void)
 {
     // GLFW stuff
 
     // Initialise GLFW
     if (!glfwInit()) {
-        fprintf(stderr, "Failed to initialize GLFW\n");
-        getchar();
-        return -1;
+	fprintf(stderr, "Failed to initialize GLFW\n");
+	getchar();
+	return -1;
     }
 
     // Set Multisampling to 4, i.e., MSAA = 4x
@@ -37,13 +38,12 @@ int main(void)
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
     // Open a window and create its OpenGL context
-    window = glfwCreateWindow(
-        800, 600, "OpenGL Code Snippets : Creating a Window", NULL, NULL);
+    window = glfwCreateWindow(800, 600, "OpenGL Code Snippets : Creating a Window", NULL, NULL);
     if (window == NULL) {
-        fprintf(stderr, "Failed to open GLFW window.\n");
-        getchar();
-        glfwTerminate();
-        return -1;
+	fprintf(stderr, "Failed to open GLFW window.\n");
+	getchar();
+	glfwTerminate();
+	return -1;
     }
     glfwMakeContextCurrent(window);
 
@@ -54,28 +54,28 @@ int main(void)
 
     // Initialize GLEW
     if (glewInit() != GLEW_OK) {
-        fprintf(stderr, "Failed to initialize GLEW\n");
-        getchar();
-        glfwTerminate();
-        return -1;
+	fprintf(stderr, "Failed to initialize GLEW\n");
+	getchar();
+	glfwTerminate();
+	return -1;
     }
 
     // Select dark green (sap green) background
     glClearColor(0.169f, 0.267f, 0.09f, 0.0f);
 
     do {
-        // Clear the screen, otherwise it flickers.
-        glClear(GL_COLOR_BUFFER_BIT);
+	// Clear the screen, otherwise it flickers.
+	glClear(GL_COLOR_BUFFER_BIT);
 
-        // Draw nothing
+	// Draw nothing
 
-        // Swap buffers
-        glfwSwapBuffers(window);
-        glfwPollEvents();
+	// Swap buffers
+	glfwSwapBuffers(window);
+	glfwPollEvents();
 
     }  // Check if the ESC key was pressed or the window was closed
     while (glfwGetKey(window, GLFW_KEY_ESCAPE) != GLFW_PRESS &&
-           glfwWindowShouldClose(window) == 0);
+	   glfwWindowShouldClose(window) == 0);
 
     // Close OpenGL window and terminate GLFW
     glfwTerminate();

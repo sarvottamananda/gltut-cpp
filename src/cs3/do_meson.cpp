@@ -8,10 +8,11 @@
 
 #include "cs3_config.h"
 
-void process_buildconf(Options_store& os)
+void
+process_buildconf(Options_store& os)
 {
-    // Currently we are directly setting the builddir and srcdir variable in the cs3_config.h using
-    // meson build system.
+    // Currently we are directly setting the builddir and srcdir variable in the cs3_config.h
+    // using meson build system.
 
     // os.set_builddir(cs_config::cs_build_dir);
     // os.set_sourcedir(cs_config::cs_source_dir);

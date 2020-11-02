@@ -11,7 +11,8 @@
 #include <iostream>
 #include <string>
 
-void Image::read_file(std::string fname)
+void
+Image::read_file(std::string fname)
 {
     int wid = 0;
     int hgt = 0;
@@ -39,4 +40,8 @@ void Image::read_file(std::string fname)
     data = p;
 }
 
-void Image::free_data() { stbi_image_free(data); }
+void
+Image::free_data()
+{
+    stbi_image_free(data);
+}

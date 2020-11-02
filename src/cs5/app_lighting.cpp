@@ -40,13 +40,13 @@
 template <class T>
 
 using Vector = std::vector<T, std::allocator<T>>;
-using std::cout;
 using std::cerr;
+using std::cout;
 using std::string;
 
+using glm::ivec4;
 using glm::mat4;
 using glm::vec3;
-using glm::ivec4;
 
 //
 // unnamed namespace declarations
@@ -70,7 +70,7 @@ GLuint cubeobj_prog = 0;  // shader for lighted test object
 GLuint ground_prog = 0;	  // shader for ground
 
 // various array object
-GLuint vao = 0;  // one vertex array object for all
+GLuint vao = 0;	 // one vertex array object for all
 
 // various buffer objects
 GLuint vbo = 0;
@@ -134,17 +134,16 @@ mat4 vp = mat4(1.0f);
 
 // world global data
 
-auto  box_sz = vec3(120.0f, 80.0f, 60.0f);
+auto box_sz = vec3(120.0f, 80.0f, 60.0f);
 
 auto start_time = std::chrono::steady_clock::now();
 
-GLfloat cubemap_num = 0.0f;  // use only one hires cubemap for this program, multiple cubemap would
-			     // have been better, but since we are storing assets locally, we do
-			     // not want to copy assets multiple times unnecessarily.
+GLfloat cubemap_num = 0.0f;  // use only one hires cubemap for this program, multiple cubemap
+			     // would have been better, but since we are storing assets locally,
+			     // we do not want to copy assets multiple times unnecessarily.
 
 std::random_device rd;
 std::mt19937 gen(rd());
-
 
 // camera global data
 
@@ -159,7 +158,7 @@ auto eye_lookat = vec3(0, start_alt, 0);	// Look at the origin
 
 // lights global data
 
-auto sun_dir = vec3(0.3f, 0.4f, -0.5f); 
+auto sun_dir = vec3(0.3f, 0.4f, -0.5f);
 auto sun_color = vec3(1.0f, 1.0f, 0.75f);
 auto ambient_color = vec3(0.5f, 0.75f, 1.0f);
 
@@ -253,7 +252,7 @@ debug_callback(GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei l
 {
     fprintf(stderr, "GL CALLBACK: %s type = 0x%x, severity = 0x%x, message = %s\n",
 	    (type == GL_DEBUG_TYPE_ERROR ? "** GL ERROR **" : ""), type, severity, message);
-} 
+}
 
 static void
 prepare(const Window &win)
@@ -270,8 +269,8 @@ prepare(const Window &win)
     prepare_uniforms();	 // Uniforms info is not stored in vao
     prepare_textures();	 // textures and buffers info is not stored in vao
     prepare_buffers();
-    prepare_attributes(); 
-}  
+    prepare_attributes();
+}
 
 GLfloat
 rng_float()
@@ -303,8 +302,8 @@ static void
 prepare_cubes()
 {
     for (auto i = 0u; i < num_cubes; i++) {
-	cube_xform[i].disp =
-	    vec3(rng_float() * box_sz.x - box_sz.x/2.0f, rng_float() * box_sz.y, rng_float() * -box_sz.z);
+	cube_xform[i].disp = vec3(rng_float() * box_sz.x - box_sz.x / 2.0f,
+				  rng_float() * box_sz.y, rng_float() * -box_sz.z);
 
 	vec3 axis_vec = vec3(rng_float(), rng_float(), rng_float());
 	if (axis_vec[0] + axis_vec[1] + axis_vec[2] == 0) {
@@ -316,15 +315,16 @@ prepare_cubes()
 	cube_xform[i].avel = rng_float() * 30;
 	cube_xform[i].yvel = 2 + rng_float() * 4;
 
-        GLint material = 4*int(cube_xform[i].disp.x * 4/box_sz.x + 2) + int(-cube_xform[i].disp.z * 4/box_sz.z );
-        cmodel[i].material.x = material;
+	GLint material = 4 * int(cube_xform[i].disp.x * 4 / box_sz.x + 2) +
+			 int(-cube_xform[i].disp.z * 4 / box_sz.z);
+	cmodel[i].material.x = material;
     }
 
     /*
     std::cout << "Materials : ";
     for (auto i = 0; i < num_cubes; i++){
-        std::cout << cmodel[i].material.x << " ";
-        std::cout << cube_xform[i].disp.x << " " << cube_xform[i].disp.z  << " ";
+	std::cout << cmodel[i].material.x << " ";
+	std::cout << cube_xform[i].disp.x << " " << cube_xform[i].disp.z  << " ";
     }
     std::cout << std::endl;
     */
@@ -335,20 +335,20 @@ prepare_programs()
 // Create glsl programs for the shader
 {
     Vector<string> skybox_shaders = {
-	string(cs_config::cs_source_dir)+"/shaders/skybox.vert",
-	string(cs_config::cs_source_dir)+"/shaders/skybox.frag",
+	string(cs_config::cs_source_dir) + "/shaders/skybox.vert",
+	string(cs_config::cs_source_dir) + "/shaders/skybox.frag",
     };
     skybox_prog = create_program("Skybox", skybox_shaders);
 
     Vector<string> ground_shaders = {
-	string(cs_config::cs_source_dir)+"/shaders/ground.vert",
-	string(cs_config::cs_source_dir)+"/shaders/ground.frag",
+	string(cs_config::cs_source_dir) + "/shaders/ground.vert",
+	string(cs_config::cs_source_dir) + "/shaders/ground.frag",
     };
     ground_prog = create_program("Ground", ground_shaders);
 
     Vector<string> cubeobj_shaders = {
-	string(cs_config::cs_source_dir)+"/shaders/cubeobj.vert",
-	string(cs_config::cs_source_dir)+"/shaders/cubeobj.frag",
+	string(cs_config::cs_source_dir) + "/shaders/cubeobj.vert",
+	string(cs_config::cs_source_dir) + "/shaders/cubeobj.frag",
     };
     cubeobj_prog = create_program("Cubeobj", cubeobj_shaders);
 
@@ -363,8 +363,6 @@ prepare_programs()
 
     glGetIntegerv(GL_UNIFORM_BUFFER_OFFSET_ALIGNMENT, &info);
     std::cout << "GL_UNIFORM_BUFFER_OFFSET_ALIGNMENT : " << info << "\n";
-
-
 }
 
 static void
@@ -428,7 +426,7 @@ prepare_matrices(const Window &win)
 	pos[1] -= ((GLfloat)cur_dur.count() * cube_xform[i].yvel);
 	angle += ((GLfloat)cur_dur.count() * cube_xform[i].avel);
 
-        // when the cube gets completely below the surface move it back
+	// when the cube gets completely below the surface move it back
 	if (pos[1] < -2.0f) cube_xform[i].disp[1] += box_sz.y;
 
 	model = glm::translate(model, pos);
@@ -438,17 +436,17 @@ prepare_matrices(const Window &win)
 	// mvp for cube object
 
 	cmodel[i].mvp = projection * view * model;
-        cmodel[i].model = model;
-        // remove translation for normal transformation matrix
-        mat4 nmodel = mat4(1.0f);
+	cmodel[i].model = model;
+	// remove translation for normal transformation matrix
+	mat4 nmodel = mat4(1.0f);
 	nmodel = glm::rotate(nmodel, glm::radians(angle), cube_xform[i].axis);
 	nmodel = glm::scale(nmodel, sf);
-        cmodel[i].model_invxpos = nmodel;
+	cmodel[i].model_invxpos = nmodel;
     }
 
     // Model matrix for ground
 
-    mat4 gmodel = mat4(1.0f);	 // Identity matrix
+    mat4 gmodel = mat4(1.0f);  // Identity matrix
 
     gmodel = glm::scale(gmodel, vec3(1.0f, 1.0f, 1.0f));
     gmodel = glm::rotate(gmodel, glm::radians(90.0f), vec3(-1.0f, 0.0f, 0.0f));
@@ -486,12 +484,12 @@ prepare_cubemap_texture()
 // Upload pixel data on textures.
 {
     Vector<string> file = {
-	string(cs_config::cs_root_dir)+"/assets/skybox/skybox-right.jpg", 
-        string(cs_config::cs_root_dir)+"/assets/skybox/skybox-left.jpg",
-	string(cs_config::cs_root_dir)+"/assets/skybox/skybox-top.jpg",   
-        string(cs_config::cs_root_dir)+"/assets/skybox/skybox-bottom.jpg",
-	string(cs_config::cs_root_dir)+"/assets/skybox/skybox-front.jpg", 
-        string(cs_config::cs_root_dir)+"/assets/skybox/skybox-back.jpg",
+	string(cs_config::cs_root_dir) + "/assets/skybox/skybox-right.jpg",
+	string(cs_config::cs_root_dir) + "/assets/skybox/skybox-left.jpg",
+	string(cs_config::cs_root_dir) + "/assets/skybox/skybox-top.jpg",
+	string(cs_config::cs_root_dir) + "/assets/skybox/skybox-bottom.jpg",
+	string(cs_config::cs_root_dir) + "/assets/skybox/skybox-front.jpg",
+	string(cs_config::cs_root_dir) + "/assets/skybox/skybox-back.jpg",
     };
     auto num_images = file.size();  // Number of images
 
@@ -712,14 +710,14 @@ prepare_uniform_buffers()
     glBindBuffer(GL_UNIFORM_BUFFER, model_ubo);
     glBufferStorage(GL_UNIFORM_BUFFER, num_cubes * sizeof(Model_data), (GLvoid *)nullptr,
 		    GL_DYNAMIC_STORAGE_BIT);
-    glBufferSubData(GL_UNIFORM_BUFFER, (GLintptr)0, (GLsizeiptr)(num_cubes * sizeof(Model_data)),
-		    (const GLvoid *)(&cmodel[0]));
+    glBufferSubData(GL_UNIFORM_BUFFER, (GLintptr)0,
+		    (GLsizeiptr)(num_cubes * sizeof(Model_data)), (const GLvoid *)(&cmodel[0]));
 
     /*
     std::cout << "Materials : ";
     std::cout << sizeof(ivec4) << ":";
     for (auto i = 0; i < num_cubes; i++){
-        std::cout << cmaterial[i].x << " ";
+	std::cout << cmaterial[i].x << " ";
     }
     std::cout << std::endl;
     */
@@ -819,8 +817,8 @@ do_draw_commands(const Window &win)
     */
 
     for (auto i = 0; i < num_cubes / num_ub; i++) {
-	glBindBufferRange(GL_UNIFORM_BUFFER, model_bindpoint, model_ubo, i * num_ub * sizeof(Model_data),
-			  num_ub * sizeof(Model_data));
+	glBindBufferRange(GL_UNIFORM_BUFFER, model_bindpoint, model_ubo,
+			  i * num_ub * sizeof(Model_data), num_ub * sizeof(Model_data));
 	glDrawElementsInstancedBaseVertex(GL_TRIANGLES, cube.idx_num, GL_UNSIGNED_SHORT,
 					  (void *)cube_off, num_ub, (GLint)cube_base);
     }
@@ -830,7 +828,6 @@ do_draw_commands(const Window &win)
 void
 App_lighting::key_callback(Key key, int scancode, Key_action action, Key_mods mods)
 {
-
     if (action == Key_action::release) return;
 
     switch (key) {
@@ -984,8 +981,8 @@ static void
 modify_buffers()
 {
     glBindBuffer(GL_UNIFORM_BUFFER, model_ubo);
-    glBufferSubData(GL_UNIFORM_BUFFER, (GLintptr)0, (GLsizeiptr)(num_cubes * sizeof(Model_data)),
-		    (const GLvoid *)(&cmodel[0]));
+    glBufferSubData(GL_UNIFORM_BUFFER, (GLintptr)0,
+		    (GLsizeiptr)(num_cubes * sizeof(Model_data)), (const GLvoid *)(&cmodel[0]));
     glBindBuffer(GL_UNIFORM_BUFFER, 0);
 }
 

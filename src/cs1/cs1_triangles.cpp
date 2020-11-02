@@ -39,15 +39,16 @@ const char *fragmentShaderSource =
     "   FragColor = vec4(fCol);\n"
     "}\n\0";
 
-int main(void) 
+int
+main(void)
 {
     // glfw stuff
 
     // initialize and configure glfw
     // ------------------------------
     if (!glfwInit()) {
-        std::cerr << "Failed to initialize glfw.\n";
-        exit(EXIT_FAILURE);
+	std::cerr << "Failed to initialize glfw.\n";
+	exit(EXIT_FAILURE);
     }
     // multisampling anti-aliasing (MSAA) 4x
     glfwWindowHint(GLFW_SAMPLES, 4);
@@ -65,12 +66,12 @@ int main(void)
 
     // glfw window creation
     // --------------------
-    GLFWwindow *window = glfwCreateWindow(
-        SCR_WIDTH, SCR_HEIGHT, "OpenGL Code Snippets : Triangles", NULL, NULL);
+    GLFWwindow *window =
+	glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, "OpenGL Code Snippets : Triangles", NULL, NULL);
     if (window == NULL) {
-        std::cout << "Failed to create glfw window." << std::endl;
-        glfwTerminate();
-        exit(EXIT_FAILURE);
+	std::cout << "Failed to create glfw window." << std::endl;
+	glfwTerminate();
+	exit(EXIT_FAILURE);
     }
     glfwMakeContextCurrent(window);
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
@@ -79,9 +80,9 @@ int main(void)
 
     // initialize glew
     if (glewInit() != GLEW_OK) {
-        std::cerr << "Failed to initialize glew.\n";
-        glfwTerminate();
-        exit(EXIT_FAILURE);
+	std::cerr << "Failed to initialize glew.\n";
+	glfwTerminate();
+	exit(EXIT_FAILURE);
     }
 
     // build and compile our shader program
@@ -96,9 +97,8 @@ int main(void)
     char infoLog[512];
     glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &success);
     if (!success) {
-        glGetShaderInfoLog(vertexShader, 512, NULL, infoLog);
-        std::cout << "Vertex shader compilation failed.\n"
-                  << infoLog << std::endl;
+	glGetShaderInfoLog(vertexShader, 512, NULL, infoLog);
+	std::cout << "Vertex shader compilation failed.\n" << infoLog << std::endl;
     }
 
     // fragment shader
@@ -108,9 +108,8 @@ int main(void)
     // check for shader compile errors
     glGetShaderiv(fragmentShader, GL_COMPILE_STATUS, &success);
     if (!success) {
-        glGetShaderInfoLog(fragmentShader, 512, NULL, infoLog);
-        std::cout << "fragment shader compilation failed.\n"
-                  << infoLog << std::endl;
+	glGetShaderInfoLog(fragmentShader, 512, NULL, infoLog);
+	std::cout << "fragment shader compilation failed.\n" << infoLog << std::endl;
     }
 
     // link shaders
@@ -121,8 +120,8 @@ int main(void)
     // check for linking errors
     glGetProgramiv(shaderProgram, GL_LINK_STATUS, &success);
     if (!success) {
-        glGetProgramInfoLog(shaderProgram, 512, NULL, infoLog);
-        std::cout << "Shade program linking failed.\n" << infoLog << std::endl;
+	glGetProgramInfoLog(shaderProgram, 512, NULL, infoLog);
+	std::cout << "Shade program linking failed.\n" << infoLog << std::endl;
     }
     glDeleteShader(vertexShader);
     glDeleteShader(fragmentShader);
@@ -134,35 +133,35 @@ int main(void)
     // 3-float position vector per vertex)
 
     // Bad code: position and color are different types
-    
+
     GLfloat vertices[] = {
 
-        // first triangle
+	// first triangle
 
-        -0.9f, -0.5f, 0.0f,  // left
-        0.5f, 0.2f, 0.0f,    // dark orange
-        -0.0f, -0.5f, 0.0f,  // right
-        0.5f, 0.2f, 0.0f,    // dark orange
-        -0.45f, 0.5f, 0.0f,  // top
-        1.0f, 0.4f, 0.0f,    // orange
+	-0.9f, -0.5f, 0.0f,  // left
+	0.5f, 0.2f, 0.0f,    // dark orange
+	-0.0f, -0.5f, 0.0f,  // right
+	0.5f, 0.2f, 0.0f,    // dark orange
+	-0.45f, 0.5f, 0.0f,  // top
+	1.0f, 0.4f, 0.0f,    // orange
 
-        // second triangle
+	// second triangle
 
-        0.0f, -0.5f, 0.0f,  // left
-        0.25f, 0.0f, 0.4f,  // dark purple
-        0.9f, -0.5f, 0.0f,  // right
-        0.25f, 0.0f, 0.4f,  // dark purple
-        0.45f, 0.5f, 0.0f,  // top
-        0.5f, 0.0f, 0.8f,   // purple
+	0.0f, -0.5f, 0.0f,  // left
+	0.25f, 0.0f, 0.4f,  // dark purple
+	0.9f, -0.5f, 0.0f,  // right
+	0.25f, 0.0f, 0.4f,  // dark purple
+	0.45f, 0.5f, 0.0f,  // top
+	0.5f, 0.0f, 0.8f,   // purple
 
-        // third triangle
+	// third triangle
 
-        -0.45f, 0.5f, 0.0f,   // left
-        0.25f, 0.25f, 0.25f,  // dark gray
-        0.45f, 0.5f, 0.0f,    // right
-        0.25f, 0.25f, 0.25f,  // dark gray
-        0.0f, -0.5f, 0.0f,    // bottom
-        0.4f, 0.4f, 0.4f,     // gray
+	-0.45f, 0.5f, 0.0f,   // left
+	0.25f, 0.25f, 0.25f,  // dark gray
+	0.45f, 0.5f, 0.0f,    // right
+	0.25f, 0.25f, 0.25f,  // dark gray
+	0.0f, -0.5f, 0.0f,    // bottom
+	0.4f, 0.4f, 0.4f,     // gray
     };
 
     GLuint VBO[1], VAO[1];
@@ -177,9 +176,9 @@ int main(void)
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat),
-                          (void *)(0 * sizeof(GLfloat)));
+			  (void *)(0 * sizeof(GLfloat)));
     glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat),
-                          (void *)(3 * sizeof(GLfloat)));
+			  (void *)(3 * sizeof(GLfloat)));
 
     glEnableVertexAttribArray(0);
     glEnableVertexAttribArray(1);
@@ -204,30 +203,30 @@ int main(void)
 
     // render loop
     while (!glfwWindowShouldClose(window)) {
-        // input
-        process_input(window);
+	// input
+	process_input(window);
 
-        // render
-        glClear(GL_COLOR_BUFFER_BIT);
+	// render
+	glClear(GL_COLOR_BUFFER_BIT);
 
-        // draw our triangles
-        glUseProgram(shaderProgram);
-        // seeing as we only have a single VAO there's no need to bind it every
-        // time, but we'll do so to keep things a bit more organized
+	// draw our triangles
+	glUseProgram(shaderProgram);
+	// seeing as we only have a single VAO there's no need to bind it every
+	// time, but we'll do so to keep things a bit more organized
 
-        glBindVertexArray(VAO[0]);
-        // set the count to 6 since we're drawing 9 vertices now (3 triangles);
-        // not 3!
+	glBindVertexArray(VAO[0]);
+	// set the count to 6 since we're drawing 9 vertices now (3 triangles);
+	// not 3!
 
-        glDrawArrays(GL_TRIANGLES, 0, 9);
-        // no need to unbind it every time
+	glDrawArrays(GL_TRIANGLES, 0, 9);
+	// no need to unbind it every time
 
-        // glBindVertexArray(0);
+	// glBindVertexArray(0);
 
-        // swap buffers and poll IO events (keys pressed/released, mouse moved
-        // etc.)
-        glfwSwapBuffers(window);
-        glfwPollEvents();
+	// swap buffers and poll IO events (keys pressed/released, mouse moved
+	// etc.)
+	glfwSwapBuffers(window);
+	glfwPollEvents();
     }
 
     // optional: de-allocate all resources once they've outlived their purpose:
@@ -242,15 +241,17 @@ int main(void)
 
 // process all input: query GLFW whether relevant keys are pressed/released
 // this frame and react accordingly
-void process_input(GLFWwindow *window) 
+void
+process_input(GLFWwindow *window)
 {
     if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
-        glfwSetWindowShouldClose(window, true);
+	glfwSetWindowShouldClose(window, true);
 }
 
 // whenever the window size changed (by OS or user resize) this callback
 // function executes
-void framebuffer_size_callback(GLFWwindow *window, int width, int height) 
+void
+framebuffer_size_callback(GLFWwindow *window, int width, int height)
 {
     // make sure the viewport matches the new window dimensions; note that width
     // and height will be significantly larger than specified on retina

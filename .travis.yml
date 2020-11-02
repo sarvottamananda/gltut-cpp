@@ -1,21 +1,24 @@
 dist: focal
 group: travis_latest
 os: linux
+
 language: 
-    - python
     - cpp
 
-matrix:
-  include:
-    - env: CC=g++
-    - env: CC=clang
+compiler: 
+    - gcc
+
+branches:
+    only:
+        - master
+        - develop
 
 before_install:
     - sudo apt-get update -qq
 
 install:
-    - sudo pip install meson ninja
-    - sudo apt install libglew-dev libglfw3-dev libglm-dev 
+    - sudo pip install 'meson>=0.56' ninja --force-reinstall
+    - sudo apt-get -y install libglew-dev libglfw3-dev libglm-dev 
 
 script:
     - meson builddir

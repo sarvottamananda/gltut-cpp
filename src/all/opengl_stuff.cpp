@@ -8,11 +8,11 @@
 
 #include <iostream>
 
-GLenum check_glerror(const char *file, int line)
+GLenum
+check_glerror(const char *file, int line)
 {
     GLenum errorCode;
-    while ((errorCode = glGetError()) != GL_NO_ERROR)
-    {
+    while ((errorCode = glGetError()) != GL_NO_ERROR) {
 	// clang-format off
         std::string error;
         switch (errorCode)
@@ -39,4 +39,3 @@ GLenum check_glerror(const char *file, int line)
     }
     return errorCode;
 }
-

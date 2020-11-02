@@ -20,7 +20,8 @@ using std::string;
 
 GLuint create_shader(const string, const GLenum);
 
-GLuint create_program(string name, std::vector<string> shaders)
+GLuint
+create_program(string name, std::vector<string> shaders)
 {
     cout << "Creating program (" << name << ")...\n";
 
@@ -126,7 +127,8 @@ GLuint create_program(string name, std::vector<string> shaders)
 
 static string read_file(std::string);
 
-GLuint create_shader(const string fn, const GLenum type)
+GLuint
+create_shader(const string fn, const GLenum type)
 // This function compiles the shader.
 {
     string read_str = read_file(fn).c_str();  // Get source code for vertex shader.
@@ -166,7 +168,8 @@ GLuint create_shader(const string fn, const GLenum type)
     return shader;
 }
 
-static string read_file(std::string filename)
+static string
+read_file(std::string filename)
 {
     std::ifstream fs(filename);
 

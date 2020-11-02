@@ -21,7 +21,8 @@
 static int getnumarg(char *);
 static void print_usage(char *);
 
-void process_args(int argc, char **argv, Options_store &os)
+void
+process_args(int argc, char **argv, Options_store &os)
 {
     int res = -1;
 
@@ -126,7 +127,8 @@ void process_args(int argc, char **argv, Options_store &os)
     return;
 }
 
-static int getnumarg(char *s)
+static int
+getnumarg(char *s)
 {
     try {
 	std::size_t pos;
@@ -145,7 +147,8 @@ static int getnumarg(char *s)
     abort();
 }
 
-static void print_usage(char *program_name)
+static void
+print_usage(char *program_name)
 {
     printf(
 	"Usage: %s <options>\n"

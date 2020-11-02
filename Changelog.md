@@ -13,6 +13,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [0.6.0] - 2020-10-15
 
+- 2020-11-03 (SS) Remove unnecessary meson.build files
+- 2020-11-03 (SS) Incorporate git-flow branching model
 
 ## [0.5.0] - 2020-10-15
 

@@ -8,7 +8,8 @@
 
 #include <iostream>
 
-void Model_base::print()
+void
+Model_base::print()
 {
     using std::cout;
 

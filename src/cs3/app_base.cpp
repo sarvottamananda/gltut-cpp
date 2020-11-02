@@ -9,13 +9,15 @@
 #include "options_store.h"
 #include "window.h"
 
-void App_base::initialize(Options_store& os)
+void
+App_base::initialize(Options_store& os)
 {
     // Opens a window of required resolution and mode
     w.initialize("OpenGL Snippets : Cubemap Arrays", os.width, os.height, os.fullscreen);
 }
 
-void App_base::render_loop()
+void
+App_base::render_loop()
 {
     // Makes the window the current  OpenGl context for rendering
     w.make_current();
@@ -28,5 +30,13 @@ void App_base::render_loop()
     }
 }
 
-void App_base::terminate() { w.terminate(); }
-void App_base::key_callback(Key k, int sc, Key_action ka, Key_mods km) { return; }
+void
+App_base::terminate()
+{
+    w.terminate();
+}
+void
+App_base::key_callback(Key k, int sc, Key_action ka, Key_mods km)
+{
+    return;
+}

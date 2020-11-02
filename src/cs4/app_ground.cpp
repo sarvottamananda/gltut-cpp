@@ -316,12 +316,12 @@ prepare_cubemap_texture()
 // Upload pixel data on textures.
 {
     Vector<string> file = {
-	string(cs_config::cs_root_dir)+"/assets/skybox/skybox-right.jpg", 
-        string(cs_config::cs_root_dir)+"/assets/skybox/skybox-left.jpg",
-	string(cs_config::cs_root_dir)+"/assets/skybox/skybox-top.jpg",   
-        string(cs_config::cs_root_dir)+"/assets/skybox/skybox-bottom.jpg",
-	string(cs_config::cs_root_dir)+"/assets/skybox/skybox-front.jpg", 
-        string(cs_config::cs_root_dir)+"/assets/skybox/skybox-back.jpg",
+	string(cs_config::cs_root_dir) + "/assets/skybox/skybox-right.jpg",
+	string(cs_config::cs_root_dir) + "/assets/skybox/skybox-left.jpg",
+	string(cs_config::cs_root_dir) + "/assets/skybox/skybox-top.jpg",
+	string(cs_config::cs_root_dir) + "/assets/skybox/skybox-bottom.jpg",
+	string(cs_config::cs_root_dir) + "/assets/skybox/skybox-front.jpg",
+	string(cs_config::cs_root_dir) + "/assets/skybox/skybox-back.jpg",
     };
     auto num_images = file.size();  // Number of images
 
@@ -371,7 +371,7 @@ store_cubemap_texture_data(Vector<Image> &image)
 
 	if (image[i].get_width() != w || image[i].get_height() != h ||
 	    image[i].get_bytes_per_pixel() != nc) {
-            throw std::runtime_error("Images do not have same size, resize them equally");
+	    throw std::runtime_error("Images do not have same size, resize them equally");
 	}
 
 	glTexSubImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, 0, 0, w, h, GL_RGB,

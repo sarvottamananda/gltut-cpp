@@ -76,8 +76,16 @@ Key map_key_table[GLFW_KEY_LAST + 1];
 // The extern functions needed to access and destroy the implementation app window hidden in
 // unnamed namespace above.
 
-Window *create_glfw_window() { return new Window_glfw; }
-void destroy_glfw_window(Window *aw) { delete aw; }
+Window *
+create_glfw_window()
+{
+    return new Window_glfw;
+}
+void
+destroy_glfw_window(Window *aw)
+{
+    delete aw;
+}
 
 // All the overridden virtual functions defined in sequence. Later on if we need to override
 // them we shall make them virtual. But right now there is no need to bother with mixing virtual
@@ -85,7 +93,8 @@ void destroy_glfw_window(Window *aw) { delete aw; }
 
 // bool Window_glfw::initialize(std::string title, int width, int height, bool fullscreen)
 // {{{1
-bool Window_glfw::initialize(std::string title, int width, int height, bool fullscreen)
+bool
+Window_glfw::initialize(std::string title, int width, int height, bool fullscreen)
 // We initialize both glfw and glew, and open a window which is either windowed or fullscreen,
 // depending on the fullscreen parameter. Opening of window/fullscreen is necessary because glew
 // needs a context to get initialized.
@@ -221,9 +230,8 @@ bool Window_glfw::initialize(std::string title, int width, int height, bool full
     // initialize glew
     if (glewInit() != GLEW_OK) {
 	::glfwTerminate();
-    	throw std::runtime_error("Failed to initialize glew");
+	throw std::runtime_error("Failed to initialize glew");
     }
-
 
     ::glfwSwapInterval(1);
 
@@ -239,22 +247,25 @@ bool Window_glfw::initialize(std::string title, int width, int height, bool full
 }
 // 1}}}
 
-void Window_glfw::make_current()
+void
+Window_glfw::make_current()
 {
     //// This makes the window context, current OpenGL context for rendering
     //::glfwMakeContextCurrent(window);
 
     if (glfwGetCurrentContext() != window) {
 	::glfwTerminate();
-    	throw std::runtime_error("Window context not set");
+	throw std::runtime_error("Window context not set");
     }
 }
 
-void Window_glfw::render_begin()
+void
+Window_glfw::render_begin()
 {
 }
 
-bool Window_glfw::render_cond()
+bool
+Window_glfw::render_cond()
 {
     // Check if the ESC key was pressed or the window was closed
     auto render_condition = (::glfwGetKey(window, GLFW_KEY_ESCAPE) != GLFW_PRESS &&
@@ -262,7 +273,8 @@ bool Window_glfw::render_cond()
     return render_condition;
 }
 
-void Window_glfw::render_end()
+void
+Window_glfw::render_end()
 {
     // Swap buffers
     ::glfwSwapBuffers(window);
@@ -272,9 +284,14 @@ void Window_glfw::render_end()
     //::glfwWaitEvents();
 }
 
-void Window_glfw::terminate() { glfwTerminate(); }
+void
+Window_glfw::terminate()
+{
+    glfwTerminate();
+}
 
-bool Window_glfw::is_valid()
+bool
+Window_glfw::is_valid()
 {
     if (window != nullptr) {
 	std::cout << "Current window is a valid context (" << (void *)window << ")\n";
@@ -283,12 +300,14 @@ bool Window_glfw::is_valid()
     return false;
 }
 
-static void error_callback(int error, const char *description)
+static void
+error_callback(int error, const char *description)
 {
     cerr << "GLFW error (" << error << ") " << description << "\n";
 }
 
-void Window_glfw::framebuffer_size_callback(GLFWwindow *window, int width, int height)
+void
+Window_glfw::framebuffer_size_callback(GLFWwindow *window, int width, int height)
 {
     // make sure the viewport matches the new window dimensions; note that width
     // and height will be significantly larger than specified on retina
@@ -302,7 +321,8 @@ void Window_glfw::framebuffer_size_callback(GLFWwindow *window, int width, int h
     glViewport(0, 0, width, height);
 }
 
-void Window_glfw::key_callback(GLFWwindow *window, int key, int scancode, int action, int mods)
+void
+Window_glfw::key_callback(GLFWwindow *window, int key, int scancode, int action, int mods)
 {
     Key appkey = map_key(key);
     Key_action appaction = map_action(action);
@@ -317,7 +337,8 @@ void Window_glfw::key_callback(GLFWwindow *window, int key, int scancode, int ac
     }
 }
 
-static void initialize_key_map()
+static void
+initialize_key_map()
 {
     for (auto i = 0; i <= GLFW_KEY_LAST; i++) map_key_table[i] = Key::none;
 
@@ -347,9 +368,10 @@ static void initialize_key_map()
     map_key_table[GLFW_KEY_SPACE] = Key::space;
 }
 
-static Key map_key(int key)
+static Key
+map_key(int key)
 {
-    assert(key <= GLFW_KEY_LAST && key >= GLFW_KEY_UNKNOWN); 
+    assert(key <= GLFW_KEY_LAST && key >= GLFW_KEY_UNKNOWN);
 
     if (key == GLFW_KEY_UNKNOWN) {
 	return Key::unknown;
@@ -358,7 +380,8 @@ static Key map_key(int key)
     return map_key_table[key];
 }
 
-static Key_action map_action(int a)
+static Key_action
+map_action(int a)
 {
     switch (a) {
 	case GLFW_RELEASE:
@@ -372,7 +395,8 @@ static Key_action map_action(int a)
     }
 }
 
-static Key_mods map_mods(int mods)
+static Key_mods
+map_mods(int mods)
 {
     // We have mapped mods of GLFW one-to-one with our mapping so pass them as it is
 

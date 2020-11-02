@@ -25,9 +25,14 @@ std::string dbg_suffix = "D";
 
 }  // namespace
 
-int debug::getdebug(void) { return dbg_level; }
+int
+debug::getdebug(void)
+{
+    return dbg_level;
+}
 
-int debug::setdebug(int level)
+int
+debug::setdebug(int level)
 {
     int olevel = dbg_level;
 
@@ -36,9 +41,14 @@ int debug::setdebug(int level)
     return olevel;
 }
 
-int debug::getindent(void) { return dbg_indent; }
+int
+debug::getindent(void)
+{
+    return dbg_indent;
+}
 
-int debug::setindent(int val)
+int
+debug::setindent(int val)
 {
     int oindent = dbg_indent;
 
@@ -47,7 +57,8 @@ int debug::setindent(int val)
     return oindent;
 }
 
-FILE* debug::setfilep(FILE* fp)
+FILE*
+debug::setfilep(FILE* fp)
 {
     FILE* ofilep = dbg_filep;
 
@@ -61,7 +72,8 @@ FILE* debug::setfilep(FILE* fp)
     return ofilep;
 }
 
-void debug::setfilename(const std::string fn)
+void
+debug::setfilename(const std::string fn)
 {
     FILE* fp;
 
@@ -75,14 +87,16 @@ void debug::setfilename(const std::string fn)
     }
 }
 
-const std::string debug::setsuffix(const std::string s)
+const std::string
+debug::setsuffix(const std::string s)
 {
     std::string osuffix = dbg_suffix;
     dbg_suffix = s;
     return osuffix;
 }
 
-void debug::print(int level, const char* fmt, ...)
+void
+debug::print(int level, const char* fmt, ...)
 {
     DTRACK();
     if (dbg_level >= level) {
@@ -102,7 +116,8 @@ void debug::print(int level, const char* fmt, ...)
     }
 }
 
-void debug::printloc(int level, const char* fn, int lno, const char* fmt, ...)
+void
+debug::printloc(int level, const char* fn, int lno, const char* fmt, ...)
 {
     if (dbg_level >= level) {
 	va_list ap;
@@ -123,7 +138,8 @@ void debug::printloc(int level, const char* fn, int lno, const char* fmt, ...)
 
 #if defined(TEST)
 
-static void test(void)
+static void
+test(void)
 {
     D_TRACE(1, "This should have appeared at debug level %d; %d %f\n", 1, 3, 3.141593);
     D_TRACE(2, "This should have appeared at debug level %d; %d %f\n", 2, 3, 3.141593);
@@ -132,7 +148,8 @@ static void test(void)
     D_CALL(5, printf("Hello, world!\n"));
 }
 
-static void test1(int i)
+static void
+test1(int i)
 {
     debug::setdebug(i);
     fprintf(stderr, "Debug level is: %d\n", debug::getdebug());
@@ -143,7 +160,8 @@ static void test1(int i)
     test();
 }
 
-static void test_debug(int argc, char** argv)
+static void
+test_debug(int argc, char** argv)
 {
     int i;
 
@@ -155,7 +173,8 @@ static void test_debug(int argc, char** argv)
     }
 }
 
-int main(int argc, char** argv)
+int
+main(int argc, char** argv)
 {
     D_TRACKING();
     if (argc <= 1) printf("It is more fun if you add arguments to the command line!\n");

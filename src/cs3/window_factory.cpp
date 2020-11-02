@@ -9,7 +9,8 @@
 
 #include <iostream>
 
-Window* Window_factory::create_window(Window_type type)
+Window*
+Window_factory::create_window(Window_type type)
 {
     extern Window* create_glfw_window();
 
@@ -22,7 +23,8 @@ Window* Window_factory::create_window(Window_type type)
     }
 }
 
-void Window_factory::destroy_window(Window* win, Window_type type)
+void
+Window_factory::destroy_window(Window* win, Window_type type)
 {
     extern void destroy_glfw_window(Window*);
 

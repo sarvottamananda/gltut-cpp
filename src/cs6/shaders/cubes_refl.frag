@@ -45,6 +45,6 @@ void main()
     //vec3 res = (ambient_comp) * color.rgb;
     //vec3 res = (diffuse_comp) * color.rgb;
 
-    frag_color = vec4(res, 1.0);
+    frag_color = vec4(0.8*res, 1.0);
     //frag_color = color;
 }

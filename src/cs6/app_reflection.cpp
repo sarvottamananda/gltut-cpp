@@ -1071,5 +1071,5 @@ modify_buffers()
 void
 App_reflection::initialize(Options &os)
 {
-    w.initialize("OpenGL Snippets : Lighted Cubes", os.width, os.height, os.fullscreen);
+    w.initialize("OpenGL Snippets : Reflected Cubes and Cupemap", os.width, os.height, os.fullscreen);
 }

@@ -22,4 +22,4 @@ class App_lighting : public App_base {
    private:
 };
 
-#endif	// APP_LIGHTING_H
+#endif  // APP_LIGHTING_H

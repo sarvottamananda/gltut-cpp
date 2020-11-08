@@ -1,8 +1,10 @@
-//	Sarvottamananda (shreesh)
-//	2020-09-28
-//	main.cpp v0.0 (OpenGL Code Snippets)
-//
-//	Main function for the code snippet.
+/*!
+ * Sarvottamananda (shreesh)
+ * 2020-11-03
+ * cs5_lighting.cpp v0.0 (OpenGL/C++ Tutorials)
+ *
+ * Main function for the code snippet.
+ */
 
 #include "app_lighting.h"
 #include "cs5_config.h"
@@ -37,5 +39,5 @@ main(int argc, char* argv[])
     code_snippet.terminate();
 
     Window_factory::destroy_window(
-	win_glfw, Window_type::glfw);  // Destroy the glfw window using factory idiom
+        win_glfw, Window_type::glfw);  // Destroy the glfw window using factory idiom
 }

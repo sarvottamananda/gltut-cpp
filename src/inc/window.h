@@ -99,4 +99,4 @@ enum class Key_mods : uint8_t {
     num_lock = 1 << 5,
 };
 
-#endif	// WINDOW_H
+#endif  // WINDOW_H

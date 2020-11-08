@@ -13,4 +13,4 @@
 
 extern GLenum check_glerror(const char *file, int line);
 
-#endif	// OPENGL_STUFF_H
+#endif  // OPENGL_STUFF_H

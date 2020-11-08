@@ -20,4 +20,4 @@ class Window_factory {
     static void destroy_window(Window*, Window_type);
 };
 
-#endif	// SNIPPETS_WINDOW_FACTORY_H
+#endif  // SNIPPETS_WINDOW_FACTORY_H

@@ -1,16 +1,19 @@
 /*!
  * Sarvottamananda (shreesh)
- * 2020-11-03
- * cs4_ground.cpp v0.0 (OpenGL/C++ Tutorials)
+ * 2020-11-08
+ * cs6_reflection.cpp v0.0 (OpenGL/C++ Tutorials)
  *
  * Main function for the code snippet.
  */
 
-#include "app_ground.h"
-#include "cs4_config.h"
+#include "app_reflection.h"
+#include "cs6_config.h"
+#include "debug.h"
 #include "options.h"
 #include "window.h"
 #include "window_factory.h"
+
+static void process_buildconf(Options& op);
 
 int
 main(int argc, char* argv[])
@@ -21,12 +24,13 @@ main(int argc, char* argv[])
     opts.process_options(argc, argv);
     opts.print("Options store");
 
-    Window* win_glfw = Window_factory::create_window(
-        Window_type::glfw);  // Create a glfw window using factory idiom
-    App_ground code_snippet(
-        win_glfw);  // Create an app instance using glfw window, we did not want to
-                    // hardcode glfw instance of window inside the app, hence we
-                    // create it first and then pass it to app instance
+    // Create a glfw window using factory idiom
+    Window* win_glfw = Window_factory::create_window(Window_type::glfw);
+
+    // Create an app instance using glfw window, we did not want to
+    // hardcode glfw instance of window inside the app, hence we
+    // create it first and then pass it to app instance
+    App_reflection code_snippet(win_glfw);
 
     win_glfw->set_app(&code_snippet);
 

@@ -14,4 +14,4 @@
 
 GLuint create_program(std::string, std::vector<std::string>);
 
-#endif	// SHADER_STUFF_H
+#endif  // SHADER_STUFF_H

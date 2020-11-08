@@ -31,4 +31,4 @@ class Options_store {
     void print(std::string title);
 };
 
-#endif	// SNIPPETS_OPTIONS_STORE_H
+#endif  // SNIPPETS_OPTIONS_STORE_H

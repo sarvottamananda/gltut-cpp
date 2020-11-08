@@ -33,4 +33,4 @@ class App_base {
    private:
 };
 
-#endif	// SNIPPETS_APP_BASE_H
+#endif  // SNIPPETS_APP_BASE_H

@@ -1,8 +1,10 @@
-//	Sarvottamananda (shreesh)
-//	2020-09-28
-//	main.cpp v0.0 (OpenGL Code Snippets)
-//
-//	Main function for the code snippet.
+/*!
+ * Sarvottamananda (shreesh)
+ * 2020-11-03
+ * cs3_skybox.cpp v0.0 (OpenGL/C++ Tutorials)
+ *
+ * Main function for the code snippet.
+ */
 
 #include "app_skybox.h"
 #include "do_args.h"
@@ -20,12 +22,12 @@ main(int argc, char* argv[])
     opts_store.print("Options store");
 
     Window* win_glfw = Window_factory::create_window(
-	Window_type::glfw);  // Create a glfw window using factory idiom
+        Window_type::glfw);  // Create a glfw window using factory idiom
     App_skybox code_snippet(
-	win_glfw);  // Create an app instance using glfw window, we did not want to
-		    // hardcode glfw instance of window inside the app, hence we
-		    // create it first and then pass it to app instance
-		    //
+        win_glfw);  // Create an app instance using glfw window, we did not want to
+                    // hardcode glfw instance of window inside the app, hence we
+                    // create it first and then pass it to app instance
+                    //
     win_glfw->set_app(&code_snippet);
 
     code_snippet.initialize(opts_store);
@@ -33,5 +35,5 @@ main(int argc, char* argv[])
     code_snippet.terminate();
 
     Window_factory::destroy_window(
-	win_glfw, Window_type::glfw);  // Destroy the glfw window using factory idiom
+        win_glfw, Window_type::glfw);  // Destroy the glfw window using factory idiom
 }

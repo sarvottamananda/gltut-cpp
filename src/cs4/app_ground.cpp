@@ -82,17 +82,17 @@ using glm::vec3;
 
 auto pos = vec3(0.0f, 2.0f, 0.0f);   // model location
 auto sf = vec3(1.0f, 1.0f, 1.0f);    // model scaling factor
-auto angle = (GLfloat)0.0f;	     // model rotation angle
+auto angle = (GLfloat)0.0f;          // model rotation angle
 auto axis = vec3(1.0f, 1.0f, 1.0f);  // model rotational axis
 
-auto eye_up = vec3(0, 1, 0);	  // Up is +ive Y (will be (0,-1,0) to look upside-down)
-auto eye_right = vec3(1, 0, 0);	  // Right is +ive X
+auto eye_up = vec3(0, 1, 0);      // Up is +ive Y (will be (0,-1,0) to look upside-down)
+auto eye_right = vec3(1, 0, 0);   // Right is +ive X
 auto eye_front = vec3(0, 0, -1);  // Front is -ive Z
 auto eye_dist = start_dist;
 auto eye_alt = start_alt;
 
-auto eye_pos = vec3(0, start_alt, start_dist);	// Camera at (8,0,0), in World Space
-auto eye_lookat = vec3(0, start_alt, 0);	// Look at the origin
+auto eye_pos = vec3(0, start_alt, start_dist);  // Camera at (8,0,0), in World Space
+auto eye_lookat = vec3(0, start_alt, 0);        // Look at the origin
 
 GLfloat cubemap_num = 0.0f;
 
@@ -125,8 +125,8 @@ static void move_back(float delta);
 static void calculate_camera();
 static void init_camera();
 static void GLAPIENTRY debug_callback(GLenum source, GLenum type, GLuint id, GLenum severity,
-				      GLsizei length, const GLchar *message,
-				      const void *userParam);
+                                      GLsizei length, const GLchar *message,
+                                      const void *userParam);
 
 /*
  * App::render_loop() is the main function defined in this file.
@@ -146,23 +146,23 @@ App_ground::render_loop()
     std::cout << "OpenGL version : " << glGetString(GL_VERSION) << "\n";
     std::cout << "Renderer : " << glGetString(GL_VERSION) << "\n\n";
 
-    glEnable(GL_DEPTH_TEST);		     // Enables depth testing for triangles in the back
-    glEnable(GL_BLEND);			     // Enable Blending for transparency
-    glEnable(GL_CULL_FACE);		     // Enables culling of away facing triangles
-    glCullFace(GL_BACK);		     // Cull back facing faces
+    glEnable(GL_DEPTH_TEST);                 // Enables depth testing for triangles in the back
+    glEnable(GL_BLEND);                      // Enable Blending for transparency
+    glEnable(GL_CULL_FACE);                  // Enables culling of away facing triangles
+    glCullFace(GL_BACK);                     // Cull back facing faces
     glEnable(GL_TEXTURE_CUBE_MAP_SEAMLESS);  // Remove slight gap between cubemap boundaries
-    glEnable(GL_MULTISAMPLE);		     // Mix the texture if more pixels are transposing
-    glEnable(GL_DEBUG_OUTPUT);		     // Debug require OpenGL 4.3
+    glEnable(GL_MULTISAMPLE);                // Mix the texture if more pixels are transposing
+    glEnable(GL_DEBUG_OUTPUT);               // Debug require OpenGL 4.3
     glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);   // Flush debug messages
 
-    glDebugMessageCallback(debug_callback, nullptr);	// Simple debug callback
-    glDepthFunc(GL_LEQUAL);				// Cull farther triangles
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);	// Alpha channel decides the final color
-    glFrontFace(GL_CCW);				// Faces are counter-clockwise
-    glCullFace(GL_BACK);				// Cull back facing faces
-    glClearDepth(1.0f);					// Depth buffer clear value
-    glClearColor(0.0f, 0.051f, 0.1f, 0.0f);		// Color clear value
-    glPointSize(1);					// Size of screen points
+    glDebugMessageCallback(debug_callback, nullptr);    // Simple debug callback
+    glDepthFunc(GL_LEQUAL);                             // Cull farther triangles
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);  // Alpha channel decides the final color
+    glFrontFace(GL_CCW);                                // Faces are counter-clockwise
+    glCullFace(GL_BACK);                                // Cull back facing faces
+    glClearDepth(1.0f);                                 // Depth buffer clear value
+    glClearColor(0.0f, 0.051f, 0.1f, 0.0f);             // Color clear value
+    glPointSize(1);                                     // Size of screen points
 
     // Preparing data
     std::cout << "Preparing to draw\n";
@@ -170,20 +170,20 @@ App_ground::render_loop()
 
     // The render loop
     while (w.render_cond()) {
-	w.render_begin();
-	do_draw_commands(w);
-	w.render_end();	 // This also swaps buffer
+        w.render_begin();
+        do_draw_commands(w);
+        w.render_end();  // This also swaps buffer
     }
 }  // render_loop()
 // 1}}}
 
 static void GLAPIENTRY
 debug_callback(GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length,
-	       const GLchar *message, const void *userParam)
+               const GLchar *message, const void *userParam)
 // Directly copied from OpenGL khronos.org website
 {
     fprintf(stderr, "GL CALLBACK: %s type = 0x%x, severity = 0x%x, message = %s\n",
-	    (type == GL_DEBUG_TYPE_ERROR ? "** GL ERROR **" : ""), type, severity, message);
+            (type == GL_DEBUG_TYPE_ERROR ? "** GL ERROR **" : ""), type, severity, message);
 }
 
 static void
@@ -191,8 +191,8 @@ prepare(const Window &win)
 // Prepare various stuff to draw
 {
     prepare_models();
-    prepare_programs();	 // Programs are not stored in vao
-    prepare_uniforms();	 // Uniforms are not stored in vao
+    prepare_programs();  // Programs are not stored in vao
+    prepare_uniforms();  // Uniforms are not stored in vao
     prepare_textures();
     prepare_buffers();
     prepare_attributes();  // textures and buffers info is stored in vao
@@ -211,20 +211,20 @@ prepare_programs()
 // Create glsl programs for the shader
 {
     Vector<string> skybox_shaders = {
-	string(cs_config::cs_source_dir) + "/shaders/skybox.vert",
-	string(cs_config::cs_source_dir) + "/shaders/skybox.frag",
+        string(cs_config::cs_source_dir) + "/shaders/skybox.vert",
+        string(cs_config::cs_source_dir) + "/shaders/skybox.frag",
     };
     skybox_prog = create_program("Skybox", skybox_shaders);
 
     Vector<string> ground_shaders = {
-	string(cs_config::cs_source_dir) + "/shaders/ground.vert",
-	string(cs_config::cs_source_dir) + "/shaders/ground.frag",
+        string(cs_config::cs_source_dir) + "/shaders/ground.vert",
+        string(cs_config::cs_source_dir) + "/shaders/ground.frag",
     };
     ground_prog = create_program("Ground", ground_shaders);
 
     Vector<string> cubeobj_shaders = {
-	string(cs_config::cs_source_dir) + "/shaders/cubeobj.vert",
-	string(cs_config::cs_source_dir) + "/shaders/cubeobj.frag",
+        string(cs_config::cs_source_dir) + "/shaders/cubeobj.vert",
+        string(cs_config::cs_source_dir) + "/shaders/cubeobj.frag",
     };
     cubeobj_prog = create_program("Cubeobj", cubeobj_shaders);
 }
@@ -262,7 +262,7 @@ prepare_matrices(const Window &win)
 
     // Model matrix for cube
 
-    glm::mat4 cmodel = glm::mat4(1.0f);	 // Identity matrix
+    glm::mat4 cmodel = glm::mat4(1.0f);  // Identity matrix
 
     cmodel = glm::scale(cmodel, sf);
     cmodel = glm::rotate(cmodel, glm::radians(angle), axis);
@@ -274,7 +274,7 @@ prepare_matrices(const Window &win)
 
     // Model matrix for ground
 
-    glm::mat4 gmodel = glm::mat4(1.0f);	 // Identity matrix
+    glm::mat4 gmodel = glm::mat4(1.0f);  // Identity matrix
 
     gmodel = glm::scale(gmodel, vec3(1.0f, 1.0f, 1.0f));
     gmodel = glm::rotate(gmodel, glm::radians(90.0f), vec3(-1.0f, 0.0f, 0.0f));
@@ -316,18 +316,18 @@ prepare_cubemap_texture()
 // Upload pixel data on textures.
 {
     Vector<string> file = {
-	string(cs_config::cs_root_dir) + "/assets/skybox/skybox-right.jpg",
-	string(cs_config::cs_root_dir) + "/assets/skybox/skybox-left.jpg",
-	string(cs_config::cs_root_dir) + "/assets/skybox/skybox-top.jpg",
-	string(cs_config::cs_root_dir) + "/assets/skybox/skybox-bottom.jpg",
-	string(cs_config::cs_root_dir) + "/assets/skybox/skybox-front.jpg",
-	string(cs_config::cs_root_dir) + "/assets/skybox/skybox-back.jpg",
+        string(cs_config::cs_root_dir) + "/assets/skybox/skybox-right.jpg",
+        string(cs_config::cs_root_dir) + "/assets/skybox/skybox-left.jpg",
+        string(cs_config::cs_root_dir) + "/assets/skybox/skybox-top.jpg",
+        string(cs_config::cs_root_dir) + "/assets/skybox/skybox-bottom.jpg",
+        string(cs_config::cs_root_dir) + "/assets/skybox/skybox-front.jpg",
+        string(cs_config::cs_root_dir) + "/assets/skybox/skybox-back.jpg",
     };
     auto num_images = file.size();  // Number of images
 
     Vector<Image> image(num_images);
     for (auto i = 0u; i < num_images; i++) {
-	image[i].read_file(file[i]);
+        image[i].read_file(file[i]);
     }
     store_cubemap_texture_data(image);
 }
@@ -366,22 +366,22 @@ store_cubemap_texture_data(Vector<Image> &image)
     glTexStorage2D(GL_TEXTURE_CUBE_MAP, cnt_mip_level, GL_RGB8, w, h);
 
     for (auto i = 0u; i < num_images; i++) {
-	// Array holding the texels
-	GLubyte *p = (GLubyte *)image[i].pixels();
+        // Array holding the texels
+        GLubyte *p = (GLubyte *)image[i].pixels();
 
-	if (image[i].get_width() != w || image[i].get_height() != h ||
-	    image[i].get_bytes_per_pixel() != nc) {
-	    throw std::runtime_error("Images do not have same size, resize them equally");
-	}
+        if (image[i].get_width() != w || image[i].get_height() != h ||
+            image[i].get_bytes_per_pixel() != nc) {
+            throw std::runtime_error("Images do not have same size, resize them equally");
+        }
 
-	glTexSubImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, 0, 0, w, h, GL_RGB,
-			GL_UNSIGNED_BYTE, (void *)p);
+        glTexSubImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, 0, 0, w, h, GL_RGB,
+                        GL_UNSIGNED_BYTE, (void *)p);
     }
     // glGenerateMipmap(GL_TEXTURE_CUBE_MAP);
 
     // Free the image data
     for (auto i = 0u; i < num_images; i++) {
-	image[i].free_data();
+        image[i].free_data();
     }
 }
 // 1}}}
@@ -395,13 +395,13 @@ prepare_ground_texture()
     GLubyte image[tex_sz][tex_sz][4];  // RGBA storage
 
     for (auto i = 0u; i < tex_sz; i++) {
-	for (auto j = 0u; j < tex_sz; j++) {
-	    GLubyte c = (((i & 0x20) == 0) ^ ((j & 0x20) == 0)) * 255;
-	    image[i][j][0] = (GLubyte)c;
-	    image[i][j][1] = (GLubyte)c;
-	    image[i][j][2] = (GLubyte)c;
-	    image[i][j][3] = (GLubyte)255;
-	}
+        for (auto j = 0u; j < tex_sz; j++) {
+            GLubyte c = (((i & 0x20) == 0) ^ ((j & 0x20) == 0)) * 255;
+            image[i][j][0] = (GLubyte)c;
+            image[i][j][1] = (GLubyte)c;
+            image[i][j][2] = (GLubyte)c;
+            image[i][j][3] = (GLubyte)255;
+        }
     }
 
     glGenTextures(1, &ground_tex);
@@ -417,7 +417,7 @@ prepare_ground_texture()
     int cnt_mip_level = 7;
     glTexStorage2D(GL_TEXTURE_2D, cnt_mip_level, GL_RGB8, tex_sz, tex_sz);
     glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, tex_sz, tex_sz, GL_RGBA, GL_UNSIGNED_BYTE,
-		    (void *)image);
+                    (void *)image);
     glGenerateMipmap(GL_TEXTURE_2D);
 }
 // 1}}}
@@ -428,7 +428,7 @@ prepare_cube_texture()
     Image image;
 
     image.read_file(
-	(string(cs_config::cs_root_dir) + "/assets/textures/cc-textures.jpg").c_str());
+        (string(cs_config::cs_root_dir) + "/assets/textures/cc-textures.jpg").c_str());
 
     auto w = image.get_width();
     auto h = image.get_height();
@@ -449,7 +449,7 @@ prepare_cube_texture()
     int cnt_mip_level = 8;
     glTexStorage2D(GL_TEXTURE_2D, cnt_mip_level, GL_RGB8, w, h);
     glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, w, h, GL_RGB, GL_UNSIGNED_BYTE,
-		    (void *)image.pixels());
+                    (void *)image.pixels());
 
     image.free_data();
 }
@@ -467,9 +467,9 @@ prepare_buffers()
     auto sum_idx_num = cube.idx_num + ground.idx_num;
 
     glBufferStorage(GL_ARRAY_BUFFER, sum_v_num * sizeof(struct Vertex_data), (GLvoid *)nullptr,
-		    GL_DYNAMIC_STORAGE_BIT);
+                    GL_DYNAMIC_STORAGE_BIT);
     glBufferStorage(GL_ELEMENT_ARRAY_BUFFER, sum_idx_num * sizeof(GLushort), (GLvoid *)nullptr,
-		    GL_DYNAMIC_STORAGE_BIT);
+                    GL_DYNAMIC_STORAGE_BIT);
 
     GLint base = 0;
 
@@ -504,7 +504,7 @@ prepare_buffers()
 
     glBufferSubData(GL_ARRAY_BUFFER, (GLintptr)vbo_off, vbo_sz, (const GLvoid *)ground.data);
     glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, (GLintptr)ebo_off, ebo_sz,
-		    (const void *)ground.idx);
+                    (const void *)ground.idx);
 
     vbo_off += vbo_sz;
     ebo_off += ebo_sz;
@@ -531,11 +531,11 @@ prepare_attributes()
     glBindBuffer(GL_ARRAY_BUFFER, vbo);
 
     glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, sizeof(Vertex_data),
-			  (GLvoid *)(offsetof(Vertex_data, pos)));
+                          (GLvoid *)(offsetof(Vertex_data, pos)));
     glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, sizeof(Vertex_data),
-			  (GLvoid *)(offsetof(Vertex_data, normal)));
+                          (GLvoid *)(offsetof(Vertex_data, normal)));
     glVertexAttribPointer(2, 4, GL_FLOAT, GL_FALSE, sizeof(Vertex_data),
-			  (GLvoid *)(offsetof(Vertex_data, tx)));
+                          (GLvoid *)(offsetof(Vertex_data, tx)));
 
     glEnableVertexAttribArray(0);
     glEnableVertexAttribArray(1);
@@ -572,7 +572,7 @@ do_draw_commands(const Window &win)
 
     glDepthMask(GL_FALSE);
     glDrawElementsBaseVertex(GL_TRIANGLES, cube.idx_num, GL_UNSIGNED_SHORT, (void *)cube_off,
-			     (GLint)cube_base);
+                             (GLint)cube_base);
     glDepthMask(GL_TRUE);
     // */
 
@@ -584,7 +584,7 @@ do_draw_commands(const Window &win)
 
     glDisable(GL_CULL_FACE);  // Enables culling of away facing triangles
     glDrawElementsBaseVertex(GL_TRIANGLES, ground.idx_num, GL_UNSIGNED_SHORT,
-			     (void *)ground_off, (GLint)ground_base);
+                             (void *)ground_off, (GLint)ground_base);
     glEnable(GL_CULL_FACE);  // Enables culling of away facing triangles
     // */
 
@@ -597,7 +597,7 @@ do_draw_commands(const Window &win)
     // glDrawElements(GL_TRIANGLES, cube.idx_num, GL_UNSIGNED_SHORT, (void *)0);
 
     glDrawElementsBaseVertex(GL_TRIANGLES, cube.idx_num, GL_UNSIGNED_SHORT, (void *)cube_off,
-			     (GLint)cube_base);
+                             (GLint)cube_base);
     // */
 }
 // 1}}}
@@ -611,108 +611,108 @@ App_ground::key_callback(Key key, int scancode, Key_action action, Key_mods mods
     if (action == Key_action::release) return;
 
     switch (key) {
-	case Key::left:
-	    cout << "key (left)\n";
-	    rotate_right(-delta_theta);
-	    break;
-	case Key::right:
-	    cout << "key (right)\n";
-	    rotate_right(delta_theta);
-	    break;
-	case Key::up:
-	    cout << "key (up)\n";
-	    rotate_up(delta_theta);
-	    break;
-	case Key::down:
-	    cout << "key (down)\n";
-	    rotate_up(-delta_theta);
-	    break;
+        case Key::left:
+            cout << "key (left)\n";
+            rotate_right(-delta_theta);
+            break;
+        case Key::right:
+            cout << "key (right)\n";
+            rotate_right(delta_theta);
+            break;
+        case Key::up:
+            cout << "key (up)\n";
+            rotate_up(delta_theta);
+            break;
+        case Key::down:
+            cout << "key (down)\n";
+            rotate_up(-delta_theta);
+            break;
 
-	case Key::kw:
-	    cout << "key (w)\n";
-	    move_back(-delta);
-	    break;
-	case Key::ks:
-	    cout << "key (s)\n";
-	    move_back(delta);
-	    break;
-	case Key::ka:
-	    cout << "key (a)\n";
-	    angle += delta_alpha;
-	    break;
-	case Key::kd:
-	    cout << "key (d)\n";
-	    angle -= delta_alpha;
-	    break;
+        case Key::kw:
+            cout << "key (w)\n";
+            move_back(-delta);
+            break;
+        case Key::ks:
+            cout << "key (s)\n";
+            move_back(delta);
+            break;
+        case Key::ka:
+            cout << "key (a)\n";
+            angle += delta_alpha;
+            break;
+        case Key::kd:
+            cout << "key (d)\n";
+            angle -= delta_alpha;
+            break;
 
-	case Key::k0:
-	    cout << "key (0)\n";
-	    cubemap_num = 0.0f;
-	    break;
-	case Key::k1:
-	    cout << "key (1)\n";
-	    cubemap_num = 0.0f;
-	    break;
-	case Key::k2:
-	    cout << "key (2)\n";
-	    cubemap_num = 0.0f;
-	    break;
-	case Key::k3:
-	    cout << "key (3)\n";
-	    cubemap_num = 0.0f;
-	    break;
-	case Key::k4:
-	    cout << "key (4)\n";
-	    cubemap_num = 0.0f;
-	    break;
-	case Key::k5:
-	    cout << "key (5)\n";
-	    cubemap_num = 0.0f;
-	    break;
-	case Key::k6:
-	    cout << "key (6)\n";
-	    cubemap_num = 0.0f;
-	    break;
-	case Key::k7:
-	    cout << "key (7)\n";
-	    cubemap_num = 0.0f;
-	    break;
-	case Key::k8:
-	    cout << "key (8)\n";
-	    cubemap_num = 0.0f;
-	    break;
-	case Key::k9:
-	    cout << "key (9)\n";
-	    cubemap_num = 0.0f;
-	    break;
+        case Key::k0:
+            cout << "key (0)\n";
+            cubemap_num = 0.0f;
+            break;
+        case Key::k1:
+            cout << "key (1)\n";
+            cubemap_num = 0.0f;
+            break;
+        case Key::k2:
+            cout << "key (2)\n";
+            cubemap_num = 0.0f;
+            break;
+        case Key::k3:
+            cout << "key (3)\n";
+            cubemap_num = 0.0f;
+            break;
+        case Key::k4:
+            cout << "key (4)\n";
+            cubemap_num = 0.0f;
+            break;
+        case Key::k5:
+            cout << "key (5)\n";
+            cubemap_num = 0.0f;
+            break;
+        case Key::k6:
+            cout << "key (6)\n";
+            cubemap_num = 0.0f;
+            break;
+        case Key::k7:
+            cout << "key (7)\n";
+            cubemap_num = 0.0f;
+            break;
+        case Key::k8:
+            cout << "key (8)\n";
+            cubemap_num = 0.0f;
+            break;
+        case Key::k9:
+            cout << "key (9)\n";
+            cubemap_num = 0.0f;
+            break;
 
-	case Key::space:
-	    cout << "key (space)\n";
-	    init_camera();
-	    break;
-	case Key::esc:
-	    cout << "key (esc)\n";
-	    break;
+        case Key::space:
+            cout << "key (space)\n";
+            init_camera();
+            break;
+        case Key::esc:
+            cout << "key (esc)\n";
+            break;
 
-	case Key::left_shift:
-	case Key::right_shift:
-	    cout << "key (shift)\n";
-	    break;
-	case Key::left_ctrl:
-	case Key::right_ctrl:
-	    cout << "key (ctrl)\n";
-	    break;
-	case Key::left_alt:
-	case Key::right_alt:
-	    cout << "key (alt)\n";
-	    break;
-	case Key::left_super:
-	case Key::right_super:
-	    cout << "key (super)\n";
-	    break;
-	default:
-	    cout << "key (unknown)\n";
-	    break;
+        case Key::left_shift:
+        case Key::right_shift:
+            cout << "key (shift)\n";
+            break;
+        case Key::left_ctrl:
+        case Key::right_ctrl:
+            cout << "key (ctrl)\n";
+            break;
+        case Key::left_alt:
+        case Key::right_alt:
+            cout << "key (alt)\n";
+            break;
+        case Key::left_super:
+        case Key::right_super:
+            cout << "key (super)\n";
+            break;
+        default:
+            cout << "key (unknown)\n";
+            break;
     }
     return;
 }

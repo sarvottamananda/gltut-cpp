@@ -1,12 +1,12 @@
 /**
  * Sarvottamananda (shreesh)
- * Oct 19, 2020
- * app_lighting.cpp v0.0 (OpenGL Code Snippets)
+ * 2020-11-08
+ * app_reflection.cpp v0.0 (OpenGL Code Snippets)
  *
  * Apps derived from App_base
  */
 
-#include "app_lighting.h"
+#include "app_reflection.h"
 
 // clang-format: off
 #include <GL/glew.h>
@@ -20,7 +20,7 @@
 #include <random>
 #include <vector>
 
-#include "cs5_config.h"
+#include "cs6_config.h"
 #include "img_stuff.h"
 #include "model_cube.h"
 #include "model_ground.h"
@@ -65,7 +65,8 @@ Model_ground ground;  // flat ground
 
 // program objects
 GLuint skybox_prog = 0;   // shader for cubemap
-GLuint cubeobj_prog = 0;  // shader for lighted test object
+GLuint cubes_prog = 0;  // shader for lighted test object
+GLuint refls_prog = 0;  // shader for lighted test object
 GLuint ground_prog = 0;   // shader for ground
 
 // various array object
@@ -77,20 +78,32 @@ GLuint ebo = 0;
 GLuint model_ubo = 0;
 
 // uniform block(s)
-GLuint cmodel_ind = 0;
-GLuint model_bindpoint = 0;
+GLuint cmodel_ind = 0; // model_block index in cubes shader
+GLuint rmodel_ind = 0; // model_block index in refls shader
+
+GLuint cmodel_bindpoint = 0;  // uniform buffer block 0, used in bothe cubes and refls shader
+                              // becaues the Model_data struct is same.
 
 // uniforms
 GLuint gmvp_loc = 0;
+GLuint ground_tex_loc = 0;
+GLuint gskybox_tex_loc = 0;
+GLuint geye_pos_loc = 0;
+
 GLuint vp_loc = 0;
+GLuint skybox_tex_loc = 0;
+
 GLuint eye_pos_loc = 0;
 GLuint sun_dir_loc = 0;
 GLuint amb_col_loc = 0;
 GLuint sun_col_loc = 0;
-
-GLuint skybox_tex_loc = 0;
 GLuint cube_tex_loc = 0;
-GLuint ground_tex_loc = 0;
+
+GLuint refl_eye_pos_loc = 0;
+GLuint refl_sun_dir_loc = 0;
+GLuint refl_amb_col_loc = 0;
+GLuint refl_sun_col_loc = 0;
+GLuint refl_cube_tex_loc = 0;
 
 // texture objects
 GLuint skybox_tex = 0;
@@ -125,7 +138,7 @@ struct Model_data {
     ivec4 material;
 };
 
-Model_data cmodel[num_cubes];
+Model_data cmodel[num_cubes * 2]; // twice as many cubes, because of reflections
 
 mat4 gmvp = mat4(1.0f);
 mat4 vp = mat4(1.0f);
@@ -136,7 +149,7 @@ auto box_sz = vec3(120.0f, 80.0f, 60.0f);
 
 auto start_time = std::chrono::steady_clock::now();
 
-GLfloat cubemap_num = 0.0f;  // use only one hires cubemap for this program, multiple cubemap
+GLfloat cubemap_num = 0.0f;  // use only one hi-res cubemap for this program, multiple cubemap
                              // would have been better, but since we are storing assets locally,
                              // we do not want to copy assets multiple times unnecessarily.
 
@@ -200,7 +213,7 @@ static void GLAPIENTRY debug_callback(GLenum source, GLenum type, GLuint id, GLe
  */
 
 void
-App_lighting::render_loop()
+App_reflection::render_loop()
 // Function for rendering, later on we will make a Renderable class for  doing this.
 {
     // This makes w's OpenGL context current, just in case if there are multiple windows too.
@@ -315,7 +328,10 @@ prepare_cubes()
 
         GLint material = 4 * int(cube_xform[i].disp.x * 4 / box_sz.x + 2) +
                          int(-cube_xform[i].disp.z * 4 / box_sz.z);
+
         cmodel[i].material.x = material;
+        // and its reflection, we will use the same transform as above
+        cmodel[i + num_cubes].material.x = material;
     }
 
     /*
@@ -344,11 +360,17 @@ prepare_programs()
     };
     ground_prog = create_program("Ground", ground_shaders);
 
-    Vector<string> cubeobj_shaders = {
-        string(cs_config::cs_source_dir) + "/shaders/cubeobj.vert",
-        string(cs_config::cs_source_dir) + "/shaders/cubeobj.frag",
+    Vector<string> cubes_shaders = {
+        string(cs_config::cs_source_dir) + "/shaders/cubes.vert",
+        string(cs_config::cs_source_dir) + "/shaders/cubes.frag",
     };
-    cubeobj_prog = create_program("Cubeobj", cubeobj_shaders);
+    cubes_prog = create_program("Cubes", cubes_shaders);
+
+    Vector<string> refls_shaders = {
+        string(cs_config::cs_source_dir) + "/shaders/cubes_refl.vert",
+        string(cs_config::cs_source_dir) + "/shaders/cubes_refl.frag",
+    };
+    refls_prog = create_program("Reflections", refls_shaders);
 
     // We need 64 Model_data
     GLint info = 0;
@@ -356,8 +378,11 @@ prepare_programs()
     std::cout << "GL_MAX_UNIFORM_BLOCK_SIZE: " << info << "\n";
     assert(info >= (GLint)(64 * sizeof(Model_data)));
 
-    glGetActiveUniformBlockiv(cubeobj_prog, 0, GL_UNIFORM_BLOCK_DATA_SIZE, &info);
-    std::cout << "GL_UNIFORM_BLOCK_DATA_SIZE (cubeobj:0) : " << info << "\n";
+    glGetActiveUniformBlockiv(cubes_prog, 0, GL_UNIFORM_BLOCK_DATA_SIZE, &info);
+    std::cout << "GL_UNIFORM_BLOCK_DATA_SIZE (cubes:0) : " << info << "\n";
+
+    glGetActiveUniformBlockiv(refls_prog, 0, GL_UNIFORM_BLOCK_DATA_SIZE, &info);
+    std::cout << "GL_UNIFORM_BLOCK_DATA_SIZE (refls:0) : " << info << "\n";
 
     glGetIntegerv(GL_UNIFORM_BUFFER_OFFSET_ALIGNMENT, &info);
     std::cout << "GL_UNIFORM_BUFFER_OFFSET_ALIGNMENT : " << info << "\n";
@@ -367,22 +392,35 @@ static void
 prepare_uniforms()
 {
     // skybox
-    skybox_tex_loc = glGetUniformLocation(skybox_prog, "skybox");
+    skybox_tex_loc = glGetUniformLocation(skybox_prog, "skybox_tex");
     vp_loc = glGetUniformLocation(skybox_prog, "vp");
 
     // cubes
-    cmodel_ind = glGetUniformBlockIndex(cubeobj_prog, "model_block");
-    cube_tex_loc = glGetUniformLocation(cubeobj_prog, "cube_tex");
+    cmodel_ind = glGetUniformBlockIndex(cubes_prog, "model_block");
+    cube_tex_loc = glGetUniformLocation(cubes_prog, "cube_tex");
 
-    eye_pos_loc = glGetUniformLocation(cubeobj_prog, "eye_pos");
-    sun_dir_loc = glGetUniformLocation(cubeobj_prog, "sun_dir");
-    amb_col_loc = glGetUniformLocation(cubeobj_prog, "ambient_color");
-    sun_col_loc = glGetUniformLocation(cubeobj_prog, "sun_color");
+    eye_pos_loc = glGetUniformLocation(cubes_prog, "eye_pos");
+    sun_dir_loc = glGetUniformLocation(cubes_prog, "sun_dir");
+    amb_col_loc = glGetUniformLocation(cubes_prog, "ambient_color");
+    sun_col_loc = glGetUniformLocation(cubes_prog, "sun_color");
 
-    glUniformBlockBinding(cubeobj_prog, cmodel_ind, model_bindpoint);
+    glUniformBlockBinding(cubes_prog, cmodel_ind, cmodel_bindpoint);
+
+    // reflections
+    rmodel_ind = glGetUniformBlockIndex(refls_prog, "model_block");
+    refl_cube_tex_loc = glGetUniformLocation(refls_prog, "cube_tex");
+
+    refl_eye_pos_loc = glGetUniformLocation(refls_prog, "eye_pos");
+    refl_sun_dir_loc = glGetUniformLocation(refls_prog, "sun_dir");
+    refl_amb_col_loc = glGetUniformLocation(refls_prog, "ambient_color");
+    refl_sun_col_loc = glGetUniformLocation(refls_prog, "sun_color");
+
+    glUniformBlockBinding(refls_prog, rmodel_ind, cmodel_bindpoint);
 
     // ground
     ground_tex_loc = glGetUniformLocation(ground_prog, "ground_tex");
+    gskybox_tex_loc = glGetUniformLocation(ground_prog, "skybox_tex");
+    geye_pos_loc = glGetUniformLocation(ground_prog, "eye_pos");
     gmvp_loc = glGetUniformLocation(ground_prog, "mvp");
 }
 
@@ -409,25 +447,31 @@ prepare_matrices(const Window &win)
 
     mat4 projection = glm::perspective(fovy, aspect, near, far);
 
-    // Model matrix for cube
+    // Model matrix for cube and reflections
 
     auto cur_time = std::chrono::steady_clock::now();
     std ::chrono::duration<float> cur_dur = cur_time - start_time;
 
     for (auto i = 0u; i < num_cubes; i++) {
+
+        //
+        // cmodel data for the cube
+        //
+
         mat4 model = mat4(1.0f);  // Identity matrix
 
         vec3 pos = cube_xform[i].disp;
         GLfloat angle = cube_xform[i].angle;
+        vec3 axis = cube_xform[i].axis;
 
         pos[1] -= ((GLfloat)cur_dur.count() * cube_xform[i].yvel);
         angle += ((GLfloat)cur_dur.count() * cube_xform[i].avel);
 
         // when the cube gets completely below the surface move it back
-        if (pos[1] < -2.0f) cube_xform[i].disp[1] += box_sz.y;
+        if (pos[1] < 0.0f) cube_xform[i].disp[1] += box_sz.y;
 
         model = glm::translate(model, pos);
-        model = glm::rotate(model, glm::radians(angle), cube_xform[i].axis);
+        model = glm::rotate(model, glm::radians(angle), axis);
         model = glm::scale(model, sf);
 
         // mvp for cube object
@@ -439,6 +483,34 @@ prepare_matrices(const Window &win)
         nmodel = glm::rotate(nmodel, glm::radians(angle), cube_xform[i].axis);
         nmodel = glm::scale(nmodel, sf);
         cmodel[i].model_invxpos = nmodel;
+
+        //
+        // cmodel data for reflection, we invert the y-coordnate
+        //
+
+        mat4 rmodel = mat4(1.0f);  // Identity matrix
+
+        vec3 rpos = pos;
+        rpos[1] = -rpos[1];
+
+        GLfloat rangle  = -angle;
+        vec3 raxis = axis;
+        axis[1] = -1;
+
+        // and then we repeat the calculations
+        rmodel = glm::translate(rmodel, rpos);
+        rmodel = glm::rotate(rmodel, glm::radians(rangle), raxis);
+        rmodel = glm::scale(rmodel, sf);
+
+        // mvp for cube object
+
+        cmodel[i + num_cubes].mvp = projection * view * rmodel;
+        cmodel[i + num_cubes].model = rmodel;
+        // remove translation for normal transformation matrix
+        mat4 rnmodel = mat4(1.0f);
+        rnmodel = glm::rotate(rnmodel, glm::radians(rangle), raxis);
+        rnmodel = glm::scale(rnmodel, sf);
+        cmodel[i + num_cubes].model_invxpos = rnmodel;
     }
 
     // Model matrix for ground
@@ -705,10 +777,10 @@ prepare_uniform_buffers()
 {
     // model matrices uniform block
     glBindBuffer(GL_UNIFORM_BUFFER, model_ubo);
-    glBufferStorage(GL_UNIFORM_BUFFER, num_cubes * sizeof(Model_data), (GLvoid *)nullptr,
+    glBufferStorage(GL_UNIFORM_BUFFER, 2 * num_cubes * sizeof(Model_data), (GLvoid *)nullptr,
                     GL_DYNAMIC_STORAGE_BIT);
     glBufferSubData(GL_UNIFORM_BUFFER, (GLintptr)0,
-                    (GLsizeiptr)(num_cubes * sizeof(Model_data)), (const GLvoid *)(&cmodel[0]));
+                    (GLsizeiptr)(2 * num_cubes * sizeof(Model_data)), (const GLvoid *)(&cmodel[0]));
 
     /*
     std::cout << "Materials : ";
@@ -783,46 +855,60 @@ do_draw_commands(const Window &win)
     glDepthMask(GL_TRUE);
     // */
 
+    // Draw reflections
+    // /*
+    glUseProgram(refls_prog);
+    glUniform1i(refl_cube_tex_loc, 2);
+    glUniform3fv(refl_eye_pos_loc, 1, glm::value_ptr(eye_pos));
+    glUniform3fv(refl_sun_dir_loc, 1, glm::value_ptr(sun_dir));
+    glUniform3fv(refl_amb_col_loc, 1, glm::value_ptr(ambient_color));
+    glUniform3fv(refl_sun_col_loc, 1, glm::value_ptr(sun_color));
+    glCullFace(GL_BACK);
+    for (auto i = 0; i < num_cubes / num_ub; i++) {
+        glBindBufferRange(GL_UNIFORM_BUFFER, cmodel_bindpoint, model_ubo,
+                          (num_cubes + i * num_ub) * sizeof(Model_data), num_ub * sizeof(Model_data));
+        glDrawElementsInstancedBaseVertex(GL_TRIANGLES, cube.idx_num, GL_UNSIGNED_SHORT,
+                                          (void *)cube_off, num_ub, (GLint)cube_base);
+    }
+    // */
+
     // Draw ground
     // /*
     glUseProgram(ground_prog);
     glUniform1i(ground_tex_loc, 1);
+    glUniform1i(gskybox_tex_loc, 0);
+    glUniform3fv(geye_pos_loc, 1, glm::value_ptr(eye_pos));
     glUniformMatrix4fv(gmvp_loc, 1, GL_FALSE, &gmvp[0][0]);
 
-    glDisable(GL_CULL_FACE);  // Enables culling of away facing triangles
+    //cout << eye_pos[0] << " " << eye_pos[1] << " " << eye_pos[2] << "\n";
+
+    glDisable(GL_CULL_FACE);  // Disable culling of away facing triangles
     glDrawElementsBaseVertex(GL_TRIANGLES, ground.idx_num, GL_UNSIGNED_SHORT,
                              (void *)ground_off, (GLint)ground_base);
-    glEnable(GL_CULL_FACE);  // Enables culling of away facing triangles
+    glEnable(GL_CULL_FACE);  // Enable culling of away facing triangles
     // */
 
-    // Draw cube
+    // Draw cubes
     // /*
-    glUseProgram(cubeobj_prog);
+    glUseProgram(cubes_prog);
     glUniform1i(cube_tex_loc, 2);
     glUniform3fv(eye_pos_loc, 1, glm::value_ptr(eye_pos));
     glUniform3fv(sun_dir_loc, 1, glm::value_ptr(sun_dir));
     glUniform3fv(amb_col_loc, 1, glm::value_ptr(ambient_color));
     glUniform3fv(sun_col_loc, 1, glm::value_ptr(sun_color));
     glCullFace(GL_BACK);
-    // glDrawElements(GL_TRIANGLES, cube.idx_num, GL_UNSIGNED_SHORT, (void *)0);
-
-    /*
-    glBindBufferBase(GL_UNIFORM_BUFFER, ub_bindpoint, mvp_ubo);
-    glDrawElementsInstancedBaseVertex(GL_TRIANGLES, cube.idx_num, GL_UNSIGNED_SHORT,
-                                      (void *)cube_off, num_ub, (GLint)cube_base);
-    */
 
     for (auto i = 0; i < num_cubes / num_ub; i++) {
-        glBindBufferRange(GL_UNIFORM_BUFFER, model_bindpoint, model_ubo,
+        glBindBufferRange(GL_UNIFORM_BUFFER, cmodel_bindpoint, model_ubo,
                           i * num_ub * sizeof(Model_data), num_ub * sizeof(Model_data));
         glDrawElementsInstancedBaseVertex(GL_TRIANGLES, cube.idx_num, GL_UNSIGNED_SHORT,
                                           (void *)cube_off, num_ub, (GLint)cube_base);
     }
-    // *8
+    // */
 }
 
 void
-App_lighting::key_callback(Key key, int scancode, Key_action action, Key_mods mods)
+App_reflection::key_callback(Key key, int scancode, Key_action action, Key_mods mods)
 {
     if (action == Key_action::release) return;
 
@@ -978,12 +1064,12 @@ modify_buffers()
 {
     glBindBuffer(GL_UNIFORM_BUFFER, model_ubo);
     glBufferSubData(GL_UNIFORM_BUFFER, (GLintptr)0,
-                    (GLsizeiptr)(num_cubes * sizeof(Model_data)), (const GLvoid *)(&cmodel[0]));
+                    (GLsizeiptr)(2 * num_cubes * sizeof(Model_data)), (const GLvoid *)(&cmodel[0]));
     glBindBuffer(GL_UNIFORM_BUFFER, 0);
 }
 
 void
-App_lighting::initialize(Options &os)
+App_reflection::initialize(Options &os)
 {
-    w.initialize("OpenGL Snippets : Lighted Cubes", os.width, os.height, os.fullscreen);
+    w.initialize("OpenGL Snippets : Reflected Cubes and Cupemap", os.width, os.height, os.fullscreen);
 }

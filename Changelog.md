@@ -11,8 +11,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-## [0.6.0] - 2020-10-15
+- Plan to add sperical reflecting surfaces
 
+
+## [0.6.0] - 2020-11-09
+
+### Added
+
+- Added cs6 tutorial example for OpenGL in C++ (SS)
+- Demonstrated reflections of objects
+- Demonstrated reflection of skybox
+- Demonstrated transparency
 - 2020-11-03 (SS) Remove unnecessary meson.build files
 - 2020-11-03 (SS) Incorporate git-flow branching model
 

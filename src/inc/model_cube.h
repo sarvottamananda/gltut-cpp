@@ -15,4 +15,4 @@ class Model_cube : public Model_base {
     virtual ~Model_cube(){};
 };
 
-#endif	// MODEL_CUBE_H
+#endif  // MODEL_CUBE_H

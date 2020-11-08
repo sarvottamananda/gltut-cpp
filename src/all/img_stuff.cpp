@@ -16,16 +16,16 @@
 void
 Image::read_file(std::string fname)
 {
-    int req_nc = 0;	// required number of channels
-    int wid = 0;	// image width
-    int hgt = 0;	// image height
-    int nc = 0;		// number of channels
-    void* p = nullptr;	// pixels data
+    int req_nc = 0;     // required number of channels
+    int wid = 0;        // image width
+    int hgt = 0;        // image height
+    int nc = 0;         // number of channels
+    void* p = nullptr;  // pixels data
 
     // std::cerr << "Reading image (" << fname << ")\n";
     p = stbi_load(fname.c_str(), &wid, &hgt, &nc, req_nc);
     if (p == nullptr) {
-	throw std::runtime_error("Unable to load image : " + fname);
+        throw std::runtime_error("Unable to load image : " + fname);
     }
 
     assert((nc > 0 && nc <= 4));

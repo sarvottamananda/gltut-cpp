@@ -115,18 +115,28 @@ $ ./build/src/cs5/cs5-lighting
 
 ![Tutorial 5](https://raw.githubusercontent.com/wiki/sarvottamananda/glbits-cpp/imgs/cs5-lighting.jpg)
 
+#### Tutorial 6 - Reflection
+
+The reflections are not perfect, for example, we do not clip the cubes properly
+at the ground, though it can be done using clip and culling planes in OpenGL.
+
+```
+$ ./build/src/cs6/cs6-reflection
+```
+
+![Tutorial 6](https://raw.githubusercontent.com/wiki/sarvottamananda/glbits-cpp/imgs/cs6-reflection.jpg)
+
 ***
 
 
-<details>
-<summary>
-<a class="btnfire small stroke"><em class="fas fa-chevron-circle-down"></em>&nbsp;&nbsp;Frequently Asked Questions</a>    
+<details> <summary> <a class="btnfire small stroke"><em class="fas
+fa-chevron-circle-down"></em>&nbsp;&nbsp;Frequently Asked Questions</a>
 </summary>
 
 <ul>
 <li>
 
-[CODE_OF_CONDUCT](CONDUCT.md)
+[Code of Conduct](Code_of_conduct.md)
 </li>
 
 

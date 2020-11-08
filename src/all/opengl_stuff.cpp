@@ -1,8 +1,10 @@
-//	Sarvottamananda (shreesh)
-//	2020-09-28
-//	app_base.cpp v0.0 (OpenGL Code Snippets)
-//
-//	Base App class implementation
+/*!
+ * Sarvottamananda (shreesh)
+ * 2020-11-03
+ * opengl_stuff.cpp v0.0 (OpenGL/C++ Tutorials)
+ *
+ * Base App class implementation
+ */
 
 #include "opengl_stuff.h"
 
@@ -13,7 +15,7 @@ check_glerror(const char *file, int line)
 {
     GLenum errorCode;
     while ((errorCode = glGetError()) != GL_NO_ERROR) {
-	// clang-format off
+        // clang-format off
         std::string error;
         switch (errorCode)
         {
@@ -34,8 +36,8 @@ check_glerror(const char *file, int line)
             default:                               error = "unknown_gl_error"; 
                                                    break;
         }
-	// clang-format on
-	std::cerr << error << " | " << file << " (" << line << ")" << std::endl;
+        // clang-format on
+        std::cerr << error << " | " << file << " (" << line << ")" << std::endl;
     }
     return errorCode;
 }

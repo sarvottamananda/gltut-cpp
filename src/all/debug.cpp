@@ -65,7 +65,7 @@ debug::setfilep(FILE* fp)
     assert(fp != nullptr);
     dbg_filep = fp;
     if (dbg_filep != stdin && dbg_filep != stdout && dbg_filep != stderr) {
-	fclose(dbg_filep);
+        fclose(dbg_filep);
     }
     dbg_filep = fp;
     dbg_filename = "<unknown>";
@@ -79,11 +79,11 @@ debug::setfilename(const std::string fn)
 
     assert(fn.size() > 0);
     if (fn == dbg_filename)  // same as last time?
-	return;
+        return;
     if ((fp = fopen(fn.c_str(), "a+")) != nullptr) {
-	setfilep(fp);
-	std::string ofilename = dbg_filename;
-	dbg_filename = fn;
+        setfilep(fp);
+        std::string ofilename = dbg_filename;
+        dbg_filename = fn;
     }
 }
 
@@ -100,19 +100,19 @@ debug::print(int level, const char* fmt, ...)
 {
     DTRACK();
     if (dbg_level >= level) {
-	va_list ap;
+        va_list ap;
 
-	fflush(stdout);
-	flockfile(dbg_filep);
+        fflush(stdout);
+        flockfile(dbg_filep);
 
-	va_start(ap, fmt);
-	fprintf(dbg_filep, "%s:%*s", dbg_suffix.c_str(), dbg_indent, "");
-	vfprintf(dbg_filep, fmt, ap);
-	fputc('\n', dbg_filep);
-	va_end(ap);
+        va_start(ap, fmt);
+        fprintf(dbg_filep, "%s:%*s", dbg_suffix.c_str(), dbg_indent, "");
+        vfprintf(dbg_filep, fmt, ap);
+        fputc('\n', dbg_filep);
+        va_end(ap);
 
-	fflush(dbg_filep);
-	funlockfile(dbg_filep);
+        fflush(dbg_filep);
+        funlockfile(dbg_filep);
     }
 }
 
@@ -120,19 +120,19 @@ void
 debug::printloc(int level, const char* fn, int lno, const char* fmt, ...)
 {
     if (dbg_level >= level) {
-	va_list ap;
+        va_list ap;
 
-	fflush(stdout);
-	flockfile(dbg_filep);
+        fflush(stdout);
+        flockfile(dbg_filep);
 
-	va_start(ap, fmt);
-	fprintf(dbg_filep, "%s:%*s%s %d", dbg_suffix.c_str(), dbg_indent, "", fn, lno);
-	vfprintf(dbg_filep, fmt, ap);
-	fputc('\n', dbg_filep);
-	va_end(ap);
+        va_start(ap, fmt);
+        fprintf(dbg_filep, "%s:%*s%s %d", dbg_suffix.c_str(), dbg_indent, "", fn, lno);
+        vfprintf(dbg_filep, fmt, ap);
+        fputc('\n', dbg_filep);
+        va_end(ap);
 
-	fflush(dbg_filep);
-	funlockfile(dbg_filep);
+        fflush(dbg_filep);
+        funlockfile(dbg_filep);
     }
 }
 
@@ -168,8 +168,8 @@ test_debug(int argc, char** argv)
     for (i = 0; i <= argc; i++) test1(i);
 
     if (argc > 0) {
-	fprintf(stderr, "Recurse with argc = %d\n", argc - 1);
-	test_debug(argc - 1, argv);
+        fprintf(stderr, "Recurse with argc = %d\n", argc - 1);
+        test_debug(argc - 1, argv);
     }
 }
 
@@ -182,4 +182,4 @@ main(int argc, char** argv)
     return (0);
 }
 
-#endif	// TEST
+#endif  // TEST

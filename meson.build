@@ -1,6 +1,6 @@
 project('opengl-cpp-tutorials',
 	['c', 'cpp'],
-	version : '0.1.5',
+	version : '0.6',
 	license : 'MIT',
 	meson_version : '>= 0.56',
   	default_options : [
@@ -26,6 +26,8 @@ add_project_arguments('-Wno-unused-parameter', language: ['c', 'cpp'])
 add_project_arguments('-Wno-unused-function', language: ['c', 'cpp'])
 add_project_arguments('-Wno-unused-result', language: ['c', 'cpp'])
 
+cs_inc = include_directories('src/inc')
+
 #dl_dep = c_compiler.find_library('dl', required : true)
 glew_dep = dependency('glew')
 glfw_dep = dependency('glfw3', version: '>= 3')
@@ -36,4 +38,11 @@ m_dep = cpp_compiler.find_library('m', required : false)
 copy_to_build = find_program('scripts/copy_to_build.py')
 copy = find_program('scripts/copy.py')
 
-subdir('src')
+subdir('src/all')
+subdir('src/cs0')
+subdir('src/cs1')
+subdir('src/cs2')
+subdir('src/cs3')
+subdir('src/cs4')
+subdir('src/cs5')
+subdir('src/cs6')

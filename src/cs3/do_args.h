@@ -17,4 +17,4 @@ class Options_store;
 
 void process_args(int, char**, Options_store& os);
 
-#endif	// SNIPPETS_DO_ARGS_H
+#endif  // SNIPPETS_DO_ARGS_H

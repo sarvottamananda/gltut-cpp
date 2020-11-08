@@ -19,43 +19,43 @@ Model_base::print()
     cout << "    Vertices:\n";
 
     for (auto i = 0; i < v_num; i++) {
-	cout << "\t(";
-	for (auto j = 0; j < 3; j++) {
-	    cout << data[i].pos[j];
-	    if (j == 2)
-		cout << ") ";
-	    else
-		cout << ", ";
-	}
+        cout << "\t(";
+        for (auto j = 0; j < 3; j++) {
+            cout << data[i].pos[j];
+            if (j == 2)
+                cout << ") ";
+            else
+                cout << ", ";
+        }
 
-	cout << "(";
-	for (auto j = 0; j < 3; j++) {
-	    cout << data[i].normal[j];
-	    if (j == 2)
-		cout << ") ";
-	    else
-		cout << ", ";
-	}
+        cout << "(";
+        for (auto j = 0; j < 3; j++) {
+            cout << data[i].normal[j];
+            if (j == 2)
+                cout << ") ";
+            else
+                cout << ", ";
+        }
 
-	cout << "(";
-	for (auto j = 0; j < 2; j++) {
-	    cout << data[i].txtr[0];
-	    if (j == 1)
-		cout << ")\n";
-	    else
-		cout << ", ";
-	}
+        cout << "(";
+        for (auto j = 0; j < 2; j++) {
+            cout << data[i].txtr[0];
+            if (j == 1)
+                cout << ")\n";
+            else
+                cout << ", ";
+        }
     }
 
     cout << "    Indices:\n";
     for (auto i = 0; i < idx_num / 3; i++) {
-	cout << "\t(";
-	for (auto j = 0; j < 3; j++) {
-	    cout << idx[i * 3 + j];
-	    if (j == 2)
-		cout << ")\n";
-	    else
-		cout << ", ";
-	}
+        cout << "\t(";
+        for (auto j = 0; j < 3; j++) {
+            cout << idx[i * 3 + j];
+            if (j == 2)
+                cout << ")\n";
+            else
+                cout << ", ";
+        }
     }
 }

@@ -30,4 +30,4 @@ class Model_base {
 
     void print();
 };
-#endif	// SNIPPETS_MODEL_BASE_H
+#endif  // SNIPPETS_MODEL_BASE_H

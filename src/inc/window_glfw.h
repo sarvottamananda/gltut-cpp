@@ -42,4 +42,4 @@ void set_cur_enter_cb(Window&, App_func1);
 extern Window* create_glfw_window();
 extern void destroy_glfw_window(Window*);
 
-#endif	// WINDOW_GLFW_H
+#endif  // WINDOW_GLFW_H

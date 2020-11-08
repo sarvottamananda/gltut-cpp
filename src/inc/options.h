@@ -38,4 +38,4 @@ class Options {
     void process_options(int, char**);
 };
 
-#endif	// OPTIONS_H
+#endif  // OPTIONS_H

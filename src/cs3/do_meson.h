@@ -9,4 +9,4 @@ class Options_store;
 
 void process_buildconf(Options_store& os);
 
-#endif	// SNIPPETS_DO_MESON_H
+#endif  // SNIPPETS_DO_MESON_H

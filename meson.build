@@ -1,6 +1,6 @@
 project('opengl-cpp-tutorials',
 	['c', 'cpp'],
-	version : '0.1.6',
+	version : '0.6',
 	license : 'MIT',
 	meson_version : '>= 0.56',
   	default_options : [

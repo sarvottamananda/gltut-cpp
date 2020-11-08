@@ -1,12 +1,12 @@
 /**
  * Sarvottamananda (shreesh)
- * Oct 19, 2020
- * app_lighting.cpp v0.0 (OpenGL Code Snippets)
+ * 2020-11-08
+ * app_reflection.cpp v0.0 (OpenGL Code Snippets)
  *
  * Apps derived from App_base
  */
 
-#include "app_lighting.h"
+#include "app_reflection.h"
 
 // clang-format: off
 #include <GL/glew.h>
@@ -20,7 +20,7 @@
 #include <random>
 #include <vector>
 
-#include "cs5_config.h"
+#include "cs6_config.h"
 #include "img_stuff.h"
 #include "model_cube.h"
 #include "model_ground.h"
@@ -65,7 +65,8 @@ Model_ground ground;  // flat ground
 
 // program objects
 GLuint skybox_prog = 0;   // shader for cubemap
-GLuint cubeobj_prog = 0;  // shader for lighted test object
+GLuint cubes_prog = 0;  // shader for lighted test object
+GLuint refls_prog = 0;  // shader for lighted test object
 GLuint ground_prog = 0;   // shader for ground
 
 // various array object
@@ -200,7 +201,7 @@ static void GLAPIENTRY debug_callback(GLenum source, GLenum type, GLuint id, GLe
  */
 
 void
-App_lighting::render_loop()
+App_reflection::render_loop()
 // Function for rendering, later on we will make a Renderable class for  doing this.
 {
     // This makes w's OpenGL context current, just in case if there are multiple windows too.
@@ -344,11 +345,17 @@ prepare_programs()
     };
     ground_prog = create_program("Ground", ground_shaders);
 
-    Vector<string> cubeobj_shaders = {
-        string(cs_config::cs_source_dir) + "/shaders/cubeobj.vert",
-        string(cs_config::cs_source_dir) + "/shaders/cubeobj.frag",
+    Vector<string> cubes_shaders = {
+        string(cs_config::cs_source_dir) + "/shaders/cubes.vert",
+        string(cs_config::cs_source_dir) + "/shaders/cubes.frag",
     };
-    cubeobj_prog = create_program("Cubeobj", cubeobj_shaders);
+    cubes_prog = create_program("Cubes", cubes_shaders);
+
+    Vector<string> refls_shaders = {
+        string(cs_config::cs_source_dir) + "/shaders/cubes_refl.vert",
+        string(cs_config::cs_source_dir) + "/shaders/cubes_refl.frag",
+    };
+    refls_prog = create_program("Reflections", cubes_shaders);
 
     // We need 64 Model_data
     GLint info = 0;
@@ -356,8 +363,11 @@ prepare_programs()
     std::cout << "GL_MAX_UNIFORM_BLOCK_SIZE: " << info << "\n";
     assert(info >= (GLint)(64 * sizeof(Model_data)));
 
-    glGetActiveUniformBlockiv(cubeobj_prog, 0, GL_UNIFORM_BLOCK_DATA_SIZE, &info);
-    std::cout << "GL_UNIFORM_BLOCK_DATA_SIZE (cubeobj:0) : " << info << "\n";
+    glGetActiveUniformBlockiv(cubes_prog, 0, GL_UNIFORM_BLOCK_DATA_SIZE, &info);
+    std::cout << "GL_UNIFORM_BLOCK_DATA_SIZE (cubes:0) : " << info << "\n";
+
+    glGetActiveUniformBlockiv(refls_prog, 0, GL_UNIFORM_BLOCK_DATA_SIZE, &info);
+    std::cout << "GL_UNIFORM_BLOCK_DATA_SIZE (refls:0) : " << info << "\n";
 
     glGetIntegerv(GL_UNIFORM_BUFFER_OFFSET_ALIGNMENT, &info);
     std::cout << "GL_UNIFORM_BUFFER_OFFSET_ALIGNMENT : " << info << "\n";
@@ -371,15 +381,15 @@ prepare_uniforms()
     vp_loc = glGetUniformLocation(skybox_prog, "vp");
 
     // cubes
-    cmodel_ind = glGetUniformBlockIndex(cubeobj_prog, "model_block");
-    cube_tex_loc = glGetUniformLocation(cubeobj_prog, "cube_tex");
+    cmodel_ind = glGetUniformBlockIndex(cubes_prog, "model_block");
+    cube_tex_loc = glGetUniformLocation(cubes_prog, "cube_tex");
 
-    eye_pos_loc = glGetUniformLocation(cubeobj_prog, "eye_pos");
-    sun_dir_loc = glGetUniformLocation(cubeobj_prog, "sun_dir");
-    amb_col_loc = glGetUniformLocation(cubeobj_prog, "ambient_color");
-    sun_col_loc = glGetUniformLocation(cubeobj_prog, "sun_color");
+    eye_pos_loc = glGetUniformLocation(cubes_prog, "eye_pos");
+    sun_dir_loc = glGetUniformLocation(cubes_prog, "sun_dir");
+    amb_col_loc = glGetUniformLocation(cubes_prog, "ambient_color");
+    sun_col_loc = glGetUniformLocation(cubes_prog, "sun_color");
 
-    glUniformBlockBinding(cubeobj_prog, cmodel_ind, model_bindpoint);
+    glUniformBlockBinding(cubes_prog, cmodel_ind, model_bindpoint);
 
     // ground
     ground_tex_loc = glGetUniformLocation(ground_prog, "ground_tex");
@@ -797,7 +807,7 @@ do_draw_commands(const Window &win)
 
     // Draw cube
     // /*
-    glUseProgram(cubeobj_prog);
+    glUseProgram(cubes_prog);
     glUniform1i(cube_tex_loc, 2);
     glUniform3fv(eye_pos_loc, 1, glm::value_ptr(eye_pos));
     glUniform3fv(sun_dir_loc, 1, glm::value_ptr(sun_dir));
@@ -822,7 +832,7 @@ do_draw_commands(const Window &win)
 }
 
 void
-App_lighting::key_callback(Key key, int scancode, Key_action action, Key_mods mods)
+App_reflection::key_callback(Key key, int scancode, Key_action action, Key_mods mods)
 {
     if (action == Key_action::release) return;
 
@@ -983,7 +993,7 @@ modify_buffers()
 }
 
 void
-App_lighting::initialize(Options &os)
+App_reflection::initialize(Options &os)
 {
     w.initialize("OpenGL Snippets : Lighted Cubes", os.width, os.height, os.fullscreen);
 }

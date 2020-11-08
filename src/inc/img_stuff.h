@@ -27,4 +27,4 @@ class Image {
     void* data;
 };
 
-#endif	// IMG_STUFF_H
+#endif  // IMG_STUFF_H

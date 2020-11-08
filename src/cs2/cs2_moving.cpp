@@ -8,8 +8,8 @@
 
 // The following headers include order should be maintained
 // clang-format: off
-#include <GL/glew.h>	 // Include GLEW - opengl extension wrangler
-#include <GLFW/glfw3.h>	 // Include GLFW -  graphics library framework
+#include <GL/glew.h>     // Include GLEW - opengl extension wrangler
+#include <GLFW/glfw3.h>  // Include GLFW -  graphics library framework
 // clang-format: on
 
 // Include C/C++ standard headers
@@ -78,8 +78,8 @@ main(void)
     // initialize and configure glfw
     // ------------------------------
     if (!glfwInit()) {
-	std::cerr << "Failed to initialize glfw.\n";
-	exit(EXIT_FAILURE);
+        std::cerr << "Failed to initialize glfw.\n";
+        exit(EXIT_FAILURE);
     }
     // multisampling anti-aliasing (MSAA) 4x
     glfwWindowHint(GLFW_SAMPLES, 4);
@@ -100,11 +100,11 @@ main(void)
     std::cerr << "Creating windows.\n";
 
     GLFWwindow *window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT,
-					  "OpenGL Code Snippets : More Triangles", NULL, NULL);
+                                          "OpenGL Code Snippets : More Triangles", NULL, NULL);
     if (window == NULL) {
-	std::cout << "Failed to create glfw window." << std::endl;
-	glfwTerminate();
-	exit(EXIT_FAILURE);
+        std::cout << "Failed to create glfw window." << std::endl;
+        glfwTerminate();
+        exit(EXIT_FAILURE);
     }
     glfwMakeContextCurrent(window);
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
@@ -113,9 +113,9 @@ main(void)
 
     // initialize glew
     if (glewInit() != GLEW_OK) {
-	std::cerr << "Failed to initialize glew.\n";
-	glfwTerminate();
-	exit(EXIT_FAILURE);
+        std::cerr << "Failed to initialize glew.\n";
+        glfwTerminate();
+        exit(EXIT_FAILURE);
     }
 
     // build and compile our shader program
@@ -129,8 +129,8 @@ main(void)
     char infoLog[512];
     glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &success);
     if (!success) {
-	glGetShaderInfoLog(vertexShader, 512, NULL, infoLog);
-	std::cout << "Vertex shader compilation failed.\n" << infoLog << std::endl;
+        glGetShaderInfoLog(vertexShader, 512, NULL, infoLog);
+        std::cout << "Vertex shader compilation failed.\n" << infoLog << std::endl;
     }
 
     // fragment shader
@@ -140,8 +140,8 @@ main(void)
     // check for shader compile errors
     glGetShaderiv(fragmentShader, GL_COMPILE_STATUS, &success);
     if (!success) {
-	glGetShaderInfoLog(fragmentShader, 512, NULL, infoLog);
-	std::cout << "fragment shader compilation failed.\n" << infoLog << std::endl;
+        glGetShaderInfoLog(fragmentShader, 512, NULL, infoLog);
+        std::cout << "fragment shader compilation failed.\n" << infoLog << std::endl;
     }
 
     // link shaders
@@ -152,8 +152,8 @@ main(void)
     // check for linking errors
     glGetProgramiv(shaderProgram, GL_LINK_STATUS, &success);
     if (!success) {
-	glGetProgramInfoLog(shaderProgram, 512, NULL, infoLog);
-	std::cout << "Shade program linking failed.\n" << infoLog << std::endl;
+        glGetProgramInfoLog(shaderProgram, 512, NULL, infoLog);
+        std::cout << "Shade program linking failed.\n" << infoLog << std::endl;
     }
     glDeleteShader(vertexShader);
     glDeleteShader(fragmentShader);
@@ -173,15 +173,15 @@ main(void)
     enum { max_triads = 1000 };
 
     struct Buf_data {
-	GLfloat pos[2];
-	// GLfloat _pad1[2];
-	GLfloat vel[2];
-	// GLfloat _pad2[2];
-	GLfloat col[3];
-	// GLfloat _pad3[1];
-	GLfloat ctime;
-	GLfloat life;
-	// GLfloat _pad4[2];
+        GLfloat pos[2];
+        // GLfloat _pad1[2];
+        GLfloat vel[2];
+        // GLfloat _pad2[2];
+        GLfloat col[3];
+        // GLfloat _pad3[1];
+        GLfloat ctime;
+        GLfloat life;
+        // GLfloat _pad4[2];
     };
 
     Buf_data vertices[max_triads * 3];
@@ -193,42 +193,42 @@ main(void)
     const GLfloat sz_tri = 0.25f;
 
     for (auto i = 0; i < max_triads; i++) {
-	GLfloat tx = rng_float() * 6.0f - 3.0f;
-	GLfloat ty = rng_float() * 6.0f - 3.0f;
+        GLfloat tx = rng_float() * 6.0f - 3.0f;
+        GLfloat ty = rng_float() * 6.0f - 3.0f;
 
-	GLfloat tr = rng_float();
-	GLfloat tg = rng_float();
-	GLfloat tb = rng_float();
+        GLfloat tr = rng_float();
+        GLfloat tg = rng_float();
+        GLfloat tb = rng_float();
 
-	for (auto k = 0; k < 3; k++) {
-	    vertices[3 * i + k].pos[0] = tx + rng_float() * sz_tri;
-	    vertices[3 * i + k].pos[1] = ty + rng_float() * sz_tri;
-	    // vertices[3*i+k]._pad1[0] = 0.0f;
-	    // vertices[3*i+k]._pad1[1] = 0.0f;
+        for (auto k = 0; k < 3; k++) {
+            vertices[3 * i + k].pos[0] = tx + rng_float() * sz_tri;
+            vertices[3 * i + k].pos[1] = ty + rng_float() * sz_tri;
+            // vertices[3*i+k]._pad1[0] = 0.0f;
+            // vertices[3*i+k]._pad1[1] = 0.0f;
 
-	    vertices[3 * i + k].vel[0] = (rng_float() - 0.5f) * 2.0f / cross_dur;
-	    vertices[3 * i + k].vel[1] = (rng_float() - 0.5f) * 2.0f / cross_dur;
-	    // vertices[3*i+k]._pad2[0] = 0.0f;
-	    // vertices[3*i+k]._pad2[1] = 0.0f;
+            vertices[3 * i + k].vel[0] = (rng_float() - 0.5f) * 2.0f / cross_dur;
+            vertices[3 * i + k].vel[1] = (rng_float() - 0.5f) * 2.0f / cross_dur;
+            // vertices[3*i+k]._pad2[0] = 0.0f;
+            // vertices[3*i+k]._pad2[1] = 0.0f;
 
-	    vertices[3 * i + k].col[0] = tr + (rng_float() - 0.5) * 0.75;
-	    vertices[3 * i + k].col[1] = tg + (rng_float() - 0.5) * 0.75;
-	    vertices[3 * i + k].col[2] = tb + (rng_float() - 0.5) * 0.75;
-	    // vertices[3*i+k]._pad3[0] = 0.0f;
+            vertices[3 * i + k].col[0] = tr + (rng_float() - 0.5) * 0.75;
+            vertices[3 * i + k].col[1] = tg + (rng_float() - 0.5) * 0.75;
+            vertices[3 * i + k].col[2] = tb + (rng_float() - 0.5) * 0.75;
+            // vertices[3*i+k]._pad3[0] = 0.0f;
 
-	    vertices[3 * i + k].ctime = (GLfloat)cur_dur.count();
-	    vertices[3 * i + k].life = rng_float() * avg_life;
-	    // vertices[3*i+k]._pad4[0] = 0.0f;
-	    // vertices[3*i+k]._pad4[1] = 0.0f;
+            vertices[3 * i + k].ctime = (GLfloat)cur_dur.count();
+            vertices[3 * i + k].life = rng_float() * avg_life;
+            // vertices[3*i+k]._pad4[0] = 0.0f;
+            // vertices[3*i+k]._pad4[1] = 0.0f;
 
-	    /*
-	    GLfloat * p = &vertices[3*i+k].pos[0];
-	    for (auto j = 0; j < 9; j++) {
-		std::cerr << p[j] << ", ";
-	    }
-	    std::cerr << '\n';
-	    */
-	}
+            /*
+            GLfloat * p = &vertices[3*i+k].pos[0];
+            for (auto j = 0; j < 9; j++) {
+                std::cerr << p[j] << ", ";
+            }
+            std::cerr << '\n';
+            */
+        }
     }
 
     // set up buffer(s) and configure vertex attributes
@@ -245,13 +245,13 @@ main(void)
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
     glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(Buf_data),
-			  (GLvoid *)(offsetof(Buf_data, pos)));
+                          (GLvoid *)(offsetof(Buf_data, pos)));
     glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(Buf_data),
-			  (GLvoid *)(offsetof(Buf_data, vel)));
+                          (GLvoid *)(offsetof(Buf_data, vel)));
     glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, sizeof(Buf_data),
-			  (GLvoid *)(offsetof(Buf_data, col)));
+                          (GLvoid *)(offsetof(Buf_data, col)));
     glVertexAttribPointer(3, 1, GL_FLOAT, GL_FALSE, sizeof(Buf_data),
-			  (GLvoid *)(offsetof(Buf_data, ctime)));
+                          (GLvoid *)(offsetof(Buf_data, ctime)));
 
     glEnableVertexAttribArray(0);
     glEnableVertexAttribArray(1);
@@ -292,59 +292,59 @@ main(void)
 
     // render loop
     while (!glfwWindowShouldClose(window)) {
-	// input
-	process_input(window);
+        // input
+        process_input(window);
 
-	// do some stuff
+        // do some stuff
 
-	cur = std::chrono::steady_clock::now();
-	cur_dur = cur - start;
+        cur = std::chrono::steady_clock::now();
+        cur_dur = cur - start;
 
-	GLfloat old_time = mytime;
+        GLfloat old_time = mytime;
 
-	mytime = cur_dur.count();
+        mytime = cur_dur.count();
 
-	// std::cerr << mytime << '\n';
+        // std::cerr << mytime << '\n';
 
-	glUniform1f(mytime_loc, mytime);
+        glUniform1f(mytime_loc, mytime);
 
-	GLfloat cur_posx = 0.0f, cur_posy = 0.0f;
+        GLfloat cur_posx = 0.0f, cur_posy = 0.0f;
 
-	cur_posx = myposx + (mytime - old_time) * myvelx * 0.2f;
-	cur_posy = myposy + (mytime - old_time) * myvely * 0.2f;
+        cur_posx = myposx + (mytime - old_time) * myvelx * 0.2f;
+        cur_posy = myposy + (mytime - old_time) * myvely * 0.2f;
 
-	if (cur_posx < -2.0f || cur_posx > 2.0f) myvely = 2.0f * rng_float() - 1.0f;
-	if (cur_posy < -2.0f || cur_posy > 2.0f) myvelx = 2.0f * rng_float() - 1.0f;
+        if (cur_posx < -2.0f || cur_posx > 2.0f) myvely = 2.0f * rng_float() - 1.0f;
+        if (cur_posy < -2.0f || cur_posy > 2.0f) myvelx = 2.0f * rng_float() - 1.0f;
 
-	if (cur_posx > 2.0f) myvelx = -rng_float();
-	if (cur_posx < -2.0f) myvelx = rng_float();
+        if (cur_posx > 2.0f) myvelx = -rng_float();
+        if (cur_posx < -2.0f) myvelx = rng_float();
 
-	if (cur_posy > 2.0f) myvely = -rng_float();
-	if (cur_posy < -2.0f) myvely = rng_float();
+        if (cur_posy > 2.0f) myvely = -rng_float();
+        if (cur_posy < -2.0f) myvely = rng_float();
 
-	myposx = cur_posx;
-	myposy = cur_posy;
+        myposx = cur_posx;
+        myposy = cur_posy;
 
-	// std::cerr << myposx  << " " << myposy << '\n';
+        // std::cerr << myposx  << " " << myposy << '\n';
 
-	glUniform2f(mypos_loc, myposx, myposy);
+        glUniform2f(mypos_loc, myposx, myposy);
 
-	// render
-	glClearColor(0.085f, 0.13f, 0.05f, 1.0f);
-	glClear(GL_COLOR_BUFFER_BIT);
+        // render
+        glClearColor(0.085f, 0.13f, 0.05f, 1.0f);
+        glClear(GL_COLOR_BUFFER_BIT);
 
-	// draw our triangles
-	glUseProgram(shaderProgram);
+        // draw our triangles
+        glUseProgram(shaderProgram);
 
-	glBindVertexArray(vao[0]);
-	glDrawArrays(GL_TRIANGLES, 0, max_triads * 3);
+        glBindVertexArray(vao[0]);
+        glDrawArrays(GL_TRIANGLES, 0, max_triads * 3);
 
-	// glBindVertexArray(0); // no need to unbind it every time
+        // glBindVertexArray(0); // no need to unbind it every time
 
-	// glfw: swap buffers and poll IO events (keys pressed/released, mouse
-	// moved etc.)
-	glfwSwapBuffers(window);
-	glfwPollEvents();
+        // glfw: swap buffers and poll IO events (keys pressed/released, mouse
+        // moved etc.)
+        glfwSwapBuffers(window);
+        glfwPollEvents();
     }
 
     // optional: de-allocate all resources once they've outlived their purpose:
@@ -363,7 +363,7 @@ process_input(GLFWwindow *window)
 // frame and react accordingly
 {
     if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
-	glfwSetWindowShouldClose(window, true);
+        glfwSetWindowShouldClose(window, true);
 }
 
 void

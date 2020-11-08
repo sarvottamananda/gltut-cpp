@@ -18,7 +18,7 @@
 // clang-format: off
 //#include "glad.h"  // glad is written in C
 #include <GL/glew.h>
-#include <GLFW/glfw3.h>	 // GLFW3 is written in C
+#include <GLFW/glfw3.h>  // GLFW3 is written in C
 // clang-format: on
 
 // using definitions
@@ -100,7 +100,7 @@ Window_glfw::initialize(std::string title, int width, int height, bool fullscree
 // needs a context to get initialized.
 {
     if (!glfwInit()) {
-	throw std::runtime_error("Initialization failed (GLFW3)");
+        throw std::runtime_error("Initialization failed (GLFW3)");
     }
 
     ::glfwSetErrorCallback(error_callback);
@@ -122,83 +122,83 @@ Window_glfw::initialize(std::string title, int width, int height, bool fullscree
     if (title.empty()) title = "Code Snippet";
 
     if (fullscreen) {
-	int count = 0;
-	::GLFWmonitor *pmonitor = ::glfwGetPrimaryMonitor();
-	const ::GLFWvidmode *pvidmodes = ::glfwGetVideoModes(pmonitor, &count);
+        int count = 0;
+        ::GLFWmonitor *pmonitor = ::glfwGetPrimaryMonitor();
+        const ::GLFWvidmode *pvidmodes = ::glfwGetVideoModes(pmonitor, &count);
 
-	auto max_pixels = 0;
-	auto max_mode = 0;
-	auto max_hz = 0;
+        auto max_pixels = 0;
+        auto max_mode = 0;
+        auto max_hz = 0;
 
-	for (int i = 0; i < count; i++) {
-	    if (pvidmodes[i].height * pvidmodes[i].width > max_pixels) {
-		max_pixels = pvidmodes[i].width * pvidmodes[i].height;
-		max_hz = pvidmodes[i].refreshRate;
-		max_mode = i;
-	    }
-	    if (pvidmodes[i].height * pvidmodes[i].width == max_pixels) {
-		if (pvidmodes[i].refreshRate > max_hz) {
-		    max_pixels = pvidmodes[i].width * pvidmodes[i].height;
-		    max_hz = pvidmodes[i].refreshRate;
-		    max_mode = i;
-		}
-	    }
+        for (int i = 0; i < count; i++) {
+            if (pvidmodes[i].height * pvidmodes[i].width > max_pixels) {
+                max_pixels = pvidmodes[i].width * pvidmodes[i].height;
+                max_hz = pvidmodes[i].refreshRate;
+                max_mode = i;
+            }
+            if (pvidmodes[i].height * pvidmodes[i].width == max_pixels) {
+                if (pvidmodes[i].refreshRate > max_hz) {
+                    max_pixels = pvidmodes[i].width * pvidmodes[i].height;
+                    max_hz = pvidmodes[i].refreshRate;
+                    max_mode = i;
+                }
+            }
 
-	    // Hopefully we have got the best resolution with best refresh rate
+            // Hopefully we have got the best resolution with best refresh rate
 
-	    printf("No:%d, %dx%d, RGB:(%d %d %d)i @ %dHz\n", i, pvidmodes[i].width,
-		   pvidmodes[i].height, pvidmodes[i].redBits, pvidmodes[i].greenBits,
-		   pvidmodes[i].blueBits, pvidmodes[i].refreshRate);
-	}
+            printf("No:%d, %dx%d, RGB:(%d %d %d)i @ %dHz\n", i, pvidmodes[i].width,
+                   pvidmodes[i].height, pvidmodes[i].redBits, pvidmodes[i].greenBits,
+                   pvidmodes[i].blueBits, pvidmodes[i].refreshRate);
+        }
 
-	// Hack to get fullscreen with best resolution
-	// We select the one with maximum pixels
+        // Hack to get fullscreen with best resolution
+        // We select the one with maximum pixels
 
-	int pwidth = pvidmodes[max_mode].width;
-	int pheight = pvidmodes[max_mode].height;
-	int predbits = pvidmodes[max_mode].redBits;
-	int pgreenbits = pvidmodes[max_mode].greenBits;
-	int pbluebits = pvidmodes[max_mode].blueBits;
-	int prefreshrate = pvidmodes[max_mode].refreshRate;
+        int pwidth = pvidmodes[max_mode].width;
+        int pheight = pvidmodes[max_mode].height;
+        int predbits = pvidmodes[max_mode].redBits;
+        int pgreenbits = pvidmodes[max_mode].greenBits;
+        int pbluebits = pvidmodes[max_mode].blueBits;
+        int prefreshrate = pvidmodes[max_mode].refreshRate;
 
-	printf("Mode selected :%d, %dx%d@%dHz, RGB(%d,%d,%d)\n", max_mode, pwidth, pheight,
-	       prefreshrate, predbits, pgreenbits, pbluebits);
+        printf("Mode selected :%d, %dx%d@%dHz, RGB(%d,%d,%d)\n", max_mode, pwidth, pheight,
+               prefreshrate, predbits, pgreenbits, pbluebits);
 
-	// Next, since we are forced to, we try with the supplied resolution, if we fail to
-	// create a fullscreen window,
-	// we fail silently and ungracefully
+        // Next, since we are forced to, we try with the supplied resolution, if we fail to
+        // create a fullscreen window,
+        // we fail silently and ungracefully
 
-	// if (width == 0) width = pwidth;
-	// else width = (width < 640 ? 640 : width);
-	//
-	// if (height == 0) height = pheight;
-	// else height = (height < 360 ? 360 : height);
-	//
-	// window = ::glfwCreateWindow(width, height, title.c_str(), pmonitor, NULL);
+        // if (width == 0) width = pwidth;
+        // else width = (width < 640 ? 640 : width);
+        //
+        // if (height == 0) height = pheight;
+        // else height = (height < 360 ? 360 : height);
+        //
+        // window = ::glfwCreateWindow(width, height, title.c_str(), pmonitor, NULL);
 
-	window = ::glfwCreateWindow(pwidth, pheight, title.c_str(), pmonitor, NULL);
+        window = ::glfwCreateWindow(pwidth, pheight, title.c_str(), pmonitor, NULL);
 
-	const ::GLFWvidmode *pvidmode = ::glfwGetVideoMode(pmonitor);
+        const ::GLFWvidmode *pvidmode = ::glfwGetVideoMode(pmonitor);
 
-	printf("Started fullscreen %d x %d, RGB:(%d:%d:%d), Rate:%dHz\n\n", pvidmode->width,
-	       pvidmode->height, pvidmode->redBits, pvidmode->greenBits, pvidmode->blueBits,
-	       pvidmode->refreshRate);
+        printf("Started fullscreen %d x %d, RGB:(%d:%d:%d), Rate:%dHz\n\n", pvidmode->width,
+               pvidmode->height, pvidmode->redBits, pvidmode->greenBits, pvidmode->blueBits,
+               pvidmode->refreshRate);
     }
     else {
-	if (width == 0) width = 640;
-	width = (width < 640 ? 640 : width);
-	if (height == 0) height = 480;
-	height = (height < 360 ? 360 : height);
-	window = ::glfwCreateWindow(width, height, title.c_str(), NULL, NULL);
+        if (width == 0) width = 640;
+        width = (width < 640 ? 640 : width);
+        if (height == 0) height = 480;
+        height = (height < 360 ? 360 : height);
+        window = ::glfwCreateWindow(width, height, title.c_str(), NULL, NULL);
 
-	int w, h;
-	::glfwGetWindowSize(window, &w, &h);
-	printf("Started window %d x %d\n\n", w, h);
+        int w, h;
+        ::glfwGetWindowSize(window, &w, &h);
+        printf("Started window %d x %d\n\n", w, h);
     }
 
     if (window == NULL) {
-	::glfwTerminate();
-	throw std::runtime_error("Failed to open GLFW window.");
+        ::glfwTerminate();
+        throw std::runtime_error("Failed to open GLFW window.");
     }
 
     // Ensure we can capture the keys and mouse button being pressed and
@@ -226,11 +226,11 @@ Window_glfw::initialize(std::string title, int width, int height, bool fullscree
 
     ::glfwMakeContextCurrent(window);
     cout << "Initializing glew"
-	 << "\n";
+         << "\n";
     // initialize glew
     if (glewInit() != GLEW_OK) {
-	::glfwTerminate();
-	throw std::runtime_error("Failed to initialize glew");
+        ::glfwTerminate();
+        throw std::runtime_error("Failed to initialize glew");
     }
 
     ::glfwSwapInterval(1);
@@ -241,7 +241,7 @@ Window_glfw::initialize(std::string title, int width, int height, bool fullscree
     aspect = (float)width / (float)height;
 
     fovy = height / view_distance;  // assuming we are viewing the monitor at a distance twice
-				    // the height of monitor and it has resolution 1920x1080
+                                    // the height of monitor and it has resolution 1920x1080
 
     return true;
 }
@@ -254,8 +254,8 @@ Window_glfw::make_current()
     //::glfwMakeContextCurrent(window);
 
     if (glfwGetCurrentContext() != window) {
-	::glfwTerminate();
-	throw std::runtime_error("Window context not set");
+        ::glfwTerminate();
+        throw std::runtime_error("Window context not set");
     }
 }
 
@@ -269,7 +269,7 @@ Window_glfw::render_cond()
 {
     // Check if the ESC key was pressed or the window was closed
     auto render_condition = (::glfwGetKey(window, GLFW_KEY_ESCAPE) != GLFW_PRESS &&
-			     ::glfwWindowShouldClose(window) == 0);
+                             ::glfwWindowShouldClose(window) == 0);
     return render_condition;
 }
 
@@ -294,8 +294,8 @@ bool
 Window_glfw::is_valid()
 {
     if (window != nullptr) {
-	std::cout << "Current window is a valid context (" << (void *)window << ")\n";
-	return true;
+        std::cout << "Current window is a valid context (" << (void *)window << ")\n";
+        return true;
     }
     return false;
 }
@@ -314,8 +314,8 @@ Window_glfw::framebuffer_size_callback(GLFWwindow *window, int width, int height
     // displays.
     Window_glfw *handler = static_cast<Window_glfw *>(glfwGetWindowUserPointer(window));
     if (handler) {
-	handler->aspect = (float)width / (float)height;
-	handler->fovy = (float)height / view_distance;
+        handler->aspect = (float)width / (float)height;
+        handler->fovy = (float)height / view_distance;
     }
 
     glViewport(0, 0, width, height);
@@ -330,10 +330,10 @@ Window_glfw::key_callback(GLFWwindow *window, int key, int scancode, int action,
 
     Window_glfw *handler = static_cast<Window_glfw *>(glfwGetWindowUserPointer(window));
     if (handler) {
-	App_base *app = handler->app;
-	if (app) {
-	    app->key_callback(appkey, scancode, appaction, appmods);
-	}
+        App_base *app = handler->app;
+        if (app) {
+            app->key_callback(appkey, scancode, appaction, appmods);
+        }
     }
 }
 
@@ -374,7 +374,7 @@ map_key(int key)
     assert(key <= GLFW_KEY_LAST && key >= GLFW_KEY_UNKNOWN);
 
     if (key == GLFW_KEY_UNKNOWN) {
-	return Key::unknown;
+        return Key::unknown;
     }
 
     return map_key_table[key];
@@ -384,14 +384,14 @@ static Key_action
 map_action(int a)
 {
     switch (a) {
-	case GLFW_RELEASE:
-	    return Key_action::release;
-	case GLFW_PRESS:
-	    return Key_action::press;
-	case GLFW_REPEAT:
-	    return Key_action::repeat;
-	default:
-	    return Key_action::none;
+        case GLFW_RELEASE:
+            return Key_action::release;
+        case GLFW_PRESS:
+            return Key_action::press;
+        case GLFW_REPEAT:
+            return Key_action::repeat;
+        default:
+            return Key_action::none;
     }
 }
 

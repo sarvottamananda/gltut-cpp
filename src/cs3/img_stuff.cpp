@@ -24,18 +24,18 @@ Image::read_file(std::string fname)
     p = stbi_load(fname.c_str(), &wid, &hgt, &nc, 0);
 
     if (p == nullptr) {
-	std::cerr << "Unable to load image (" << fname << ")\n";
-	exit(EXIT_FAILURE);
+        std::cerr << "Unable to load image (" << fname << ")\n";
+        exit(EXIT_FAILURE);
     }
 
     width = wid;
     height = hgt;
     if (nc > 0 && nc <= 4) {
-	no_channels = nc;
+        no_channels = nc;
     }
     else {
-	std::cerr << "Invalid no. of channels (" << nc << ")\n";
-	exit(EXIT_FAILURE);
+        std::cerr << "Invalid no. of channels (" << nc << ")\n";
+        exit(EXIT_FAILURE);
     }
     data = p;
 }

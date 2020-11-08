@@ -27,4 +27,4 @@ class Image {
     void* data;
 };
 
-#endif	// SNIPPETS_IMG_STUFF_H
+#endif  // SNIPPETS_IMG_STUFF_H

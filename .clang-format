@@ -2,7 +2,7 @@
 BasedOnStyle: Google
 IndentWidth: 4
 TabWidth: 8
-UseTab: Always
+UseTab: Never
 ---
 Language: Cpp
 BreakBeforeBraces: Stroustrup

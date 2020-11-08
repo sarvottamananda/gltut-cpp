@@ -17,13 +17,13 @@ void
 Options_store::print(std::string name)
 {
     printf(
-	"Options (%s) {\n"
-	"\tverbose = %d\n"
-	"\tdebug = %d\n"
-	"\tfullscreen = %d\n"
-	"\theight = %d\n"
-	"\twidth = %d\n"
-	"}\n",
-	name.c_str(), fullscreen, verbose, debug, height, width);
+        "Options (%s) {\n"
+        "\tverbose = %d\n"
+        "\tdebug = %d\n"
+        "\tfullscreen = %d\n"
+        "\theight = %d\n"
+        "\twidth = %d\n"
+        "}\n",
+        name.c_str(), fullscreen, verbose, debug, height, width);
     fflush(stdout);
 }

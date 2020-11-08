@@ -20,4 +20,4 @@ class Window_factory {
     static void destroy_window(Window*, Window_type);
 };
 
-#endif	// WINDOW_FACTORY_H
+#endif  // WINDOW_FACTORY_H

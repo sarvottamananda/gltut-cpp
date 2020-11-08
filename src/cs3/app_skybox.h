@@ -20,4 +20,4 @@ class App_skybox : public App_base {
    private:
 };
 
-#endif	// APP_SKYBOX_H
+#endif  // APP_SKYBOX_H

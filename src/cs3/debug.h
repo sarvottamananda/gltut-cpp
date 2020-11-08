@@ -19,7 +19,7 @@ namespace debug {
 const int active = 1;
 #else
 const int active = 0;
-#endif	// DEBUG
+#endif  // DEBUG
 
 extern int setdebug(int level);
 extern int getdebug(void);
@@ -45,27 +45,27 @@ extern void printloc(int level, const char* fn, int lno, const char* fmt, ...);
 // Debug print
 #define DPRINT(...)                                        \
     do {                                                   \
-	if (debug::active) debug::print(999, __VA_ARGS__); \
+        if (debug::active) debug::print(999, __VA_ARGS__); \
     } while (0)
 
 // Debug print based on level
 #define DDEBUG(level, ...)                                   \
     do {                                                     \
-	if (debug::active) debug::print(level, __VA_ARGS__); \
+        if (debug::active) debug::print(level, __VA_ARGS__); \
     } while (0)
 
 // Debug trace based on level
 #define DTRACE(level, ...)                                                          \
     do {                                                                            \
-	if (debug::active) debug::printloc(level, __FILE__, __LINE__, __VA_ARGS__); \
+        if (debug::active) debug::printloc(level, __FILE__, __LINE__, __VA_ARGS__); \
     } while (0)
 
 // Debug call based on level
 #define DCALL(level, ...)                                    \
     do {                                                     \
-	if (debug::active && debug::getdebug() >= (level)) { \
-	    __VA_ARGS__;                                     \
-	}                                                    \
+        if (debug::active && debug::getdebug() >= (level)) { \
+            __VA_ARGS__;                                     \
+        }                                                    \
     } while (0)
 
 // DB_TRACKING(); uses the FEATURE_FILE macro from klduge.h to embed a
@@ -74,12 +74,12 @@ extern void printloc(int level, const char* fn, int lno, const char* fmt, ...);
 
 #define DTRACK()                                                             \
     do {                                                                     \
-	if (debug::active) {                                                 \
-	    static int once = 0;                                             \
-	    if (once++ == 0) {                                               \
-		fprintf(stderr, "** DEBUGGING ENABLED (%s) **\n", __FILE__); \
-	    }                                                                \
-	}                                                                    \
+        if (debug::active) {                                                 \
+            static int once = 0;                                             \
+            if (once++ == 0) {                                               \
+                fprintf(stderr, "** DEBUGGING ENABLED (%s) **\n", __FILE__); \
+            }                                                                \
+        }                                                                    \
     } while (0)
 
-#endif	// SNIPPETS_DEBUG_H
+#endif  // SNIPPETS_DEBUG_H

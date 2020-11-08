@@ -22,11 +22,11 @@ App_base::render_loop()
     // Makes the window the current  OpenGl context for rendering
     w.make_current();
     while (w.render_cond()) {
-	// Just polls events
-	w.render_begin();
+        // Just polls events
+        w.render_begin();
 
-	// Just swap buffers
-	w.render_end();
+        // Just swap buffers
+        w.render_end();
     }
 }
 

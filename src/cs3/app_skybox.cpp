@@ -60,16 +60,16 @@ using glm::vec3;
 
 auto pos = vec3(0.0f, -4.0f, 0.0f);  // model location
 auto sf = vec3(1.0f, 1.0f, 1.0f);    // model scaling factor
-auto angle = (GLfloat)0.0f;	     // model rotation angle
+auto angle = (GLfloat)0.0f;          // model rotation angle
 auto axis = vec3(1.0f, 1.0f, 1.0f);  // model rotational axis
 
-auto eye_up = vec3(0, 1, 0);	  // Up is +ive Y (will be (0,-1,0) to look upside-down)
-auto eye_right = vec3(1, 0, 0);	  // Right is +ive X
+auto eye_up = vec3(0, 1, 0);      // Up is +ive Y (will be (0,-1,0) to look upside-down)
+auto eye_right = vec3(1, 0, 0);   // Right is +ive X
 auto eye_front = vec3(0, 0, -1);  // Front is -ive Z
 auto eye_dist = start_dist;
 
-auto eye_pos = vec3(0, 0, start_dist);	// Camera at (8,0,0), in World Space
-auto eye_lookat = vec3(0, 0, 0);	// Look at the origin
+auto eye_pos = vec3(0, 0, start_dist);  // Camera at (8,0,0), in World Space
+auto eye_lookat = vec3(0, 0, 0);        // Look at the origin
 
 GLfloat cubemap_num = 0.0f;
 
@@ -118,25 +118,25 @@ App_skybox::render_loop()
 
     // Various OpenGL settings
 
-    glEnable(GL_DEPTH_TEST);		     // Enables depth testing for triangles in the back
-    glEnable(GL_BLEND);			     // Enable Blending for transparency
-    glEnable(GL_CULL_FACE);		     // Enables culling of away facing triangles
+    glEnable(GL_DEPTH_TEST);                 // Enables depth testing for triangles in the back
+    glEnable(GL_BLEND);                      // Enable Blending for transparency
+    glEnable(GL_CULL_FACE);                  // Enables culling of away facing triangles
     glEnable(GL_TEXTURE_CUBE_MAP_SEAMLESS);  // Remove slight gap between cubemap boundaries
-    glEnable(GL_MULTISAMPLE);		     // Mix the texture if more pixels are transposing
-    glDepthFunc(GL_LEQUAL);		     // Cull farther triangles
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);	// Alpha channed decides the color
-							// component of the triangle behind
-    glFrontFace(GL_CCW);				// Faces are counter-clockwise
-    glCullFace(GL_BACK);				// Cull back facing faces
-    glClearDepth(1.0f);					// Depth buffer clear value
-    glClearColor(0.0f, 0.051f, 0.1f, 0.0f);		// Color clear value
+    glEnable(GL_MULTISAMPLE);                // Mix the texture if more pixels are transposing
+    glDepthFunc(GL_LEQUAL);                  // Cull farther triangles
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);  // Alpha channed decides the color
+                                                        // component of the triangle behind
+    glFrontFace(GL_CCW);                                // Faces are counter-clockwise
+    glCullFace(GL_BACK);                                // Cull back facing faces
+    glClearDepth(1.0f);                                 // Depth buffer clear value
+    glClearColor(0.0f, 0.051f, 0.1f, 0.0f);             // Color clear value
     glPointSize(1);  // The points drawn will be one pixel wide
 
     // The render loop
     while (w.render_cond()) {
-	w.render_begin();
-	do_draw_commands(w);
-	w.render_end();	 // This also swaps buffer
+        w.render_begin();
+        do_draw_commands(w);
+        w.render_end();  // This also swaps buffer
     }
 }
 // render_loop()
@@ -146,8 +146,8 @@ prepare(const Window &win)
 // Prepare various stuff to draw
 {
     prepare_models();
-    prepare_programs();	 // Programs are not stored in vao
-    prepare_uniforms();	 // Uniforms are not stored in vao
+    prepare_programs();  // Programs are not stored in vao
+    prepare_uniforms();  // Uniforms are not stored in vao
     prepare_textures();
     prepare_buffers();
     prepare_attributes();  // textures and buffers info is stored in vao
@@ -158,12 +158,12 @@ prepare_programs()
 // Create glsl programs for the shader
 {
     Vector<string> skybox_shaders = {
-	string(cs_config::cs_source_dir) + "/shaders/skybox.vert",
-	string(cs_config::cs_source_dir) + "/shaders/skybox.frag",
+        string(cs_config::cs_source_dir) + "/shaders/skybox.vert",
+        string(cs_config::cs_source_dir) + "/shaders/skybox.frag",
     };
     Vector<string> cubeobj_shaders = {
-	string(cs_config::cs_source_dir) + "/shaders/cubeobj.vert",
-	string(cs_config::cs_source_dir) + "/shaders/cubeobj.frag",
+        string(cs_config::cs_source_dir) + "/shaders/cubeobj.vert",
+        string(cs_config::cs_source_dir) + "/shaders/cubeobj.frag",
     };
     skybox_prog = create_program("Skybox", skybox_shaders);
     cubeobj_prog = create_program("cubeobj", cubeobj_shaders);
@@ -185,7 +185,7 @@ prepare_matrices(const Window &win)
 {
     // Model
 
-    glm::mat4 model = glm::mat4(1.0f);	// Identity matrix
+    glm::mat4 model = glm::mat4(1.0f);  // Identity matrix
 
     model = glm::scale(model, sf);
     model = glm::rotate(model, glm::radians(angle), axis);
@@ -252,22 +252,22 @@ load_texture_data()
 // Upload pixel data on textures.
 {
     Vector<string> file = {
-	string(cs_config::cs_root_dir) + "/assets/cubeboxes/cubebox-0.png",
-	string(cs_config::cs_root_dir) + "/assets/cubeboxes/cubebox-1.png",
-	string(cs_config::cs_root_dir) + "/assets/cubeboxes/cubebox-2.png",
-	string(cs_config::cs_root_dir) + "/assets/cubeboxes/cubebox-3.png",
-	string(cs_config::cs_root_dir) + "/assets/cubeboxes/cubebox-4.png",
-	string(cs_config::cs_root_dir) + "/assets/cubeboxes/cubebox-5.png",
-	string(cs_config::cs_root_dir) + "/assets/cubeboxes/cubebox-6.png",
-	string(cs_config::cs_root_dir) + "/assets/cubeboxes/cubebox-7.png",
-	string(cs_config::cs_root_dir) + "/assets/cubeboxes/cubebox-8.png",
-	string(cs_config::cs_root_dir) + "/assets/cubeboxes/cubebox-9.png",
+        string(cs_config::cs_root_dir) + "/assets/cubeboxes/cubebox-0.png",
+        string(cs_config::cs_root_dir) + "/assets/cubeboxes/cubebox-1.png",
+        string(cs_config::cs_root_dir) + "/assets/cubeboxes/cubebox-2.png",
+        string(cs_config::cs_root_dir) + "/assets/cubeboxes/cubebox-3.png",
+        string(cs_config::cs_root_dir) + "/assets/cubeboxes/cubebox-4.png",
+        string(cs_config::cs_root_dir) + "/assets/cubeboxes/cubebox-5.png",
+        string(cs_config::cs_root_dir) + "/assets/cubeboxes/cubebox-6.png",
+        string(cs_config::cs_root_dir) + "/assets/cubeboxes/cubebox-7.png",
+        string(cs_config::cs_root_dir) + "/assets/cubeboxes/cubebox-8.png",
+        string(cs_config::cs_root_dir) + "/assets/cubeboxes/cubebox-9.png",
     };
     nskyboxes = file.size();  // Number of skyboxes
 
     Vector<Image> image(nskyboxes);
     for (int i = 0; i < nskyboxes; i++) {
-	image[i].read_file(file[i]);
+        image[i].read_file(file[i]);
     }
 
     splice_texture_data(image);
@@ -293,10 +293,10 @@ splice_texture_data(Vector<Image> &image)
     // We try to read the relevant parts in a loop, so we tell the looping code where the
     // interesting areas are in the images.
     struct Offset {
-	int x;
-	int y;
+        int x;
+        int y;
     } loc_face[6] = {
-	{2, 1}, {0, 1}, {1, 0}, {1, 2}, {1, 1}, {3, 1},
+        {2, 1}, {0, 1}, {1, 0}, {1, 2}, {1, 1}, {3, 1},
     };
 
     // Array to hold the result
@@ -312,52 +312,52 @@ splice_texture_data(Vector<Image> &image)
     glTexStorage3D(GL_TEXTURE_CUBE_MAP_ARRAY, cnt_mip_level, GL_RGBA8, fw, fh, 6 * nskyboxes);
 
     for (int i = 0; i < nskyboxes; i++) {
-	if (image[i].get_width() != w || image[i].get_height() != h ||
-	    image[i].get_bytes_per_pixel() != nc) {
-	    std::cerr << "Images do not have same size, resize them equally.\n";
-	    exit(EXIT_FAILURE);
-	}
-	for (int j = 0; j < 6; j++) {
-	    GLubyte *p = (GLubyte *)image[i].pixels();
+        if (image[i].get_width() != w || image[i].get_height() != h ||
+            image[i].get_bytes_per_pixel() != nc) {
+            std::cerr << "Images do not have same size, resize them equally.\n";
+            exit(EXIT_FAILURE);
+        }
+        for (int j = 0; j < 6; j++) {
+            GLubyte *p = (GLubyte *)image[i].pixels();
 
-	    int scanlines = loc_face[j].y * fh;
-	    int disp = (loc_face[j].x * fw);
+            int scanlines = loc_face[j].y * fh;
+            int disp = (loc_face[j].x * fw);
 
-	    int offset = (scanlines * w + disp) * nc;
+            int offset = (scanlines * w + disp) * nc;
 
-	    for (int jj = 0; jj < fh; jj++)
-		for (int ii = 0; ii < fw; ii++)
-		    for (int kk = 0; kk < nc; kk++) {
-			int tidx = (fw * jj + ii) * nc + kk;
-			int pidx = (jj * w + ii) * nc + kk + offset;
+            for (int jj = 0; jj < fh; jj++)
+                for (int ii = 0; ii < fw; ii++)
+                    for (int kk = 0; kk < nc; kk++) {
+                        int tidx = (fw * jj + ii) * nc + kk;
+                        int pidx = (jj * w + ii) * nc + kk + offset;
 
-			// std::cerr << tidx << "\n";
+                        // std::cerr << tidx << "\n";
 
-			if (tidx >= fw * fh * nc || tidx < 0) {
-			    std::cerr << "Bounds t : " << tidx << "\n";
-			    exit(EXIT_FAILURE);
-			}
-			if (pidx >= w * h * nc || pidx < 0) {
-			    std::cerr << "Bounds p : " << pidx << "\n";
-			    exit(EXIT_FAILURE);
-			}
+                        if (tidx >= fw * fh * nc || tidx < 0) {
+                            std::cerr << "Bounds t : " << tidx << "\n";
+                            exit(EXIT_FAILURE);
+                        }
+                        if (pidx >= w * h * nc || pidx < 0) {
+                            std::cerr << "Bounds p : " << pidx << "\n";
+                            exit(EXIT_FAILURE);
+                        }
 
-			texels[tidx] = p[pidx];
-		    }
+                        texels[tidx] = p[pidx];
+                    }
 
-	    // The first 0 refers to the mipmap level (level 0, since there's only 1)
-	    // The following 2 zeroes refers to the x and y offsets in case you only want to
-	    // specify a subrectangle. The final 6i+j refers to the layer index offset (we start
-	    // from index 0 and have 6 faces). Altogether you can specify a 3D box subset of
-	    // the overall texture, but only one mip level at a time.
+            // The first 0 refers to the mipmap level (level 0, since there's only 1)
+            // The following 2 zeroes refers to the x and y offsets in case you only want to
+            // specify a subrectangle. The final 6i+j refers to the layer index offset (we start
+            // from index 0 and have 6 faces). Altogether you can specify a 3D box subset of
+            // the overall texture, but only one mip level at a time.
 
-	    // std ::cerr << "Loading texture (" << j << " of " << i << "\n";
+            // std ::cerr << "Loading texture (" << j << " of " << i << "\n";
 
-	    // for (int zz = 0 ; zz < fw * fh * nc ; zz++) texels[zz] = 127u;
+            // for (int zz = 0 ; zz < fw * fh * nc ; zz++) texels[zz] = 127u;
 
-	    glTexSubImage3D(GL_TEXTURE_CUBE_MAP_ARRAY, 0, 0, 0, i * 6 + j, fw, fh, 1, GL_RGBA,
-			    GL_UNSIGNED_BYTE, (void *)texels);
-	}
+            glTexSubImage3D(GL_TEXTURE_CUBE_MAP_ARRAY, 0, 0, 0, i * 6 + j, fw, fh, 1, GL_RGBA,
+                            GL_UNSIGNED_BYTE, (void *)texels);
+        }
     }
 
     // glGenerateMipmap(GL_TEXTURE_CUBE_MAP_ARRAY);
@@ -367,7 +367,7 @@ splice_texture_data(Vector<Image> &image)
 
     // Free the image data
     for (int i = 0; i < nskyboxes; i++) {
-	image[i].free_data();
+        image[i].free_data();
     }
 }
 // 1}}}
@@ -378,13 +378,13 @@ prepare_buffers()
     glGenBuffers(1, &vbo);
     glBindBuffer(GL_ARRAY_BUFFER, vbo);
     glBufferData(GL_ARRAY_BUFFER, cube.v_num * sizeof(struct Vertex_data),
-		 (const GLvoid *)cube.data, GL_STATIC_DRAW);
+                 (const GLvoid *)cube.data, GL_STATIC_DRAW);
     glBindBuffer(GL_ARRAY_BUFFER, 0);
 
     glGenBuffers(1, &ebo);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, cube.idx_num * sizeof(GLushort),
-		 (const void *)cube.idx, GL_STATIC_DRAW);
+                 (const void *)cube.idx, GL_STATIC_DRAW);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 }
 
@@ -404,11 +404,11 @@ prepare_attributes()
     glBindBuffer(GL_ARRAY_BUFFER, vbo);
 
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex_data),
-			  (GLvoid *)(offsetof(Vertex_data, pos)));
+                          (GLvoid *)(offsetof(Vertex_data, pos)));
     glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex_data),
-			  (GLvoid *)(offsetof(Vertex_data, normal)));
+                          (GLvoid *)(offsetof(Vertex_data, normal)));
     glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex_data),
-			  (GLvoid *)(offsetof(Vertex_data, txtr)));
+                          (GLvoid *)(offsetof(Vertex_data, txtr)));
 
     glEnableVertexAttribArray(0);
     glEnableVertexAttribArray(1);
@@ -458,108 +458,108 @@ App_skybox::key_callback(Key key, int scancode, Key_action action, Key_mods mods
     if (action == Key_action::release) return;
 
     switch (key) {
-	case Key::left:
-	    cout << "key (left)\n";
-	    rotate_right(-delta_theta);
-	    break;
-	case Key::right:
-	    cout << "key (right)\n";
-	    rotate_right(delta_theta);
-	    break;
-	case Key::up:
-	    cout << "key (up)\n";
-	    rotate_up(delta_theta);
-	    break;
-	case Key::down:
-	    cout << "key (down)\n";
-	    rotate_up(-delta_theta);
-	    break;
+        case Key::left:
+            cout << "key (left)\n";
+            rotate_right(-delta_theta);
+            break;
+        case Key::right:
+            cout << "key (right)\n";
+            rotate_right(delta_theta);
+            break;
+        case Key::up:
+            cout << "key (up)\n";
+            rotate_up(delta_theta);
+            break;
+        case Key::down:
+            cout << "key (down)\n";
+            rotate_up(-delta_theta);
+            break;
 
-	case Key::kw:
-	    cout << "key (w)\n";
-	    move_back(-delta);
-	    break;
-	case Key::ks:
-	    cout << "key (s)\n";
-	    move_back(delta);
-	    break;
-	case Key::ka:
-	    cout << "key (a)\n";
-	    angle += delta_alpha;
-	    break;
-	case Key::kd:
-	    cout << "key (d)\n";
-	    angle -= delta_alpha;
-	    break;
+        case Key::kw:
+            cout << "key (w)\n";
+            move_back(-delta);
+            break;
+        case Key::ks:
+            cout << "key (s)\n";
+            move_back(delta);
+            break;
+        case Key::ka:
+            cout << "key (a)\n";
+            angle += delta_alpha;
+            break;
+        case Key::kd:
+            cout << "key (d)\n";
+            angle -= delta_alpha;
+            break;
 
-	case Key::k0:
-	    cout << "key (0)\n";
-	    cubemap_num = 0.0f;
-	    break;
-	case Key::k1:
-	    cout << "key (1)\n";
-	    cubemap_num = 1.0f;
-	    break;
-	case Key::k2:
-	    cout << "key (2)\n";
-	    cubemap_num = 2.0f;
-	    break;
-	case Key::k3:
-	    cout << "key (3)\n";
-	    cubemap_num = 3.0f;
-	    break;
-	case Key::k4:
-	    cout << "key (4)\n";
-	    cubemap_num = 4.0f;
-	    break;
-	case Key::k5:
-	    cout << "key (5)\n";
-	    cubemap_num = 5.0f;
-	    break;
-	case Key::k6:
-	    cout << "key (6)\n";
-	    cubemap_num = 6.0f;
-	    break;
-	case Key::k7:
-	    cout << "key (7)\n";
-	    cubemap_num = 7.0f;
-	    break;
-	case Key::k8:
-	    cout << "key (8)\n";
-	    cubemap_num = 8.0f;
-	    break;
-	case Key::k9:
-	    cout << "key (9)\n";
-	    cubemap_num = 9.0f;
-	    break;
+        case Key::k0:
+            cout << "key (0)\n";
+            cubemap_num = 0.0f;
+            break;
+        case Key::k1:
+            cout << "key (1)\n";
+            cubemap_num = 1.0f;
+            break;
+        case Key::k2:
+            cout << "key (2)\n";
+            cubemap_num = 2.0f;
+            break;
+        case Key::k3:
+            cout << "key (3)\n";
+            cubemap_num = 3.0f;
+            break;
+        case Key::k4:
+            cout << "key (4)\n";
+            cubemap_num = 4.0f;
+            break;
+        case Key::k5:
+            cout << "key (5)\n";
+            cubemap_num = 5.0f;
+            break;
+        case Key::k6:
+            cout << "key (6)\n";
+            cubemap_num = 6.0f;
+            break;
+        case Key::k7:
+            cout << "key (7)\n";
+            cubemap_num = 7.0f;
+            break;
+        case Key::k8:
+            cout << "key (8)\n";
+            cubemap_num = 8.0f;
+            break;
+        case Key::k9:
+            cout << "key (9)\n";
+            cubemap_num = 9.0f;
+            break;
 
-	case Key::space:
-	    cout << "key (space)\n";
-	    init_camera();
-	    break;
-	case Key::esc:
-	    cout << "key (esc)\n";
-	    break;
+        case Key::space:
+            cout << "key (space)\n";
+            init_camera();
+            break;
+        case Key::esc:
+            cout << "key (esc)\n";
+            break;
 
-	case Key::left_shift:
-	case Key::right_shift:
-	    cout << "key (shift)\n";
-	    break;
-	case Key::left_ctrl:
-	case Key::right_ctrl:
-	    cout << "key (ctrl)\n";
-	    break;
-	case Key::left_alt:
-	case Key::right_alt:
-	    cout << "key (alt)\n";
-	    break;
-	case Key::left_super:
-	case Key::right_super:
-	    cout << "key (super)\n";
-	    break;
-	default:
-	    cout << "key (unknown)\n";
-	    break;
+        case Key::left_shift:
+        case Key::right_shift:
+            cout << "key (shift)\n";
+            break;
+        case Key::left_ctrl:
+        case Key::right_ctrl:
+            cout << "key (ctrl)\n";
+            break;
+        case Key::left_alt:
+        case Key::right_alt:
+            cout << "key (alt)\n";
+            break;
+        case Key::left_super:
+        case Key::right_super:
+            cout << "key (super)\n";
+            break;
+        default:
+            cout << "key (unknown)\n";
+            break;
     }
     return;
 }

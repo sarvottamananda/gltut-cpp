@@ -30,4 +30,4 @@ class Model_base {
 
     void print();
 };
-#endif	// MODEL_BASE_H
+#endif  // MODEL_BASE_H

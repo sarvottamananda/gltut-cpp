@@ -136,7 +136,7 @@ fa-chevron-circle-down"></em>&nbsp;&nbsp;Frequently Asked Questions</a>
 <ul>
 <li>
 
-[CODE_OF_CONDUCT](CONDUCT.md)
+[Code of Conduct](Code_of_conduct.md)
 </li>
 
 

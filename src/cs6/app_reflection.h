@@ -1,7 +1,7 @@
 /*!
  * Sarvottamananda (shreesh)
  * 2020-11-08
- * app_reflection.h v0.0 (OpenGL/C++ Tutorials) 
+ * app_reflection.h v0.0 (OpenGL/C++ Tutorials)
  *
  * Interface for the derived class
  */

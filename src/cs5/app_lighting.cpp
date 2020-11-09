@@ -818,7 +818,7 @@ do_draw_commands(const Window &win)
         glDrawElementsInstancedBaseVertex(GL_TRIANGLES, cube.idx_num, GL_UNSIGNED_SHORT,
                                           (void *)cube_off, num_ub, (GLint)cube_base);
     }
-    // *8
+    // */
 }
 
 void

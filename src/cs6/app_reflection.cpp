@@ -64,10 +64,10 @@ Model_cube cube;      // test model and the skybox
 Model_ground ground;  // flat ground
 
 // program objects
-GLuint skybox_prog = 0;   // shader for cubemap
-GLuint cubes_prog = 0;  // shader for lighted test object
-GLuint refls_prog = 0;  // shader for lighted test object
-GLuint ground_prog = 0;   // shader for ground
+GLuint skybox_prog = 0;  // shader for cubemap
+GLuint cubes_prog = 0;   // shader for lighted test object
+GLuint refls_prog = 0;   // shader for lighted test object
+GLuint ground_prog = 0;  // shader for ground
 
 // various array object
 GLuint vao = 0;  // one vertex array object for all
@@ -78,8 +78,8 @@ GLuint ebo = 0;
 GLuint model_ubo = 0;
 
 // uniform block(s)
-GLuint cmodel_ind = 0; // model_block index in cubes shader
-GLuint rmodel_ind = 0; // model_block index in refls shader
+GLuint cmodel_ind = 0;  // model_block index in cubes shader
+GLuint rmodel_ind = 0;  // model_block index in refls shader
 
 GLuint cmodel_bindpoint = 0;  // uniform buffer block 0, used in bothe cubes and refls shader
                               // becaues the Model_data struct is same.
@@ -138,7 +138,7 @@ struct Model_data {
     ivec4 material;
 };
 
-Model_data cmodel[num_cubes * 2]; // twice as many cubes, because of reflections
+Model_data cmodel[num_cubes * 2];  // twice as many cubes, because of reflections
 
 mat4 gmvp = mat4(1.0f);
 mat4 vp = mat4(1.0f);
@@ -453,7 +453,6 @@ prepare_matrices(const Window &win)
     std ::chrono::duration<float> cur_dur = cur_time - start_time;
 
     for (auto i = 0u; i < num_cubes; i++) {
-
         //
         // cmodel data for the cube
         //
@@ -493,7 +492,7 @@ prepare_matrices(const Window &win)
         vec3 rpos = pos;
         rpos[1] = -rpos[1];
 
-        GLfloat rangle  = -angle;
+        GLfloat rangle = -angle;
         vec3 raxis = axis;
         axis[1] = -1;
 
@@ -780,7 +779,8 @@ prepare_uniform_buffers()
     glBufferStorage(GL_UNIFORM_BUFFER, 2 * num_cubes * sizeof(Model_data), (GLvoid *)nullptr,
                     GL_DYNAMIC_STORAGE_BIT);
     glBufferSubData(GL_UNIFORM_BUFFER, (GLintptr)0,
-                    (GLsizeiptr)(2 * num_cubes * sizeof(Model_data)), (const GLvoid *)(&cmodel[0]));
+                    (GLsizeiptr)(2 * num_cubes * sizeof(Model_data)),
+                    (const GLvoid *)(&cmodel[0]));
 
     /*
     std::cout << "Materials : ";
@@ -866,7 +866,8 @@ do_draw_commands(const Window &win)
     glCullFace(GL_BACK);
     for (auto i = 0; i < num_cubes / num_ub; i++) {
         glBindBufferRange(GL_UNIFORM_BUFFER, cmodel_bindpoint, model_ubo,
-                          (num_cubes + i * num_ub) * sizeof(Model_data), num_ub * sizeof(Model_data));
+                          (num_cubes + i * num_ub) * sizeof(Model_data),
+                          num_ub * sizeof(Model_data));
         glDrawElementsInstancedBaseVertex(GL_TRIANGLES, cube.idx_num, GL_UNSIGNED_SHORT,
                                           (void *)cube_off, num_ub, (GLint)cube_base);
     }
@@ -880,7 +881,7 @@ do_draw_commands(const Window &win)
     glUniform3fv(geye_pos_loc, 1, glm::value_ptr(eye_pos));
     glUniformMatrix4fv(gmvp_loc, 1, GL_FALSE, &gmvp[0][0]);
 
-    //cout << eye_pos[0] << " " << eye_pos[1] << " " << eye_pos[2] << "\n";
+    // cout << eye_pos[0] << " " << eye_pos[1] << " " << eye_pos[2] << "\n";
 
     glDisable(GL_CULL_FACE);  // Disable culling of away facing triangles
     glDrawElementsBaseVertex(GL_TRIANGLES, ground.idx_num, GL_UNSIGNED_SHORT,
@@ -1064,12 +1065,14 @@ modify_buffers()
 {
     glBindBuffer(GL_UNIFORM_BUFFER, model_ubo);
     glBufferSubData(GL_UNIFORM_BUFFER, (GLintptr)0,
-                    (GLsizeiptr)(2 * num_cubes * sizeof(Model_data)), (const GLvoid *)(&cmodel[0]));
+                    (GLsizeiptr)(2 * num_cubes * sizeof(Model_data)),
+                    (const GLvoid *)(&cmodel[0]));
     glBindBuffer(GL_UNIFORM_BUFFER, 0);
 }
 
 void
 App_reflection::initialize(Options &os)
 {
-    w.initialize("OpenGL Snippets : Reflected Cubes and Cupemap", os.width, os.height, os.fullscreen);
+    w.initialize("OpenGL Snippets : Reflected Cubes and Cupemap", os.width, os.height,
+                 os.fullscreen);
 }

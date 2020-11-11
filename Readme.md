@@ -132,7 +132,7 @@ Keypresses 1, 2, 3 and 4 toggle ground, skybox, cubes and cubes reflection respe
 hacks with the ground and skybox.
 
 We need clipping planes on the mirror to get rid of the hacks. The hacks are just convenience and cover for laziness,
-they are not necessary, but for tutorials it might suffice.
+they are not necessary. For these tutorials, may be, the hacks might suffice as the real purpose is teaching/learning.
 
 ***
 

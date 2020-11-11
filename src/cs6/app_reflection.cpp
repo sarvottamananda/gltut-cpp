@@ -149,9 +149,12 @@ auto box_sz = vec3(120.0f, 80.0f, 60.0f);
 
 auto start_time = std::chrono::steady_clock::now();
 
-GLfloat cubemap_num = 0.0f;  // use only one hi-res cubemap for this program, multiple cubemap
-                             // would have been better, but since we are storing assets locally,
-                             // we do not want to copy assets multiple times unnecessarily.
+// use only one hi-res cubemap for this program, multiple cubemap
+// would have been better, but since we are storing assets locally,
+// we do not want to copy assets multiple times unnecessarily. So the following variable from
+// cs3 tutorial is unused.
+
+//GLfloat cubemap_num = 0.0f;
 
 std::random_device rd;
 std::mt19937 gen(rd());
@@ -172,6 +175,13 @@ auto eye_lookat = vec3(0, start_alt, 0);        // Look at the origin
 auto sun_dir = vec3(0.3f, 0.4f, -0.5f);
 auto sun_color = vec3(1.0f, 1.0f, 0.75f);
 auto ambient_color = vec3(0.5f, 0.75f, 1.0f);
+
+// Interaction
+
+bool want_skybox = true;
+bool want_ground = true;
+bool want_cubes = true;
+bool want_cubes_refl = true;
 
 }  // unnamed namespace
 
@@ -834,8 +844,11 @@ do_draw_commands(const Window &win)
 {
     //// Since we are drawing a cubemap we do not need to clear the window,
     //// however we stll need to clear the depth buffer
-    // glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    glClear(GL_DEPTH_BUFFER_BIT);
+    //glClear(GL_DEPTH_BUFFER_BIT);
+
+    // However we are toggling it off for demonstration when we press the toggle skybox, so we
+    // clear everything for safe measures
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glBindVertexArray(vao);
 
     calculate_camera();
@@ -844,66 +857,74 @@ do_draw_commands(const Window &win)
 
     // Draw skybox
     // /*
-    glUseProgram(skybox_prog);
-    glUniformMatrix4fv(vp_loc, 1, GL_FALSE, &vp[0][0]);
-    glUniform1i(skybox_tex_loc, 0);
-    glCullFace(GL_FRONT);
+    if (want_skybox) {
+        glUseProgram(skybox_prog);
+        glUniformMatrix4fv(vp_loc, 1, GL_FALSE, &vp[0][0]);
+        glUniform1i(skybox_tex_loc, 0);
+        glCullFace(GL_FRONT);
 
-    glDepthMask(GL_FALSE);
-    glDrawElementsBaseVertex(GL_TRIANGLES, cube.idx_num, GL_UNSIGNED_SHORT, (void *)cube_off,
-                             (GLint)cube_base);
-    glDepthMask(GL_TRUE);
+        glDepthMask(GL_FALSE);
+        glDrawElementsBaseVertex(GL_TRIANGLES, cube.idx_num, GL_UNSIGNED_SHORT,
+                                 (void *)cube_off, (GLint)cube_base);
+        glDepthMask(GL_TRUE);
+    }
     // */
 
     // Draw reflections
     // /*
-    glUseProgram(refls_prog);
-    glUniform1i(refl_cube_tex_loc, 2);
-    glUniform3fv(refl_eye_pos_loc, 1, glm::value_ptr(eye_pos));
-    glUniform3fv(refl_sun_dir_loc, 1, glm::value_ptr(sun_dir));
-    glUniform3fv(refl_amb_col_loc, 1, glm::value_ptr(ambient_color));
-    glUniform3fv(refl_sun_col_loc, 1, glm::value_ptr(sun_color));
-    glCullFace(GL_BACK);
-    for (auto i = 0; i < num_cubes / num_ub; i++) {
-        glBindBufferRange(GL_UNIFORM_BUFFER, cmodel_bindpoint, model_ubo,
-                          (num_cubes + i * num_ub) * sizeof(Model_data),
-                          num_ub * sizeof(Model_data));
-        glDrawElementsInstancedBaseVertex(GL_TRIANGLES, cube.idx_num, GL_UNSIGNED_SHORT,
-                                          (void *)cube_off, num_ub, (GLint)cube_base);
+    if (want_cubes_refl) {
+        glUseProgram(refls_prog);
+        glUniform1i(refl_cube_tex_loc, 2);
+        glUniform3fv(refl_eye_pos_loc, 1, glm::value_ptr(eye_pos));
+        glUniform3fv(refl_sun_dir_loc, 1, glm::value_ptr(sun_dir));
+        glUniform3fv(refl_amb_col_loc, 1, glm::value_ptr(ambient_color));
+        glUniform3fv(refl_sun_col_loc, 1, glm::value_ptr(sun_color));
+        glCullFace(GL_BACK);
+        for (auto i = 0; i < num_cubes / num_ub; i++) {
+            glBindBufferRange(GL_UNIFORM_BUFFER, cmodel_bindpoint, model_ubo,
+                              (num_cubes + i * num_ub) * sizeof(Model_data),
+                              num_ub * sizeof(Model_data));
+            glDrawElementsInstancedBaseVertex(GL_TRIANGLES, cube.idx_num, GL_UNSIGNED_SHORT,
+                                              (void *)cube_off, num_ub, (GLint)cube_base);
+        }
     }
     // */
 
     // Draw ground
     // /*
-    glUseProgram(ground_prog);
-    glUniform1i(ground_tex_loc, 1);
-    glUniform1i(gskybox_tex_loc, 0);
-    glUniform3fv(geye_pos_loc, 1, glm::value_ptr(eye_pos));
-    glUniformMatrix4fv(gmvp_loc, 1, GL_FALSE, &gmvp[0][0]);
+    if (want_ground) {
+        glUseProgram(ground_prog);
+        glUniform1i(ground_tex_loc, 1);
+        glUniform1i(gskybox_tex_loc, 0);
+        glUniform3fv(geye_pos_loc, 1, glm::value_ptr(eye_pos));
+        glUniformMatrix4fv(gmvp_loc, 1, GL_FALSE, &gmvp[0][0]);
 
-    // cout << eye_pos[0] << " " << eye_pos[1] << " " << eye_pos[2] << "\n";
+        // cout << eye_pos[0] << " " << eye_pos[1] << " " << eye_pos[2] << "\n";
 
-    glDisable(GL_CULL_FACE);  // Disable culling of away facing triangles
-    glDrawElementsBaseVertex(GL_TRIANGLES, ground.idx_num, GL_UNSIGNED_SHORT,
-                             (void *)ground_off, (GLint)ground_base);
-    glEnable(GL_CULL_FACE);  // Enable culling of away facing triangles
+        glDisable(GL_CULL_FACE);  // Disable culling of away facing triangles
+        glDrawElementsBaseVertex(GL_TRIANGLES, ground.idx_num, GL_UNSIGNED_SHORT,
+                                 (void *)ground_off, (GLint)ground_base);
+        glEnable(GL_CULL_FACE);  // Enable culling of away facing triangles
+    }
     // */
 
     // Draw cubes
     // /*
-    glUseProgram(cubes_prog);
-    glUniform1i(cube_tex_loc, 2);
-    glUniform3fv(eye_pos_loc, 1, glm::value_ptr(eye_pos));
-    glUniform3fv(sun_dir_loc, 1, glm::value_ptr(sun_dir));
-    glUniform3fv(amb_col_loc, 1, glm::value_ptr(ambient_color));
-    glUniform3fv(sun_col_loc, 1, glm::value_ptr(sun_color));
-    glCullFace(GL_BACK);
+    if (want_cubes) {
+        glUseProgram(cubes_prog);
+        glUniform1i(cube_tex_loc, 2);
+        glUniform3fv(eye_pos_loc, 1, glm::value_ptr(eye_pos));
+        glUniform3fv(sun_dir_loc, 1, glm::value_ptr(sun_dir));
+        glUniform3fv(amb_col_loc, 1, glm::value_ptr(ambient_color));
+        glUniform3fv(sun_col_loc, 1, glm::value_ptr(sun_color));
+        glCullFace(GL_BACK);
 
-    for (auto i = 0; i < num_cubes / num_ub; i++) {
-        glBindBufferRange(GL_UNIFORM_BUFFER, cmodel_bindpoint, model_ubo,
-                          i * num_ub * sizeof(Model_data), num_ub * sizeof(Model_data));
-        glDrawElementsInstancedBaseVertex(GL_TRIANGLES, cube.idx_num, GL_UNSIGNED_SHORT,
-                                          (void *)cube_off, num_ub, (GLint)cube_base);
+        for (auto i = 0; i < num_cubes / num_ub; i++) {
+            glBindBufferRange(GL_UNIFORM_BUFFER, cmodel_bindpoint, model_ubo,
+                              i * num_ub * sizeof(Model_data), num_ub * sizeof(Model_data));
+            glDrawElementsInstancedBaseVertex(GL_TRIANGLES, cube.idx_num, GL_UNSIGNED_SHORT,
+                                              (void *)cube_off, num_ub, (GLint)cube_base);
+        }
     }
     // */
 }
@@ -950,43 +971,37 @@ App_reflection::key_callback(Key key, int scancode, Key_action action, Key_mods 
 
         case Key::k0:
             cout << "key (0)\n";
-            cubemap_num = 0.0f;
             break;
         case Key::k1:
-            cout << "key (1)\n";
-            cubemap_num = 0.0f;
+            cout << "key (1) - toggle ground\n";
+            want_ground = !want_ground;
             break;
         case Key::k2:
-            cout << "key (2)\n";
-            cubemap_num = 0.0f;
+            cout << "key (2) - toggle skybox\n";
+            want_skybox = !want_skybox;
             break;
         case Key::k3:
-            cout << "key (3)\n";
-            cubemap_num = 0.0f;
+            cout << "key (3) - toggle cubes\n";
+            want_cubes = !want_cubes;
             break;
         case Key::k4:
-            cout << "key (4)\n";
-            cubemap_num = 0.0f;
+            cout << "key (4) - toggle cubes_refl\n";
+            want_cubes_refl = !want_cubes_refl;
             break;
         case Key::k5:
             cout << "key (5)\n";
-            cubemap_num = 0.0f;
             break;
         case Key::k6:
             cout << "key (6)\n";
-            cubemap_num = 0.0f;
             break;
         case Key::k7:
             cout << "key (7)\n";
-            cubemap_num = 0.0f;
             break;
         case Key::k8:
             cout << "key (8)\n";
-            cubemap_num = 0.0f;
             break;
         case Key::k9:
             cout << "key (9)\n";
-            cubemap_num = 0.0f;
             break;
 
         case Key::space:
@@ -1051,7 +1066,10 @@ init_camera()
     eye_dist = start_dist;
     eye_alt = start_alt;
 
-    // angle = 0.0f;
+    want_ground = true;
+    want_skybox = true;
+    want_cubes = true;
+    want_cubes_refl = true;
 }
 
 static void

@@ -1,16 +1,23 @@
 #version 430 core
-out vec4 fragcolor;
-
-in vec4 texcoords;
 
 uniform samplerCube skybox_tex;
 
+const float refr_coef = 0.4;
+
+in vec4 texcoords;
+
+out vec4 fragcolor;
+
 void main()
 {    
-    fragcolor = texture(skybox_tex, vec3(texcoords.st, -texcoords.p));
-    if (texcoords.y < 0) {
-        fragcolor = 0.2 * fragcolor;
-        fragcolor.a = 0.8;
-    }
+
+    // HACK 
+    //
+    // Since our far point is not at infinity, we hardcode how much we can look below the horizon from our current
+    // location. The following has an effect of full transparency at the horizon.
+    
+    //fragcolor =  texture(skybox_tex, vec3(texcoords.st, -texcoords.p));
+    fragcolor =  (refr_coef + smoothstep(-0.05, -0.005, texcoords.y) * (1 - refr_coef)) * texture(skybox_tex, vec3(texcoords.st, -texcoords.p));
+    fragcolor.a = 1.0;
 
 }

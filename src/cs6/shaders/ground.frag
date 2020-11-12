@@ -4,7 +4,7 @@ uniform sampler2D ground_tex;
 uniform samplerCube skybox_tex;
 uniform vec3 eye_pos;
 
-const float refl_coef = 0.75;
+const float refl_coef = 0.5;
 const float ground_coef = 0.1;
 
 in vec4 f_pos;
@@ -36,7 +36,7 @@ void main()
 
     vec3 dir = gpos - epos;
 
-    dir[1] = -dir[1];
+    //dir[1] = -dir[1];
 
     dir = normalize(dir);
 

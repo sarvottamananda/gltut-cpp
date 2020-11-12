@@ -41,9 +41,9 @@ template <class T>
 
 using Vector = std::vector<T, std::allocator<T>>;
 using std::cout;
-using std::string;
+using std::string; 
 
-using glm::ivec4;
+using glm::ivec4; 
 using glm::mat4;
 using glm::vec3;
 
@@ -477,7 +477,7 @@ prepare_matrices(const Window &win)
         angle += ((GLfloat)cur_dur.count() * cube_xform[i].avel);
 
         // when the cube gets completely below the surface move it back
-        if (pos[1] < 0.0f) cube_xform[i].disp[1] += box_sz.y;
+        if (pos[1] < 1.732f) cube_xform[i].disp[1] += box_sz.y;
 
         model = glm::translate(model, pos);
         model = glm::rotate(model, glm::radians(angle), axis);

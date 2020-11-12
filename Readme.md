@@ -136,6 +136,8 @@ they are not necessary. For these tutorials, may be, the hacks might suffice as 
 
 For movement, as before, WASD and left, right, up and down keys.
 
+Key <space> resets the scene.
+
 ***
 
 

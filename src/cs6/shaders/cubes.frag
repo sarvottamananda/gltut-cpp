@@ -8,8 +8,8 @@ uniform vec3 ambient_color;
 uniform vec3 sun_color;
 
 const float ambient_coeff = 0.5;
-const float diffuse_coeff = 1.0;
-const float specular_coeff = 0.75;
+const float diffuse_coeff = 0.5;
+const float specular_coeff = 0.5;
 const float specular_shine = 4.0;
 const float refl_coef = 0.75;
 

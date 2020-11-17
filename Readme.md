@@ -11,6 +11,8 @@ develop:[![Build Status](https://travis-ci.com/sarvottamananda/gltut-cpp.svg?bra
 
 ***
 
+![logo](gltut++.png)
+
 This project contains beginner level OpenGL code snippets. The purpose is to learn OpenGL through
 practical programming. 
 

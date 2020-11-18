@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="gltut++.png" width="400" />
+</p>
+
 # GLTut  - Simple Code Bits for OpenGL/Linux/C++
 
 [![PRs welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat)](http://makeapullrequest.com)
@@ -10,6 +14,7 @@ master:[![Build Status](https://travis-ci.com/sarvottamananda/gltut-cpp.svg?bran
 develop:[![Build Status](https://travis-ci.com/sarvottamananda/gltut-cpp.svg?branch=develop)](https://travis-ci.com/sarvottamananda/gltut-cpp)
 
 ***
+
 
 This project contains beginner level OpenGL code snippets. The purpose is to learn OpenGL through
 practical programming. 

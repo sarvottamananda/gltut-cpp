@@ -7,10 +7,8 @@
 [![Open Source Love](https://firstcontributions.github.io/open-source-badges/badges/open-source-v1/open-source.svg)](https://github.com/firstcontributions/open-source-badges)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT)
 
-Build Statuses:
-
+Build Status:
 master:[![Build Status](https://travis-ci.com/sarvottamananda/gltut-cpp.svg?branch=master)](https://travis-ci.com/sarvottamananda/gltut-cpp)
-
 develop:[![Build Status](https://travis-ci.com/sarvottamananda/gltut-cpp.svg?branch=develop)](https://travis-ci.com/sarvottamananda/gltut-cpp)
 
 ***

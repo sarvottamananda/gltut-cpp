@@ -1,6 +1,4 @@
-<p align="center">
-  <img src="gltut++.png" width="400" />
-</p>
+![Image of Mascot](https://raw.githubusercontent.com/wiki/sarvottamananda/glbits-cpp/imgs/gltut_cpp.png)
 
 # GLTut  - Simple Code Bits for OpenGL/Linux/C++
 
@@ -8,6 +6,8 @@
 [![First timers only friendly](https://img.shields.io/badge/first--timers--only-friendly-blue.svg?style=flat)](https://github.com/sarvottamananda/)
 [![Open Source Love](https://firstcontributions.github.io/open-source-badges/badges/open-source-v1/open-source.svg)](https://github.com/firstcontributions/open-source-badges)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT)
+
+Build Statuses:
 
 master:[![Build Status](https://travis-ci.com/sarvottamananda/gltut-cpp.svg?branch=master)](https://travis-ci.com/sarvottamananda/gltut-cpp)
 

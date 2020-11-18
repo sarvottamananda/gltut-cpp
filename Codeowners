@@ -1,9 +1,12 @@
-Sarvottamananda initiated the code repository to help students understand and program in OpenGL
-using C++.
+# Sarvottamananda initiated the code repository to help students understand and program in OpenGL
+# using C++.
 
 *       @sarvottamananda
 
 *.md    @sarvottamananda
 *.cpp   @sarvottamananda
+*.h   @sarvottamananda
 
-assets/gltut_cpp.png    @heraldofspace (aniket)
+# Aniket is responsible for the logo, which has been moved to wiki
+
+/assets/images/*.png    @heraldofspace (aniket)
